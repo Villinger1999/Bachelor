@@ -4,9 +4,6 @@ import cv2
 import pyiqa
 from PIL import Image
 from skimage.metrics import peak_signal_noise_ratio as psnr, structural_similarity as ssim
-from torchvision import transforms
-import tensorflow as tf
-from skimage import io, util
 import os
 import time
 
