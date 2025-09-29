@@ -2,5 +2,6 @@
 __pycache__/
 *.pyc
 
+# Ignore images
 results/assessment/
 data/

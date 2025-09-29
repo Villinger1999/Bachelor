@@ -9,7 +9,7 @@ import os
 import numpy as np
 
 # Make path the folder path
-path = os.getcwd() + "/"   # always points to the folder you are in
+path = os.getcwd() + "/"   
 
 # Download CIFAR-10 and load it into memory
 (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
