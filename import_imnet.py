@@ -2,20 +2,21 @@ import zipfile
 import os
 import random
 from pathlib import Path
+from PIL import Image
+from io import BytesIO
 
 # Make path the folder path
 path = path = os.getcwd() + "/"   
 
 zip_path = "data/imnet.zip"                 # path to downloaded Kaggle file
-extract_path = "data/imnet_subset_1000"  # folder to extract subset into
-subset_size = 1000                     # number of random images to extract
-random_seed = 42                       # for reproducibility
+extract_path = "data/imnet_subset_1000"     # folder to extract subset into
+subset_size = 1000                          # number of random images to extract
+random_seed = 42                            # for reproducibility
 
 
 os.makedirs(path + extract_path, exist_ok=True)
 random.seed(random_seed)
 
-# === MAIN ===
 with zipfile.ZipFile(path + zip_path, 'r') as zip_ref:
     # Get all image file paths inside ZIP
     all_files = [f for f in zip_ref.namelist() if f.lower().endswith(('.jpg', '.jpeg', '.png'))]
@@ -30,6 +31,15 @@ with zipfile.ZipFile(path + zip_path, 'r') as zip_ref:
 
     # Extract only selected images
     for f in subset_files:
-        zip_ref.extract(f, path + extract_path)
+        # Read file from zip directly
+        with zip_ref.open(f) as file:
+            img = Image.open(BytesIO(file.read()))
+            img = img.convert("RGB")                 # ensure RGB
+            img = img.resize((224, 224), Image.LANCZOS) 
+            
+            # Save resized image to extract_path
+            out_path = Path(path + extract_path) / Path(f).name
+            out_path.parent.mkdir(parents=True, exist_ok=True)
+            img.save(out_path, format="JPEG", quality=95)
 
-print(f"Done! Extracted {len(subset_files)} images to '{path + extract_path}'")
+print(f"Extracted {len(subset_files)} images to '{path + extract_path}'")

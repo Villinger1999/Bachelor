@@ -20,7 +20,7 @@ print("Test:", x_test.shape, y_test.shape)
 # Variances for Gaussian noise
 variances = [0, 0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5]
 
-x = 256 # Resolution
+x = 224 # Resolution
 resize = transforms.Resize((x, x))
 
 # Store results
