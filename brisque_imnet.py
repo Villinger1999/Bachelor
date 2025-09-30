@@ -2,7 +2,6 @@ import os
 import random
 import time
 from pathlib import Path
-
 import pandas as pd
 import matplotlib.pyplot as plt
 import cv2
@@ -10,8 +9,6 @@ import numpy as np
 import pyiqa
 from PIL import Image
 from skimage.metrics import peak_signal_noise_ratio as psnr, structural_similarity as ssim
-
-from test_train_noiseadd import x  # custom variable
 
 path = Path.cwd()
 subset_path = path / "data" / "imnet_subset_1000"
@@ -114,7 +111,7 @@ for ax, metric in zip(axes, metrics):
     ax.grid(True, linestyle="--", alpha=0.6)
     ax.legend()
 
-plt.suptitle(f"Image Quality Metrics vs Noise Variance (res={x})", fontsize=16, y=1.02)
+plt.suptitle(f"Image Quality Metrics vs Noise Variance (res={256})", fontsize=16, y=1.02)
 
 timestamp = str(time.time_ns())
 plt.savefig(results_path / f"brisque_results_{timestamp}.png", dpi=150, bbox_inches="tight")
