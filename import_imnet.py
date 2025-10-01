@@ -32,3 +32,4 @@ with zipfile.ZipFile(path + zip_path, 'r') as zip_ref:
         zip_ref.extract(f, path + extract_path)
 
 print(f"Done! Extracted {len(subset_files)} images to '{path + extract_path}'")
+
