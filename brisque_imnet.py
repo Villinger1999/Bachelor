@@ -50,8 +50,8 @@ for idx, img_path in enumerate(sample_paths):
     for var_value in noise_variances:
         noisy_img = img.copy()
         if var_value > 0:
-            noise = np.random.normal(0, np.sqrt(var_value), img.shape)
-            noisy_img = np.clip(img + noise, 0, 1)
+            noise = np.random.normal(0, np.sqrt(var_value), img.shape) # gaussian noise 
+            noisy_img = np.clip(img + noise, 0, 1) # add noise and ensure that all pixel values stays between 0 and 1
 
         noisy_uint8 = (noisy_img * 255).astype(np.uint8)
         fname = f"{fname_base}_noisy_{var_value}.jpg"
