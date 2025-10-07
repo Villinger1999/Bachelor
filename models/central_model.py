@@ -17,7 +17,7 @@ def fedavg(states):
     avg = 0
     return avg
 
-# Fucntion for federated SGD
+# Fucntion for federated SDG
 def fedavg(states):
     sgd = 0
     return sgd
@@ -36,7 +36,7 @@ def local_train(model):
              for name, param in model.named_parameters()}
     return model.state_dict() # returns the training weights for FedAVG - can also be "return grads" for returning the gradients for FedSGD
 
-# Function for the full Federated Learning proces 
+# Function for simulation of the full Federated Learning proces 
 def fl_training(num_rounds, local_epochs, batch_size, client_datasets, defense_function=None, fedtype=fedavg):
     """
     Args:
