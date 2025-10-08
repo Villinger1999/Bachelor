@@ -4,6 +4,7 @@ import torch.optim as optim
 from torchvision import datasets, transforms, models
 from torch.utils.data import random_split, DataLoader
 import copy
+import random
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -13,37 +14,55 @@ def get_model(num_classes=500):
     return model
 
 # Fucntion for federated Averaging
-def fedavg(states):
-    avg = 0
-    return avg
+def fedavg(states, C, client_datasets):
+    """
+    states: a state dictionary of the local states from the trained models
+    C: fraction of clients to participate
+    client_dataset: a list of subsets with training data for each client
+    """
+    clients = list(range(len(client_datasets)))      # total number of clients
+    m = max(int(C * len(client_datasets)), 1)        # number of clients to sample
 
-# Fucntion for federated SDG
-def fedavg(states):
-    sgd = 0
-    return sgd
+    S_t = random.sample(clients, m)
+    local_states = []
+    samples = []
+    
+    for i in S_t:
+        local_states.append(states[i])
+        samples.append(len(client_datasets[i]))
+        
+    avg_state = {}
+    total_samples = sum(samples)
+    for key in local_states[0].keys():
+        avg_state[key] = sum(
+            local_states[i][key] * (samples[i] / total_samples) for i in range(len(S_t))
+        )
+    return avg_state
 
 # Model for local training proces on each client
-def local_train(model):
+def local_train(model, trainloader, epochs=1, device=device, defense_function=None):
     """
     Args:
-        num_rounds: number of training rounds
+        model: global_model
+        trainloader: DataLoader that loads the clients data 
+        epochs: default = 1
+        device: gpu or cpu
     
     Returns:
         Training weights for a FedAVG or gradients for FedSGD
     """
-    model = copy.deepcopy(model) # copy of model that ensures that the original model is not changed
-    grads = {name: torch.zeros_like(param, device=device) 
-             for name, param in model.named_parameters()}
-    return model.state_dict() # returns the training weights for FedAVG - can also be "return grads" for returning the gradients for FedSGD
+    local_model = copy.deepcopy(model) # copy of model that ensures that the original model is not changed
+    return local_model.state_dict() # 
 
 # Function for simulation of the full Federated Learning proces 
-def fl_training(num_rounds, local_epochs, batch_size, client_datasets, defense_function=None, fedtype=fedavg):
+def fl_training(num_rounds, local_epochs, batch_size, client_datasets, C, defense_function=None, fedtype=fedavg):
     """
     Args:
         num_rounds: number of training rounds
         local_epochs: number of local epochs
         batch_size: the number of training samples processed together
-        client_datasets: an list of subsets with training data for each client
+        client_datasets: a list of subsets with training data for each client
+        C: fraction of clients to participate
         defense_function: the defense function that should be used, defualt is None
         fedtype: type of federated learning update, defaults to federated averaging 
     
@@ -60,21 +79,18 @@ def fl_training(num_rounds, local_epochs, batch_size, client_datasets, defense_f
             trainloader = DataLoader(client_dataset, batch_size=batch_size, shuffle=True) # load the clients data
             
             # Train local model
-            local_state = local_train(global_model, trainloader, epochs=local_epochs, device=device) 
+            local_state = local_train(global_model, trainloader, epochs=local_epochs, device=device, defense_function=None) 
             local_states.append(local_state) 
-            
-            if defense_function != None: 
-                defended_states = defense_function(local_states) # add defense, if applied
             print(f"Client {i+1} done.")
 
-        # Aggregate
-        if defense_function != None:
-            global_state = fedtype(defended_states) 
-            return defended_states, global_model.load_state_dict(global_state) # update global model 
-        else:
-            global_state = fedtype(local_states)
-            return local_states, global_model.load_state_dict(global_state) # update global model 
+        # Apply defense
+        if defense_function != None: 
+            local_states = defense_function(local_states) # add defense, if applied
 
+        global_state = fedtype(local_states, C, client_datasets) # aggregate the local weights using federated aver
+        global_model.load_state_dict(global_state) # update global model 
+    
+    return local_states, global_model
 
 def evaluate_global(model, dataloader, device='cpu'):
     """
