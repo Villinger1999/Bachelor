@@ -13,4 +13,8 @@ def iDLG(model, model_parameters, gradients, max_ite: int, learning_rate: float)
         max_ite (int): N - maximum number of iterations
         learning_rate (float): eta - learning rate.
     """
+    infered_labels = []
     dummy_datum = np.random.randn(*model.shape)
+    
+    for i in range(max_ite):
+        # dummy_grad
