@@ -6,7 +6,7 @@ from PIL import Image
 from skimage.metrics import peak_signal_noise_ratio as psnr, structural_similarity as ssim
 import os
 import time
-from test_train_noiseadd import x
+from test_train_noiseadd import resolution
 
 
 # Make path the folder path
@@ -72,7 +72,7 @@ for ax, metric in zip(axes, metrics):
     ax.grid(True, linestyle="--", alpha=0.6)
     ax.legend()
 
-plt.suptitle(f"Image Quality Metrics vs Noise Variance res: {x}", fontsize=16, y=1)
+plt.suptitle(f"Image Quality Metrics vs Noise Variance res: {resolution}", fontsize=16, y=1)
 plt.savefig(path + "results/assessment/brisque_results_" + str(time.time_ns()) + ".png", dpi=150)
 df_metrics.to_csv(path + "results/assessment/brisque_" + str(time.time_ns()) + ".csv", index=False)
 
