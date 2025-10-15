@@ -5,7 +5,7 @@ from flwr.app import ArrayRecord, ConfigRecord, Context
 from flwr.serverapp import Grid, ServerApp
 from flwr.serverapp.strategy import FedAvg
 
-from flower_tutorial.task import Net
+from flower_tutorial.task import get_model
 
 # Create ServerApp
 app = ServerApp()
@@ -21,7 +21,7 @@ def main(grid: Grid, context: Context) -> None:
     lr: float = context.run_config["lr"]
 
     # Load global model
-    global_model = Net()
+    global_model = get_model()
     arrays = ArrayRecord(global_model.state_dict())
 
     # Initialize FedAvg strategy
