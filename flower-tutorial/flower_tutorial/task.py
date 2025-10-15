@@ -88,20 +88,6 @@ def evaluate(model, dataloader, device='cpu'):
             correct += (predicted == labels).sum().item()                                       # creates a tensor of True/False values for correct predictions, sums and converts that count from a tensor to a Python number.
     return correct / total                                                                      # calculates and returns accuracy
 
-# turn the models state_dict values into a list of numpy arrays 
-# (Flower sends parameters as NumPy arrays, wrapped in a special internal format)
-def parameters_to_list(model):                                                                  
-    return [val.cpu().numpy() for _, val in model.state_dict().items()]
-
-# turn numpy arrays from flower into tensors to use as state_dict
-def list_to_parameters(model, params_list):
-    state_dict = model.state_dict()
-    new = {}
-    for (k, v), arr in zip(state_dict.items(), params_list):
-        new[k] = torch.from_numpy(arr).to(v.device)
-    model.load_state_dict(new)
-
-
 # class Net(nn.Module):
 #     """Model (simple CNN adapted from 'PyTorch: A 60 Minute Blitz')"""
 
