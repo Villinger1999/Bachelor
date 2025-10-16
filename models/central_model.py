@@ -9,7 +9,7 @@ import random
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def get_model(num_classes=500):
-    model = models.resnet18(weights=None)
+    model = models.resnet18(weights=models.ResNet18_Weights.IMAGENET1K_V1)
     model.fc = nn.Linear(model.fc.in_features, num_classes)
     return model
 

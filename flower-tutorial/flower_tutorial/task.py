@@ -1,16 +1,6 @@
-"""flower-tutorial: A Flower / PyTorch app."""
-
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-from flwr_datasets import FederatedDataset
-from flwr_datasets.partitioner import IidPartitioner
-from torch.utils.data import DataLoader
-from torchvision.transforms import Compose, Normalize, ToTensor
-
-# to use flower open terminal and write:
-# flwr new flower-tutorial --framework pytorch --username flwrlabs
-# then cd into flower-tutorial & pip install -e .
+# to use flower open terminal
+# cd into flower-tutorial 
+# pip install -e .
 
 import torch
 import torch.nn as nn

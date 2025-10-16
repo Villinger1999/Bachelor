@@ -1,5 +1,3 @@
-"""flower-tutorial: A Flower / PyTorch app."""
-
 import torch
 from flwr.app import ArrayRecord, ConfigRecord, Context
 from flwr.serverapp import Grid, ServerApp
