@@ -54,8 +54,8 @@ def infer_labels_from_bias_grad(leaked_grads:list[torch.Tensor], model: torch.nn
     
 torch.no_grad()
 def iDLG(model: torch.nn.Module, leaked_grads:list[torch.Tensor], infered_label: int, x_shape:tuple[int,int,int,int],
-         max_ite: int = 400, learning_rate: float = 0.1, tv_weight: float = 1e-3, l2_weight: float = 1e-5,
-         init_mean: float = 0.5, init_std: float = 0.2, device:torch.device = device) -> torch.Tensor:
+         train_ite: int = 400, learning_rate: float = 0.1, tv_weight: float = 1e-3, l2_weight: float = 1e-5,
+         device:torch.device = device) -> torch.Tensor:
     """
     Improved Deep Leakage from Gradients (iDLG)
     a gradient inverion attack, meant to extract ground-truth labels and reconstruct data based on the shared gradient
@@ -67,16 +67,31 @@ def iDLG(model: torch.nn.Module, leaked_grads:list[torch.Tensor], infered_label:
         max_ite (int): N - maximum number of iterations
         learning_rate (float): eta - learning rate.
     """
-    model.eval()
+    model.eval() # activating evaluation mode, as we changes or updates to the model
+    for parameter in model.parameters():
+        parameter.requires_grad_(False) # Freezes all model weights by disabling gradient computation for them.
     
-    leaked_grads_device = [grad.detach().to(device) for grad in leaked_grads]
+    # for all the leaked gradients, detach them i.e. ensures grads are treated as constant tensors, and moves them to the chosen device 
+    leaked_grads_device = [grad.detach().to(device) for grad in leaked_grads] 
     
-    x_dummy = torch.randn(x_shape, device=device) # to initialize the random values
-    x_dummy.clamp(0,255) # change the values in the dummy input to match the RGB values
+    # initialize the dummy input and make it into a optimizable parameter
+    data_init = torch.randn(x_shape, device=device) # initialize a random image of the same shape as the real one 
+    data_init.clamp(0,255) # Scaled to be roughly in pixel range of the RGB values
+    x_dummy = torch.nn.Parameter(data_init) # makes the dummy data into a trainable parameter
+    
+    # uptimizing the dummy data using Adam
+    optimizer = torch.optim.Adam([x_dummy], lr = learning_rate)
+    
+    # loss function
+    loss_func = torch.nn.CrossEntropyLoss(reduction="mean")
+    
+    # create a tensor with the ground-truth label that was infered
     infered_label = infer_labels_from_bias_grad(leaked_grads=leaked_grads, model=model)
+    y_hat = torch.tensor([infered_label],device=device, dtype=torch.long)
+
     
-    for i in range(max_ite):
-        # dummy_grad
+    for i in range(train_ite):
+        
         x=0
         
     return x_dummy
