@@ -49,15 +49,6 @@ def infer_labels_from_bias_grad(leaked_grads:list[torch.Tensor], model: torch.nn
     # bias_grad is the Gradient of loss w.r.t. logits (g_i in equation 3 in iDLG paper)
     bias_grad = grad_dict[last_bias_name] # Bias gradient equals g_i
     return int(torch.argmin(bias_grad).item())  # True label = index of minimum gradient
-
-def tv_loss(x: torch.Tensor, eps: float = 1e-6) -> torch.Tensor:
-    """
-    Computes total variance, i.e. how noisy the image is, by penalizing images with random fluctuations, a low tv value is good.
-    """
-    dh = (x[:, :, 1:, :] - x[:, :, :-1, :])**2
-    dw = (x[:, :, :, 1:] - x[:, :, :, :-1])**2
-    return (dh.mean() + dw.mean())**0.5 + eps    
-    
     
 torch.no_grad()
 def iDLG(model: torch.nn.Module, leaked_grads:list[torch.Tensor], infered_label: int, x_shape:tuple[int,int,int,int],
@@ -110,13 +101,10 @@ def iDLG(model: torch.nn.Module, leaked_grads:list[torch.Tensor], infered_label:
         g_loss = torch.tensor(0.0, device=device)
         for dummy_grad, leaked_grad in zip(dummy_grads, leaked_grads):
             g_loss = g_loss + ((dummy_grad - leaked_grad) ** 2).sum() # compute element-wise squared difference between the gradient produced by the dummy and the leaked gradient, then sum.
-        
+         
         total = g_loss
         total.backward()
         optimizer.step()
         x_dummy.clamp_(0,1)
 
     return x_dummy.detach()
-        
-if __name__ == "__main__":
-    print(device)
