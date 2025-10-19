@@ -25,6 +25,7 @@ def cross_entropy_loss(y_c:float, y_j:list[float]) -> float:
 
 def infer_labels_from_bias_grad(leaked_grads:list[torch.Tensor], model: torch.nn.Module) -> int:
     """
+    iDLG uses the fact that when cross-entropy is used with softmax on a batch of size 1, the correct label will always have a negative sign, due to the way it's 
     iDLG: label = argmin(grad w.r.t. last-layer bias) because that bias grad equals (p - one_hot).
     Assumes batch_size == 1 and cross-entropy with softmax
 
@@ -44,15 +45,17 @@ def infer_labels_from_bias_grad(leaked_grads:list[torch.Tensor], model: torch.nn
     for name, parameter in model.named_parameters(): #loop through the names and parameters in the model 
         if name.endswith(".bias") and parameter.ndim == 1: # if it's a bias parameter and it's 1 dimentional. 
             last_bias_name = name # set is as the name of the last bias term
-            
-    bias_grad = grad_dict[last_bias_name] # sets bias_grad, to be equal to the last bias gradient in the model  
-    infered_label=int(torch.argmin(bias_grad).item()) # gets the arguments for the 
-    return infered_label
+    
+    # bias_grad is the Gradient of loss w.r.t. logits (g_i in equation 3 in iDLG paper)
+    bias_grad = grad_dict[last_bias_name] # Bias gradient equals g_i
+    return int(torch.argmin(bias_grad).item())  # True label = index of minimum gradient
     
     
     
-
-def iDLG(model: torch.nn.Module, x_shape:torch.Tensor, max_ite: int, learning_rate: float = 0.1):
+torch.no_grad()
+def iDLG(model: torch.nn.Module, leaked_grads:list[torch.Tensor], infered_label: int, x_shape:tuple[int,int,int,int],
+         max_ite: int = 400, learning_rate: float = 0.1, tv_weight: float = 1e-3, l2_weight: float = 1e-5,
+         init_mean: float = 0.5, init_std: float = 0.2, device:torch.device = device) -> torch.Tensor:
     """
     Improved Deep Leakage from Gradients (iDLG)
     a gradient inverion attack, meant to extract ground-truth labels and reconstruct data based on the shared gradient
@@ -64,19 +67,19 @@ def iDLG(model: torch.nn.Module, x_shape:torch.Tensor, max_ite: int, learning_ra
         max_ite (int): N - maximum number of iterations
         learning_rate (float): eta - learning rate.
     """
-    paramter_list = list(model.parameters()) # gets a list of the different model parameters from the model
-    bias_parameters = model.fc2.bias # gets the
-    bias_idx = None
+    model.eval()
     
-    for i, paramter in paramter_list:
-        if paramter is bias_parameters:
-            bias_idx = i
-    x_dummy = (torch.randn_like(x_shape, device=device) * 40 + 128) # is to chage the distribution from N(0,1) to N(128,40) to match the RGB of the pictures
-    infered_labels = []
+    leaked_grads_device = [grad.detach().to(device) for grad in leaked_grads]
+    
+    x_dummy = torch.randn(x_shape, device=device) # to initialize the random values
+    x_dummy.clamp(0,255) # change the values in the dummy input to match the RGB values
+    infered_label = infer_labels_from_bias_grad(leaked_grads=leaked_grads, model=model)
     
     for i in range(max_ite):
         # dummy_grad
         x=0
+        
+    return x_dummy
         
 if __name__ == "__main__":
     print(device)
