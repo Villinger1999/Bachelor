@@ -1,0 +1,19 @@
+#!/bin/bash
+
+#BSUB -J train
+#BSUB -q hpc
+#BSUB -W 120
+#BSUB -R "rusage[mem=20G]"
+#BSUB -R "select[model == XeonGold6126]"
+#BSUB -R "span[hosts=1]"
+#BSUB -n 1
+#BSUB -o train_%J.out
+#BSUB -e train_%J.err
+
+# # Load Python if needed (depends on DTU module system)
+module load python/3.10.12  
+
+# Activate your virtual environment
+source ~/torch-env/bin/activate
+
+python main.py 3 3 4 64 1
