@@ -57,16 +57,9 @@ acc_global_model = evaluate_global(global_model, testloader)
 
 print(acc_model, acc_global_model)
 
-# Save local_states
-try:
-    local_states_df = pd.DataFrame(local_states)
-    local_states_df.to_csv("local_states.csv", mode='a', index=False)
-except Exception as e:
-    print("Error saving local_states:", e)
-
 # Save accuracies
 acc_df = pd.DataFrame({
-    "Model": ["Initial Model", "Global Model"],
+    f"Model{num_clients},{num_rounds},{local_epochs},{batch_size}:": ["Initial Model", "Global Model"],
     "Accuracy": [acc_model, acc_global_model]
 })
 acc_df.to_csv("model_accuracies.csv", mode='a', index=False)

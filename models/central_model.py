@@ -5,6 +5,7 @@ from torchvision import datasets, transforms, models
 from torch.utils.data import random_split, DataLoader
 import copy
 import random
+import time
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -107,7 +108,15 @@ def fl_training(num_rounds, local_epochs, batch_size, client_datasets, C, defens
             
             # Train local model
             local_state = local_train(global_model, trainloader, epochs=local_epochs, device=device, defense_function=None) 
-            local_states.append(local_state) 
+            local_states.append(local_state)                 
+            
+            if round == (num_rounds-1):
+                # Save local_states
+                try:
+                    torch.save(local_state, f"state_dicts/local_state_client{i}{str(time.time)}.pt")
+                except Exception as e:
+                    print("Error saving local_state:", e)
+                    
             print(f"Client {i+1} done.")
 
         # Add defense, if applied
