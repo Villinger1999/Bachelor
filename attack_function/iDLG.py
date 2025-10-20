@@ -50,7 +50,6 @@ def infer_labels_from_bias_grad(leaked_grads:list[torch.Tensor], model: torch.nn
     bias_grad = grad_dict[last_bias_name] # Bias gradient equals g_i
     return int(torch.argmin(bias_grad).item())  # True label = index of minimum gradient
     
-torch.no_grad()
 def iDLG(model: torch.nn.Module, leaked_grads:list[torch.Tensor], infered_label: int, x_shape:tuple[int,int,int,int],
          train_ite: int = 400, learning_rate: float = 0.1, device:torch.device = device) -> torch.Tensor:
     """
@@ -64,6 +63,7 @@ def iDLG(model: torch.nn.Module, leaked_grads:list[torch.Tensor], infered_label:
         max_ite (int): N - maximum number of iterations
         learning_rate (float): eta - learning rate.
     """
+    torch.no_grad()
     model.eval() # activating evaluation mode, as we changes or updates to the model
     for parameter in model.parameters():
         parameter.requires_grad_(False) # Freezes all model weights by disabling gradient computation for them.
@@ -73,7 +73,7 @@ def iDLG(model: torch.nn.Module, leaked_grads:list[torch.Tensor], infered_label:
     
     # initialize the dummy input and make it into a optimizable parameter
     data_init = torch.randn(x_shape, device=device) # initialize a random image of the same shape as the real one 
-    data_init.clamp(0,255) # Scaled to be roughly in pixel range of the RGB values
+    data_init.clamp(0,1) # Scaled to be roughly in pixel range of the RGB values
     x_dummy = torch.nn.Parameter(data_init) # makes the dummy data into a trainable parameter
     
     # uptimizing the dummy data using Adam
