@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 from skimage.metrics import peak_signal_noise_ratio as psnr, structural_similarity as ssim
 import tensorflow as tf
 from skimage import io, util
-from torchvision import transforms
 from PIL import Image
 import os
 import numpy as np
@@ -20,8 +19,7 @@ print("Test:", x_test.shape, y_test.shape)
 # Variances for Gaussian noise
 variances = [0, 0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5]
 
-x = 224 # Resolution
-resize = transforms.Resize((x, x))
+resolution = 224 # Resolution, gives a (resolution x resolution) sized image 
 
 # # Store results
 # results = []
