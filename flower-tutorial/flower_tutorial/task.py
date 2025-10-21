@@ -44,8 +44,11 @@ def train(model, trainloader, epochs=1, device=device, lr=0.01, defense_function
     # Local training loop
     for epoch in range(epochs):
         running_loss = 0.0
-        for batch_idx, (images, labels) in enumerate(trainloader):
-            images, labels = images.to(device), labels.to(device)                               # Move both inputs and labels to GPU (or CPU), matching model device
+        # for batch_idx, (images, labels) in enumerate(trainloader):
+        #     images, labels = images.to(device), labels.to(device)                               # Move both inputs and labels to GPU (or CPU), matching model device
+        for batch in trainloader:
+            images, labels = batch["img"].to(device), batch["label"].to(device)
+
 
             optimizer.zero_grad()                                                               # Clear old gradients from the previous step
             outputs = local_model(images)                                                       # send the images through the model
@@ -59,7 +62,7 @@ def train(model, trainloader, epochs=1, device=device, lr=0.01, defense_function
         print(f"Local Epoch [{epoch+1}/{epochs}] - Loss: {avg_loss:.4f}")
 
     # Return the trained model weights
-    return local_model.state_dict()
+    return avg_loss, local_model.state_dict()
 
 def evaluate(model, dataloader, device='cpu'):
     """
@@ -72,15 +75,22 @@ def evaluate(model, dataloader, device='cpu'):
         The accuracy of the global model
     """
     model.eval()                                                                                # Switch model to evaluation mode
-    correct, total = 0, 0
+    correct, total, running_loss = 0, 0, 0.0
+    criterion = torch.nn.CrossEntropyLoss()
     with torch.no_grad():
-        for images, labels in dataloader:
-            images, labels = images.to(device), labels.to(device)
+        # for images, labels in dataloader:
+        #     images, labels = images.to(device), labels.to(device)
+        for batch in dataloader:
+            images, labels = batch["img"].to(device), batch["label"].to(device)
             outputs = model(images)                                                             # Get model predictions
+            loss = criterion(outputs, labels)
+            running_loss += loss.item()
             _, predicted = torch.max(outputs, 1)                                                # finds the maximum value along dimension 1 (the class dimension)
             total += labels.size(0)
             correct += (predicted == labels).sum().item()                                       # creates a tensor of True/False values for correct predictions, sums and converts that count from a tensor to a Python number.
-    return correct / total                                                                      # calculates and returns accuracy
+    avg_loss = running_loss / len(dataloader)
+    acc = correct / total
+    return avg_loss, acc                                                                     # calculates and returns accuracy
 
 
 fds = None  # Cache FederatedDataset

@@ -5,8 +5,8 @@ from flwr.clientapp import ClientApp
 from flower_tutorial.task import load_data, get_model # task.py mangler load_data
 from flower_tutorial.task import evaluate as test_fn
 from flower_tutorial.task import train as train_fn
-from defense_function.clipping import *
-from defense_function.pruning import *
+# from defense_function.clipping import *
+# from defense_function.pruning import *
 
 # Flower ClientApp
 app = ClientApp()
@@ -27,14 +27,14 @@ def train(msg: Message, context: Context):
     trainloader, _ = load_data(partition_id, num_partitions)
 
     # Call the training function
-    train_loss = train_fn(
-        model,
-        trainloader,
-        context.run_config["local-epochs"],
-        msg.content["config"]["lr"],
-        device,
-        None #defense for training process
-    )
+    train_loss, local_states = train_fn(
+    model=model,
+    trainloader=trainloader,
+    epochs=context.run_config["local-epochs"],
+    lr=msg.content["config"]["lr"],
+    device=device,
+    defense_function=None, # defense for training process
+)
 
     # add defense
     # model = plgp_gradients(model, threshold: float, alpha: float)
