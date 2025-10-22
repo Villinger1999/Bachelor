@@ -62,6 +62,7 @@ def iDLG(model: torch.nn.Module, leaked_grads:dict[str, torch.tensor], infered_l
         max_ite (int): N - maximum number of iterations
         learning_rate (float): eta - learning rate.
     """
+    torch.no_grad()
     model.eval() # activating evaluation mode, as we changes or updates to the model
     # for parameter in model.parameters():
     #     parameter.requires_grad_(False) # Freezes all model weights by disabling gradient computation for them.
@@ -72,7 +73,7 @@ def iDLG(model: torch.nn.Module, leaked_grads:dict[str, torch.tensor], infered_l
     
     # initialize the dummy input and make it into a optimizable parameter
     data_init = torch.randn(x_shape, device=device) # initialize a random image of the same shape as the real one 
-    data_init.clamp(0,255) # Scaled to be roughly in pixel range of the RGB values
+    data_init.clamp(0,1) # Scaled to be roughly in pixel range of the RGB values
     x_dummy = torch.nn.Parameter(data_init) # makes the dummy data into a trainable parameter
     
     # uptimizing the dummy data using Adam
