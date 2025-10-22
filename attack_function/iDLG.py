@@ -23,23 +23,19 @@ def cross_entropy_loss(y_c:float, y_j:list[float]) -> float:
     """
     return -np.log(np.exp(y_c)/sum(np.exp(y_j)))   
 
-def infer_labels_from_bias_grad(leaked_grads:list[torch.Tensor], model: torch.nn.Module) -> int:
+def infer_labels_from_bias_grad(leaked_grads:dict[str, torch.Tensor], model: torch.nn.Module) -> int:
     """
     iDLG uses the fact that when cross-entropy is used with softmax on a batch of size 1, the correct label will always have a negative sign, due to the way it's 
     iDLG: label = argmin(grad w.r.t. last-layer bias) because that bias grad equals (p - one_hot).
     Assumes batch_size == 1 and cross-entropy with softmax
 
     Args:
-        leaked_grads (list[torch.Tensor]): the leaked gradients
+        leaked_grads (dict[str, torch.Tensor]): the leaked gradients
         model (torch.nn.Module): the model used
 
     Returns:
         int: index of the most probable label 
     """
-    
-    # map gradients to names
-    names = list(dict(model.named_parameters()).keys()) # makes a list of the keys, i.e the names of each parameter, using a dictionary of the 
-    grad_dict = {name: grad for name, grad in zip(names, leaked_grads)} # pairs each parameter name with the corresponding gradient tensor in order.
     
     # find the name of the last bias
     for name, parameter in model.named_parameters(): #loop through the names and parameters in the model 
@@ -47,11 +43,13 @@ def infer_labels_from_bias_grad(leaked_grads:list[torch.Tensor], model: torch.nn
             last_bias_name = name # set is as the name of the last bias term
     
     # bias_grad is the Gradient of loss w.r.t. logits (g_i in equation 3 in iDLG paper)
-    bias_grad = grad_dict[last_bias_name] # Bias gradient equals g_i
-    return int(torch.argmin(bias_grad).item())  # True label = index of minimum gradient
+    bias_grad = leaked_grads[last_bias_name] # Bias gradient equals g_i
+    true_label = int(torch.argmin(bias_grad).item())
+    return true_label # True label = index of minimum gradient
     
-torch.no_grad()
-def iDLG(model: torch.nn.Module, leaked_grads:list[torch.Tensor], infered_label: int, x_shape:tuple[int,int,int,int],
+# torch.no_grad()
+
+def iDLG(model: torch.nn.Module, leaked_grads:dict[str, torch.tensor], infered_label: int, x_shape:tuple[int,int,int,int],
          train_ite: int = 400, learning_rate: float = 0.1, device:torch.device = device) -> torch.Tensor:
     """
     Improved Deep Leakage from Gradients (iDLG)
@@ -65,11 +63,12 @@ def iDLG(model: torch.nn.Module, leaked_grads:list[torch.Tensor], infered_label:
         learning_rate (float): eta - learning rate.
     """
     model.eval() # activating evaluation mode, as we changes or updates to the model
-    for parameter in model.parameters():
-        parameter.requires_grad_(False) # Freezes all model weights by disabling gradient computation for them.
+    # for parameter in model.parameters():
+    #     parameter.requires_grad_(False) # Freezes all model weights by disabling gradient computation for them.
     
     # for all the leaked gradients, detach them i.e. ensures grads are treated as constant tensors, and moves them to the chosen device 
-    leaked_grads_device = [grad.detach().to(device) for grad in leaked_grads] 
+    for k in leaked_grads:
+        leaked_grads[k] = leaked_grads[k].detach().to(device)
     
     # initialize the dummy input and make it into a optimizable parameter
     data_init = torch.randn(x_shape, device=device) # initialize a random image of the same shape as the real one 
@@ -95,16 +94,22 @@ def iDLG(model: torch.nn.Module, leaked_grads:list[torch.Tensor], infered_label:
         loss = loss_func(logits,y_hat) # compute the loss
         
         # compute gradients w.r.t. model parameters (convert iterator to a sequence)
-        dummy_grads = torch.autograd.grad(loss, tuple(model.parameters()), create_graph=True, retain_graph=False)
+        dummy_grads = torch.autograd.grad(loss, tuple(model.parameters()), create_graph=True, retain_graph=True)
         
         # gradient matching loss
         g_loss = torch.tensor(0.0, device=device)
-        for dummy_grad, leaked_grad in zip(dummy_grads, leaked_grads):
+        
+        leaked_grads_list = []
+        for name, _ in model.named_parameters():
+            leaked_grads_list.append(leaked_grads[name].detach().to(device))
+        
+        for dummy_grad, leaked_grad in zip(dummy_grads, leaked_grads_list):
             g_loss = g_loss + ((dummy_grad - leaked_grad) ** 2).sum() # compute element-wise squared difference between the gradient produced by the dummy and the leaked gradient, then sum.
          
         total = g_loss
         total.backward()
         optimizer.step()
-        x_dummy.clamp_(0,1)
+        with torch.no_grad():
+            x_dummy.clamp_(0,255)
 
     return x_dummy.detach()

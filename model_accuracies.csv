@@ -1,15 +1,3 @@
-Model,Accuracy
-Initial Model,0.0
-Global Model,0.285
-Model,Accuracy
-Initial Model,0.0
-Global Model,0.28
-Model,Accuracy 
-Initial Model,0.0
-Global Model,0.43
-Model,Accuracy
-Initial Model,0.0
-Global Model,0.375
 "Model3,3,4,64:",Accuracy
 Initial Model,0.0
 Global Model,0.365
@@ -22,3 +10,15 @@ Global Model,0.385
 "Model3,3,4,64:",Accuracy
 Initial Model,0.0
 Global Model,0.43
+"Model3,3,4,8:",Accuracy
+Initial Model,0.06
+Global Model,0.16
+"Model3,3,4,8:",Accuracy
+Initial Model,0.09
+Global Model,0.12
+"Model3,3,4,2:",Accuracy
+Initial Model,0.095
+Global Model,0.15
+"Model3,3,4,2:",Accuracy
+Initial Model,0.13
+Global Model,0.07
