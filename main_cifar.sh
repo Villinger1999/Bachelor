@@ -10,7 +10,7 @@
 #BSUB -o train_%J.out
 #BSUB -e train_%J.err
 
-# # Load Python if needed (depends on DTU module system)
+# # Load Python 
 module load python/3.10.12  
 
 # Activate your virtual environment

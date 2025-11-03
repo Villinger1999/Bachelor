@@ -2,7 +2,7 @@
 
 #BSUB -J train
 #BSUB -q hpc
-#BSUB -W 60
+#BSUB -W 120
 #BSUB -R "rusage[mem=10G]"
 #BSUB -R "select[model == XeonGold6126]"
 #BSUB -R "span[hosts=1]"
@@ -16,4 +16,4 @@ module load python/3.10.12
 # Activate your virtual environment
 source ~/torch-env/bin/activate
 
-python main_iDLG.py
+python load_imnet.py 

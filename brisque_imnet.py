@@ -11,7 +11,7 @@ from PIL import Image
 from skimage.metrics import peak_signal_noise_ratio as psnr, structural_similarity as ssim
 
 path = Path.cwd()
-subset_path = path / "data" / "imnet_subset_1000"
+subset_path = path / "data" / "imnet"
 noise_path = path / "data" / "noise"
 results_path = path / "results" / "assessment"
 

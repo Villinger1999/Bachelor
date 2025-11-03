@@ -4,12 +4,12 @@ import random
 from pathlib import Path
 
 # Make path the folder path
-path = path = os.getcwd() + "/"   
+path = os.getcwd() + "/"   
 
-zip_path = "data/imnet.zip"                 # path to downloaded Kaggle file
-extract_path = "data/imnet_subset_1000"     # folder to extract subset into
-subset_size = 1000                          # number of random images to extract
-random_seed = 42                            # seed for reproducibility
+zip_path = "data/imnet.zip"                  # path to downloaded Kaggle file
+extract_path = "data/imnet_subset_1000"      # folder to extract subset into
+subset_size = 1000                           # number of random images to extract
+random_seed = 42                             # seed for reproducibility
 
 
 os.makedirs(path + extract_path, exist_ok=True)
