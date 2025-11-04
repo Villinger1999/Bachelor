@@ -11,9 +11,10 @@
 #BSUB -e train_%J.err
 
 # # Load Python if needed (depends on DTU module system)
-module load python/3.10.12  
+
+module load python/3.10.21 
 
 # Activate your virtual environment
-source ~/torch-env/bin/activate
+source ~/bachelor/bin/activate
 
 python load_imnet.py 

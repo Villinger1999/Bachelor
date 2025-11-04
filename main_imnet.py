@@ -19,13 +19,13 @@ C = int(sys.argv[5]) # e.g 1
 synsets = sorted({os.path.basename(os.path.dirname(p)) for p in train})
 class_to_idx = {s: i for i, s in enumerate(synsets)}
 
-# Take 10% of the total dataset
+# Take % of the total dataset
 total_size = len(train)
-subset_size = int(0.0005 * total_size)  # % of data
+subset_size = int(0.01 * total_size)  # % of data
 subset = random.sample(train, subset_size)
 print(subset_size)
 
-# Assume testset is a PyTorch Dataset (e.g., CIFAR10(test=True))
+# Assume testset is a part of the train dataset
 total_size = len(train)
 subset_size = int(0.00005 * total_size)     # % subset
 test_subset = random.sample(train, subset_size)
@@ -80,17 +80,17 @@ client_sizes[-1] += num_samples - sum(client_sizes)
 
 client_datasets = random_split(trainset, client_sizes)
 
-local_states, global_model = fl_training(num_rounds, local_epochs, batch_size, client_datasets, C, defense_function=None, fedtype=fedavg)
+# Create DataLoader for the testset
+testloader = DataLoader(testset, batch_size=batch_size, shuffle=False)
+trainloader = DataLoader(trainset, batch_size=batch_size, shuffle=False)
+
+local_states, global_model = fl_training(num_rounds, local_epochs, batch_size, client_datasets, testloader, C, defense_function=None, fedtype=fedavg)
 
 model = get_model()
 
-# Create DataLoader for the smaller test subset
-testloader = DataLoader(testset, batch_size=batch_size, shuffle=False)
+acc_model = evaluate_global(model, testloader, device=device)
 
-acc_model = evaluate_global(model, testloader)
-acc_global_model = evaluate_global(global_model, testloader)
-
-print(acc_model, acc_global_model)
+acc_global_model = evaluate_global(global_model, testloader, device=device)
 
 # Save accuracies
 acc_df = pd.DataFrame({
@@ -98,3 +98,9 @@ acc_df = pd.DataFrame({
     "Accuracy": [acc_model, acc_global_model]
 })
 acc_df.to_csv("model_accuracies.csv", mode='a', index=False)
+
+state = local_train(model, trainloader, testloader, epochs=local_epochs*num_clients, device=device, defense_function=None) 
+model.load_state_dict(state)
+acc_resnet = evaluate_global(model, testloader, device=device)
+
+print(f"Accuracy before training: {acc_model}, Accurracy after FL: {acc_global_model}, Accuracy ResNet: {acc_resnet}")
