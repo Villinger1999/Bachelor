@@ -10,10 +10,15 @@
 #BSUB -o train_%J.out
 #BSUB -e train_%J.err
 
+<<<<<<< HEAD:main_cifar.sh
 # # Load Python 
 module load python/3.10.12  
+=======
+# # Load Python if needed (depends on DTU module system)
+module load python/3.9.21  
+>>>>>>> main:main.sh
 
 # Activate your virtual environment
-source ~/torch-env/bin/activate
+source /zhome/8e/8/187047/Documents/Bachelor/bachelor/bin/activate
 
-python main.py 3 3 4 2 1
+python main.py 3 3 4 1 1
