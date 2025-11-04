@@ -21,7 +21,7 @@ class_to_idx = {s: i for i, s in enumerate(synsets)}
 
 # Take % of the total dataset
 total_size = len(train)
-subset_size = int(0.005 * total_size)  # % of data
+subset_size = int(0.01 * total_size)  # % of data
 subset = random.sample(train, subset_size)
 print(subset_size)
 
