@@ -21,4 +21,9 @@ Initial Model,0.095
 Global Model,0.15
 "Model3,3,4,2:",Accuracy
 Initial Model,0.13
-Global Model,0.07
+Global Model,0.07"Model3,2,1,8:",Accuracy
+Initial Model,0.0
+Global Model,0.0
+"Model3,2,1,8:",Accuracy
+Initial Model,0.0
+Global Model,0.0625

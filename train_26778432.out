@@ -1,0 +1,78 @@
+640
+64
+Round 1/2
+Local Epoch [1/1] - Loss: 7.4508
+Client 1 done.
+Local Epoch [1/1] - Loss: 7.5541
+Client 2 done.
+Local Epoch [1/1] - Loss: 7.5380
+Client 3 done.
+Round 2/2
+Local Epoch [1/1] - Loss: 6.1411
+Client 1 done.
+Local Epoch [1/1] - Loss: 6.1490
+Client 2 done.
+Local Epoch [1/1] - Loss: 6.2600
+Client 3 done.
+0.0 0.0625
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 26778432: <train> in cluster <dcc> Done
+
+Job <train> was submitted from host <n-62-27-20> by user <s224227> in cluster <dcc> at Tue Nov  4 12:00:49 2025
+Job was executed on host(s) <n-62-31-4>, in queue <hpc>, as user <s224227> in cluster <dcc> at Tue Nov  4 12:00:50 2025
+</zhome/d1/b/187261> was used as the home directory.
+</zhome/d1/b/187261/Desktop/Bachelor/Bachelor> was used as the working directory.
+Started at Tue Nov  4 12:00:50 2025
+Terminated at Tue Nov  4 12:04:20 2025
+Results reported at Tue Nov  4 12:04:20 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+
+#BSUB -J train
+#BSUB -q hpc
+#BSUB -W 220
+#BSUB -R "rusage[mem=30G]"
+#BSUB -R "select[model == XeonGold6126]"
+#BSUB -R "span[hosts=1]"
+#BSUB -n 1
+#BSUB -o train_%J.out
+#BSUB -e train_%J.err
+
+# # Load Python if needed (depends on DTU module system)
+module load python/3.10.12  
+
+# Activate your virtual environment
+source ~/torch-env/bin/activate
+
+python main_imnet.py 3 2 1 8 1
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   206.56 sec.
+    Max Memory :                                 2110 MB
+    Average Memory :                             1732.00 MB
+    Total Requested Memory :                     30720.00 MB
+    Delta Memory :                               28610.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                6
+    Run time :                                   292 sec.
+    Turnaround time :                            211 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <train_26778432.err> for stderr output of this job.
+

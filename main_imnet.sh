@@ -16,4 +16,4 @@ module load python/3.10.12
 # Activate your virtual environment
 source ~/torch-env/bin/activate
 
-python main_imnet.py 3 2 1 8 1
+python main_imnet.py 3 10 3 8 1

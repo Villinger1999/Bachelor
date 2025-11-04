@@ -15,62 +15,68 @@ local_epochs = int(sys.argv[3]) # e.g 1
 batch_size = int(sys.argv[4]) # e.g 24
 C = int(sys.argv[5]) # e.g 1
 
+# make label map from train folder names
+synsets = sorted({os.path.basename(os.path.dirname(p)) for p in train})
+class_to_idx = {s: i for i, s in enumerate(synsets)}
+
 # Take 10% of the total dataset
 total_size = len(train)
-subset_size = int(0.0001 * total_size)  # % of data
-remaining_size = total_size - subset_size
-
-# Randomly split 10% subset and discard the rest
-subset, _ = random.sample(train, subset_size)
+subset_size = int(0.0005 * total_size)  # % of data
+subset = random.sample(train, subset_size)
+print(subset_size)
 
 # Assume testset is a PyTorch Dataset (e.g., CIFAR10(test=True))
-total_size = len(val)
-subset_size = int(0.001 * total_size)     # % subset
-remaining_size = total_size - subset_size
+total_size = len(train)
+subset_size = int(0.00005 * total_size)     # % subset
+test_subset = random.sample(train, subset_size)
+print(subset_size)
 
-# Split: keep 10%, discard 90%
-test_subset, _ = random.sample(val, subset_size)
+# Transform
+img_tf = transforms.Compose([
+    transforms.Resize(256),
+    transforms.CenterCrop(224),
+    transforms.ToTensor(),              # now we have (C,H,W) float in [0,1]
+])
 
 x_train = []
 y_train = []
 
-for i in range(len(subset)):
-    path = subset[i]
+for path in subset:
     img = Image.open(path).convert('RGB')
+    img = img_tf(img) 
     x_train.append(img)
     
     # Get synset label from parent directory name
-    synsets = sorted({os.path.basename(os.path.dirname(p)) for p in train})
-    class_to_idx = {s: i for i, s in enumerate(synsets)}
-    y_train.append(class_to_idx)
+    synset = os.path.basename(os.path.dirname(path))
+    label = class_to_idx[synset]
+    y_train.append(label)
+    
+# stack to tensors
+x_train_torch = torch.stack(x_train)                         # (N, C, H, W)
+y_train_torch = torch.tensor(y_train, dtype=torch.long)      # (N,)
     
 x_test = []
-y_test = np.zeros(len(test_subset))
-
-for i in range(len(test_subset)):
-    path = test_subset[i]
+y_test = []
+for path in test_subset:
     img = Image.open(path).convert('RGB')
-    
+    img = img_tf(img)
     x_test.append(img)
-
-    # synset = os.path.basename(os.path.dirname(path))
-    # label = val[i].class_to_idx[synset]
-    # y_test.append(label)
     
-# Convert x_train/x_test to float tensors and normalize to [0, 1]
-x_train_torch = torch.tensor(x_train.transpose((0, 3, 1, 2)), dtype=torch.float32) / 255.0
-x_test_torch  = torch.tensor(x_test.transpose((0, 3, 1, 2)), dtype=torch.float32) / 255.0
+    # Get synset label from parent directory name
+    synset = os.path.basename(os.path.dirname(path))
+    label = class_to_idx[synset]
+    y_test.append(label)
 
-# Convert labels to long tensors and flatten
-y_train_torch = torch.tensor(y_train.squeeze(), dtype=torch.long)
-y_test_torch  = torch.tensor(y_test.squeeze(), dtype=torch.long)
+x_test_torch = torch.stack(x_test)                           # (M, C, H, W)
+y_test_torch = torch.tensor(y_test, dtype=torch.long) # change to label mapping from xml
 
 trainset = TensorDataset(x_train_torch, y_train_torch)
 testset = TensorDataset(x_test_torch, y_test_torch)
 
-# Now split that 10% subset among 3 clients
-client_sizes = [subset_size // num_clients] * num_clients
-client_sizes[-1] += subset_size - sum(client_sizes)
+num_samples = len(trainset) 
+
+client_sizes = [num_samples // num_clients] * num_clients
+client_sizes[-1] += num_samples - sum(client_sizes)
 
 client_datasets = random_split(trainset, client_sizes)
 

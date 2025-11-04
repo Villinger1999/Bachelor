@@ -9,7 +9,7 @@ import time
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-def get_model(num_classes=10):
+def get_model(num_classes=1000):
     model = models.resnet18(weights='IMAGENET1K_V1') # 'IMAGENET1K_V1' or None
     model.fc = nn.Linear(model.fc.in_features, num_classes)
     return model
