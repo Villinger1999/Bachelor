@@ -9,7 +9,7 @@ import time
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-def get_model(num_classes=10):
+def get_model(num_classes=1000):
     model = models.resnet18(weights='IMAGENET1K_V1') # 'IMAGENET1K_V1' or None
     model.fc = nn.Linear(model.fc.in_features, num_classes)
     return model
@@ -40,7 +40,7 @@ def fedavg(states, C, client_datasets):
         )
     return avg_state
 
-def local_train(model, trainloader, epochs=1, device=device, lr=0.01, defense_function=None):
+def local_train(model, trainloader, testloader, epochs=1, device=device, lr=0.01, defense_function=None):
     """
     Performs local training on a client using its local dataset.
 
@@ -77,13 +77,15 @@ def local_train(model, trainloader, epochs=1, device=device, lr=0.01, defense_fu
             running_loss += loss.item()                                                         # Accumulates total loss to compute the average later
 
         avg_loss = running_loss / len(trainloader)                                              # calculate average loss
-        print(f"Local Epoch [{epoch+1}/{epochs}] - Loss: {avg_loss:.4f}")
+        acc = evaluate_global(local_model, testloader, device)
+        local_model.train()
+        print(f"Local Epoch [{epoch+1}/{epochs}] - Loss: {avg_loss:.4f} - Acc: {acc}") 
 
     # Return the trained model weights
     return local_model.state_dict()
 
 # Function for simulation of the full Federated Learning proces 
-def fl_training(num_rounds, local_epochs, batch_size, client_datasets, C, defense_function=None, fedtype=fedavg):
+def fl_training(num_rounds, local_epochs, batch_size, client_datasets, testloader, C, defense_function=None, fedtype=fedavg):
     """
     Args:
         num_rounds: number of training rounds
@@ -107,16 +109,20 @@ def fl_training(num_rounds, local_epochs, batch_size, client_datasets, C, defens
             trainloader = DataLoader(client_dataset, batch_size=batch_size, shuffle=True)       # load the clients data
             
             # Train local model
-            local_state = local_train(global_model, trainloader, epochs=local_epochs, device=device, defense_function=None) 
+            local_state = local_train(global_model, trainloader, testloader, epochs=local_epochs, device=device, defense_function=None) 
             local_states.append(local_state)                 
             
             if round == (num_rounds-1):
                 # Save local_states
                 try:
-                    torch.save(local_state, f"state_dicts/local_state_client{i}{str(time.time)}.pt")
+                    torch.save(local_state, f"state_dicts/local_state_client{i}{time.time()}.pt")
                 except Exception as e:
                     print("Error saving local_state:", e)
-                    
+                
+            # # Add defense, if applied
+            # if defense_function != None: 
+            #     local_states = defense_function(local_states) 
+                                                    
             print(f"Client {i+1} done.")
 
         # Add defense, if applied
@@ -125,10 +131,12 @@ def fl_training(num_rounds, local_epochs, batch_size, client_datasets, C, defens
 
         global_state = fedtype(local_states, C, client_datasets)                                # update the weights using fedavg
         global_model.load_state_dict(global_state)                                              # update global model with updated weigths
+        eval = evaluate_global(global_model, testloader, device)
+        print(f"eval:{eval}")
     
     return local_states, global_model
 
-def evaluate_global(model, dataloader, device='cpu'):
+def evaluate_global(model, dataloader, device=device):
     """
     Args:
         model: the global model, that needs to be evaluated
@@ -138,7 +146,8 @@ def evaluate_global(model, dataloader, device='cpu'):
     Returns:
         The accuracy of the global model
     """
-    model.eval()                                                                                # Switch model to evaluation mode
+    model = model.to(device)
+    model.eval() # Switch model to evaluation mode
     correct, total = 0, 0
     with torch.no_grad():
         for images, labels in dataloader:

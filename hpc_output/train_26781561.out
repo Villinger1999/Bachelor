@@ -1,0 +1,343 @@
+640
+64
+Round 1/20
+Local Epoch [1/5] - Loss: 7.6395
+Local Epoch [2/5] - Loss: 5.4863
+Local Epoch [3/5] - Loss: 3.2820
+Local Epoch [4/5] - Loss: 1.3785
+Local Epoch [5/5] - Loss: 0.4269
+Client 1 done.
+Local Epoch [1/5] - Loss: 7.7845
+Local Epoch [2/5] - Loss: 5.3678
+Local Epoch [3/5] - Loss: 2.8700
+Local Epoch [4/5] - Loss: 1.1543
+Local Epoch [5/5] - Loss: 0.2649
+Client 2 done.
+eval:0.0
+Round 2/20
+Local Epoch [1/5] - Loss: 2.3927
+Local Epoch [2/5] - Loss: 0.6338
+Local Epoch [3/5] - Loss: 0.1201
+Local Epoch [4/5] - Loss: 0.0339
+Local Epoch [5/5] - Loss: 0.0157
+Client 1 done.
+Local Epoch [1/5] - Loss: 2.4396
+Local Epoch [2/5] - Loss: 0.6418
+Local Epoch [3/5] - Loss: 0.1402
+Local Epoch [4/5] - Loss: 0.0324
+Local Epoch [5/5] - Loss: 0.0187
+Client 2 done.
+eval:0.0
+Round 3/20
+Local Epoch [1/5] - Loss: 0.3163
+Local Epoch [2/5] - Loss: 0.0724
+Local Epoch [3/5] - Loss: 0.0311
+Local Epoch [4/5] - Loss: 0.0172
+Local Epoch [5/5] - Loss: 0.0197
+Client 1 done.
+Local Epoch [1/5] - Loss: 0.3172
+Local Epoch [2/5] - Loss: 0.0654
+Local Epoch [3/5] - Loss: 0.0292
+Local Epoch [4/5] - Loss: 0.0229
+Local Epoch [5/5] - Loss: 0.0167
+Client 2 done.
+eval:0.015625
+Round 4/20
+Local Epoch [1/5] - Loss: 0.0937
+Local Epoch [2/5] - Loss: 0.0291
+Local Epoch [3/5] - Loss: 0.0218
+Local Epoch [4/5] - Loss: 0.0182
+Local Epoch [5/5] - Loss: 0.0152
+Client 1 done.
+Local Epoch [1/5] - Loss: 0.0991
+Local Epoch [2/5] - Loss: 0.0344
+Local Epoch [3/5] - Loss: 0.0221
+Local Epoch [4/5] - Loss: 0.0176
+Local Epoch [5/5] - Loss: 0.0148
+Client 2 done.
+eval:0.015625
+Round 5/20
+Local Epoch [1/5] - Loss: 0.0497
+Local Epoch [2/5] - Loss: 0.0279
+Local Epoch [3/5] - Loss: 0.0193
+Local Epoch [4/5] - Loss: 0.0194
+Local Epoch [5/5] - Loss: 0.0128
+Client 1 done.
+Local Epoch [1/5] - Loss: 0.0468
+Local Epoch [2/5] - Loss: 0.0237
+Local Epoch [3/5] - Loss: 0.0198
+Local Epoch [4/5] - Loss: 0.0153
+Local Epoch [5/5] - Loss: 0.0162
+Client 2 done.
+eval:0.046875
+Round 6/20
+Local Epoch [1/5] - Loss: 0.0321
+Local Epoch [2/5] - Loss: 0.0195
+Local Epoch [3/5] - Loss: 0.0151
+Local Epoch [4/5] - Loss: 0.0126
+Local Epoch [5/5] - Loss: 0.0107
+Client 1 done.
+Local Epoch [1/5] - Loss: 0.0350
+Local Epoch [2/5] - Loss: 0.0249
+Local Epoch [3/5] - Loss: 0.0189
+Local Epoch [4/5] - Loss: 0.0131
+Local Epoch [5/5] - Loss: 0.0109
+Client 2 done.
+eval:0.03125
+Round 7/20
+Local Epoch [1/5] - Loss: 0.0251
+Local Epoch [2/5] - Loss: 0.0145
+Local Epoch [3/5] - Loss: 0.0126
+Local Epoch [4/5] - Loss: 0.0120
+Local Epoch [5/5] - Loss: 0.0091
+Client 1 done.
+Local Epoch [1/5] - Loss: 0.0230
+Local Epoch [2/5] - Loss: 0.0172
+Local Epoch [3/5] - Loss: 0.0152
+Local Epoch [4/5] - Loss: 0.0113
+Local Epoch [5/5] - Loss: 0.0115
+Client 2 done.
+eval:0.0625
+Round 8/20
+Local Epoch [1/5] - Loss: 0.0219
+Local Epoch [2/5] - Loss: 0.0134
+Local Epoch [3/5] - Loss: 0.0118
+Local Epoch [4/5] - Loss: 0.0099
+Local Epoch [5/5] - Loss: 0.0110
+Client 1 done.
+Local Epoch [1/5] - Loss: 0.0180
+Local Epoch [2/5] - Loss: 0.0139
+Local Epoch [3/5] - Loss: 0.0114
+Local Epoch [4/5] - Loss: 0.0099
+Local Epoch [5/5] - Loss: 0.0097
+Client 2 done.
+eval:0.015625
+Round 9/20
+Local Epoch [1/5] - Loss: 0.0162
+Local Epoch [2/5] - Loss: 0.0120
+Local Epoch [3/5] - Loss: 0.0088
+Local Epoch [4/5] - Loss: 0.0081
+Local Epoch [5/5] - Loss: 0.0085
+Client 1 done.
+Local Epoch [1/5] - Loss: 0.0163
+Local Epoch [2/5] - Loss: 0.0111
+Local Epoch [3/5] - Loss: 0.0099
+Local Epoch [4/5] - Loss: 0.0082
+Local Epoch [5/5] - Loss: 0.0086
+Client 2 done.
+eval:0.015625
+Round 10/20
+Local Epoch [1/5] - Loss: 0.0151
+Local Epoch [2/5] - Loss: 0.0102
+Local Epoch [3/5] - Loss: 0.0090
+Local Epoch [4/5] - Loss: 0.0077
+Local Epoch [5/5] - Loss: 0.0077
+Client 1 done.
+Local Epoch [1/5] - Loss: 0.0158
+Local Epoch [2/5] - Loss: 0.0095
+Local Epoch [3/5] - Loss: 0.0089
+Local Epoch [4/5] - Loss: 0.0072
+Local Epoch [5/5] - Loss: 0.0073
+Client 2 done.
+eval:0.0625
+Round 11/20
+Local Epoch [1/5] - Loss: 0.0114
+Local Epoch [2/5] - Loss: 0.0085
+Local Epoch [3/5] - Loss: 0.0077
+Local Epoch [4/5] - Loss: 0.0069
+Local Epoch [5/5] - Loss: 0.0058
+Client 1 done.
+Local Epoch [1/5] - Loss: 0.0127
+Local Epoch [2/5] - Loss: 0.0092
+Local Epoch [3/5] - Loss: 0.0075
+Local Epoch [4/5] - Loss: 0.0065
+Local Epoch [5/5] - Loss: 0.0061
+Client 2 done.
+eval:0.03125
+Round 12/20
+Local Epoch [1/5] - Loss: 0.0106
+Local Epoch [2/5] - Loss: 0.0084
+Local Epoch [3/5] - Loss: 0.0069
+Local Epoch [4/5] - Loss: 0.0065
+Local Epoch [5/5] - Loss: 0.0055
+Client 1 done.
+Local Epoch [1/5] - Loss: 0.0127
+Local Epoch [2/5] - Loss: 0.0084
+Local Epoch [3/5] - Loss: 0.0083
+Local Epoch [4/5] - Loss: 0.0063
+Local Epoch [5/5] - Loss: 0.0062
+Client 2 done.
+eval:0.03125
+Round 13/20
+Local Epoch [1/5] - Loss: 0.0094
+Local Epoch [2/5] - Loss: 0.0069
+Local Epoch [3/5] - Loss: 0.0059
+Local Epoch [4/5] - Loss: 0.0057
+Local Epoch [5/5] - Loss: 0.0054
+Client 1 done.
+Local Epoch [1/5] - Loss: 0.0086
+Local Epoch [2/5] - Loss: 0.0073
+Local Epoch [3/5] - Loss: 0.0064
+Local Epoch [4/5] - Loss: 0.0062
+Local Epoch [5/5] - Loss: 0.0052
+Client 2 done.
+eval:0.046875
+Round 14/20
+Local Epoch [1/5] - Loss: 0.0081
+Local Epoch [2/5] - Loss: 0.0078
+Local Epoch [3/5] - Loss: 0.0059
+Local Epoch [4/5] - Loss: 0.0048
+Local Epoch [5/5] - Loss: 0.0049
+Client 1 done.
+Local Epoch [1/5] - Loss: 0.0094
+Local Epoch [2/5] - Loss: 0.0067
+Local Epoch [3/5] - Loss: 0.0067
+Local Epoch [4/5] - Loss: 0.0045
+Local Epoch [5/5] - Loss: 0.0058
+Client 2 done.
+eval:0.046875
+Round 15/20
+Local Epoch [1/5] - Loss: 0.0081
+Local Epoch [2/5] - Loss: 0.0060
+Local Epoch [3/5] - Loss: 0.0052
+Local Epoch [4/5] - Loss: 0.0046
+Local Epoch [5/5] - Loss: 0.0048
+Client 1 done.
+Local Epoch [1/5] - Loss: 0.0071
+Local Epoch [2/5] - Loss: 0.0062
+Local Epoch [3/5] - Loss: 0.0055
+Local Epoch [4/5] - Loss: 0.0045
+Local Epoch [5/5] - Loss: 0.0046
+Client 2 done.
+eval:0.046875
+Round 16/20
+Local Epoch [1/5] - Loss: 0.0072
+Local Epoch [2/5] - Loss: 0.0058
+Local Epoch [3/5] - Loss: 0.0046
+Local Epoch [4/5] - Loss: 0.0045
+Local Epoch [5/5] - Loss: 0.0040
+Client 1 done.
+Local Epoch [1/5] - Loss: 0.0078
+Local Epoch [2/5] - Loss: 0.0056
+Local Epoch [3/5] - Loss: 0.0051
+Local Epoch [4/5] - Loss: 0.0045
+Local Epoch [5/5] - Loss: 0.0042
+Client 2 done.
+eval:0.03125
+Round 17/20
+Local Epoch [1/5] - Loss: 0.0075
+Local Epoch [2/5] - Loss: 0.0049
+Local Epoch [3/5] - Loss: 0.0055
+Local Epoch [4/5] - Loss: 0.0039
+Local Epoch [5/5] - Loss: 0.0039
+Client 1 done.
+Local Epoch [1/5] - Loss: 0.0065
+Local Epoch [2/5] - Loss: 0.0059
+Local Epoch [3/5] - Loss: 0.0049
+Local Epoch [4/5] - Loss: 0.0051
+Local Epoch [5/5] - Loss: 0.0045
+Client 2 done.
+eval:0.0625
+Round 18/20
+Local Epoch [1/5] - Loss: 0.0058
+Local Epoch [2/5] - Loss: 0.0051
+Local Epoch [3/5] - Loss: 0.0045
+Local Epoch [4/5] - Loss: 0.0039
+Local Epoch [5/5] - Loss: 0.0038
+Client 1 done.
+Local Epoch [1/5] - Loss: 0.0066
+Local Epoch [2/5] - Loss: 0.0045
+Local Epoch [3/5] - Loss: 0.0047
+Local Epoch [4/5] - Loss: 0.0042
+Local Epoch [5/5] - Loss: 0.0039
+Client 2 done.
+eval:0.03125
+Round 19/20
+Local Epoch [1/5] - Loss: 0.0048
+Local Epoch [2/5] - Loss: 0.0047
+Local Epoch [3/5] - Loss: 0.0041
+Local Epoch [4/5] - Loss: 0.0036
+Local Epoch [5/5] - Loss: 0.0037
+Client 1 done.
+Local Epoch [1/5] - Loss: 0.0071
+Local Epoch [2/5] - Loss: 0.0047
+Local Epoch [3/5] - Loss: 0.0042
+Local Epoch [4/5] - Loss: 0.0040
+Local Epoch [5/5] - Loss: 0.0038
+Client 2 done.
+eval:0.046875
+Round 20/20
+Local Epoch [1/5] - Loss: 0.0058
+Local Epoch [2/5] - Loss: 0.0045
+Local Epoch [3/5] - Loss: 0.0038
+Local Epoch [4/5] - Loss: 0.0037
+Local Epoch [5/5] - Loss: 0.0034
+Client 1 done.
+Local Epoch [1/5] - Loss: 0.0045
+Local Epoch [2/5] - Loss: 0.0044
+Local Epoch [3/5] - Loss: 0.0042
+Local Epoch [4/5] - Loss: 0.0034
+Local Epoch [5/5] - Loss: 0.0032
+Client 2 done.
+eval:0.0625
+0.0 0.0625
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 26781561: <train> in cluster <dcc> Done
+
+Job <train> was submitted from host <n-62-27-22> by user <s224227> in cluster <dcc> at Tue Nov  4 14:36:17 2025
+Job was executed on host(s) <n-62-18-5>, in queue <gpua10>, as user <s224227> in cluster <dcc> at Tue Nov  4 14:36:17 2025
+</zhome/d1/b/187261> was used as the home directory.
+</zhome/d1/b/187261/Desktop/Bachelor/Bachelor> was used as the working directory.
+Started at Tue Nov  4 14:36:17 2025
+Terminated at Tue Nov  4 14:38:09 2025
+Results reported at Tue Nov  4 14:38:09 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+
+#BSUB -J train
+#BSUB -q gpua10 
+#BSUB -W 30
+#BSUB -R "rusage[mem=10G]"
+#BSUB -R "span[hosts=1]"
+#BSUB -n 1
+#BSUB -o train_%J.out
+#BSUB -e train_%J.err
+
+# # Load Python if needed (depends on DTU module system)
+module load python/3.10.12  
+
+# Activate your virtual environment
+source ~/torch-env/bin/activate
+
+python main_imnet.py 2 20 5 8 1
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   103.45 sec.
+    Max Memory :                                 1955 MB
+    Average Memory :                             1421.67 MB
+    Total Requested Memory :                     10240.00 MB
+    Delta Memory :                               8285.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                9
+    Run time :                                   168 sec.
+    Turnaround time :                            112 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <train_26781561.err> for stderr output of this job.
+
