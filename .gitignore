@@ -5,5 +5,4 @@ __pycache__/
 # Ignore images
 results/assessment/
 data/
-hpc_output/
 .vscode/settings.json

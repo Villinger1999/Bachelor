@@ -1,10 +1,9 @@
 #!/bin/bash
 
 #BSUB -J train
-#BSUB -q hpc
-#BSUB -W 220
-#BSUB -R "rusage[mem=30G]"
-#BSUB -R "select[model == XeonGold6126]"
+#BSUB -q gpua10 
+#BSUB -W 200
+#BSUB -R "rusage[mem=15G]"
 #BSUB -R "span[hosts=1]"
 #BSUB -n 1
 #BSUB -o train_%J.out
@@ -16,4 +15,4 @@ module load python/3.10.12
 # Activate your virtual environment
 source ~/torch-env/bin/activate
 
-python main_imnet.py 3 10 3 8 1
+python main_imnet.py 5 20 5 64 1

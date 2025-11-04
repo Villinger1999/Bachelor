@@ -27,3 +27,36 @@ Global Model,0.0
 "Model3,2,1,8:",Accuracy
 Initial Model,0.0
 Global Model,0.0625
+"Model3,10,3,8:",Accuracy
+Initial Model,0.0
+Global Model,0.09375
+"Model2,20,5,8:",Accuracy
+Initial Model,0.0
+Global Model,0.03125
+"Model2,20,5,8:",Accuracy
+Initial Model,0.0
+Global Model,0.171875
+"Model2,20,5,8:",Accuracy
+Initial Model,0.0
+Global Model,0.03125
+"Model2,20,5,8:",Accuracy
+Initial Model,0.0
+Global Model,0.09375
+"Model2,20,5,8:",Accuracy
+Initial Model,0.0
+Global Model,0.0625
+"Model2,20,5,8:",Accuracy
+Initial Model,0.0
+Global Model,0.0
+"Model2,20,5,8:",Accuracy
+Initial Model,0.0
+Global Model,0.125
+"Model2,20,5,8:",Accuracy
+Initial Model,0.0
+Global Model,0.109375
+"Model5,30,5,64:",Accuracy
+Initial Model,0.015625
+Global Model,0.078125
+"Model5,20,5,64:",Accuracy
+Initial Model,0.0
+Global Model,0.265625

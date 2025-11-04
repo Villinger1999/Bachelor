@@ -1,0 +1,194 @@
+640
+64
+Round 1/10
+Local Epoch [1/3] - Loss: 7.5009
+Local Epoch [2/3] - Loss: 4.2179
+Local Epoch [3/3] - Loss: 1.9298
+Client 1 done.
+Local Epoch [1/3] - Loss: 7.5794
+Local Epoch [2/3] - Loss: 4.5852
+Local Epoch [3/3] - Loss: 2.3943
+Client 2 done.
+Local Epoch [1/3] - Loss: 7.6104
+Local Epoch [2/3] - Loss: 4.0175
+Local Epoch [3/3] - Loss: 1.7696
+Client 3 done.
+Round 2/10
+Local Epoch [1/3] - Loss: 4.1588
+Local Epoch [2/3] - Loss: 1.3258
+Local Epoch [3/3] - Loss: 0.3313
+Client 1 done.
+Local Epoch [1/3] - Loss: 4.4305
+Local Epoch [2/3] - Loss: 1.4986
+Local Epoch [3/3] - Loss: 0.4256
+Client 2 done.
+Local Epoch [1/3] - Loss: 4.1689
+Local Epoch [2/3] - Loss: 1.1911
+Local Epoch [3/3] - Loss: 0.3357
+Client 3 done.
+Round 3/10
+Local Epoch [1/3] - Loss: 1.8324
+Local Epoch [2/3] - Loss: 0.4111
+Local Epoch [3/3] - Loss: 0.1062
+Client 1 done.
+Local Epoch [1/3] - Loss: 2.0763
+Local Epoch [2/3] - Loss: 0.5024
+Local Epoch [3/3] - Loss: 0.1288
+Client 2 done.
+Local Epoch [1/3] - Loss: 1.9009
+Local Epoch [2/3] - Loss: 0.4044
+Local Epoch [3/3] - Loss: 0.1092
+Client 3 done.
+Round 4/10
+Local Epoch [1/3] - Loss: 0.6154
+Local Epoch [2/3] - Loss: 0.1738
+Local Epoch [3/3] - Loss: 0.0591
+Client 1 done.
+Local Epoch [1/3] - Loss: 0.7422
+Local Epoch [2/3] - Loss: 0.1879
+Local Epoch [3/3] - Loss: 0.0881
+Client 2 done.
+Local Epoch [1/3] - Loss: 0.7186
+Local Epoch [2/3] - Loss: 0.1495
+Local Epoch [3/3] - Loss: 0.0413
+Client 3 done.
+Round 5/10
+Local Epoch [1/3] - Loss: 0.2661
+Local Epoch [2/3] - Loss: 0.0583
+Local Epoch [3/3] - Loss: 0.0273
+Client 1 done.
+Local Epoch [1/3] - Loss: 0.2762
+Local Epoch [2/3] - Loss: 0.0786
+Local Epoch [3/3] - Loss: 0.0300
+Client 2 done.
+Local Epoch [1/3] - Loss: 0.2452
+Local Epoch [2/3] - Loss: 0.0509
+Local Epoch [3/3] - Loss: 0.0265
+Client 3 done.
+Round 6/10
+Local Epoch [1/3] - Loss: 0.1146
+Local Epoch [2/3] - Loss: 0.0514
+Local Epoch [3/3] - Loss: 0.0248
+Client 1 done.
+Local Epoch [1/3] - Loss: 0.1282
+Local Epoch [2/3] - Loss: 0.0493
+Local Epoch [3/3] - Loss: 0.0263
+Client 2 done.
+Local Epoch [1/3] - Loss: 0.1285
+Local Epoch [2/3] - Loss: 0.0399
+Local Epoch [3/3] - Loss: 0.0267
+Client 3 done.
+Round 7/10
+Local Epoch [1/3] - Loss: 0.0901
+Local Epoch [2/3] - Loss: 0.0370
+Local Epoch [3/3] - Loss: 0.0230
+Client 1 done.
+Local Epoch [1/3] - Loss: 0.0823
+Local Epoch [2/3] - Loss: 0.0395
+Local Epoch [3/3] - Loss: 0.0294
+Client 2 done.
+Local Epoch [1/3] - Loss: 0.0878
+Local Epoch [2/3] - Loss: 0.0432
+Local Epoch [3/3] - Loss: 0.0230
+Client 3 done.
+Round 8/10
+Local Epoch [1/3] - Loss: 0.0650
+Local Epoch [2/3] - Loss: 0.0316
+Local Epoch [3/3] - Loss: 0.0239
+Client 1 done.
+Local Epoch [1/3] - Loss: 0.0599
+Local Epoch [2/3] - Loss: 0.0464
+Local Epoch [3/3] - Loss: 0.0289
+Client 2 done.
+Local Epoch [1/3] - Loss: 0.0554
+Local Epoch [2/3] - Loss: 0.0304
+Local Epoch [3/3] - Loss: 0.0218
+Client 3 done.
+Round 9/10
+Local Epoch [1/3] - Loss: 0.0439
+Local Epoch [2/3] - Loss: 0.0296
+Local Epoch [3/3] - Loss: 0.0193
+Client 1 done.
+Local Epoch [1/3] - Loss: 0.0541
+Local Epoch [2/3] - Loss: 0.0257
+Local Epoch [3/3] - Loss: 0.0209
+Client 2 done.
+Local Epoch [1/3] - Loss: 0.0487
+Local Epoch [2/3] - Loss: 0.0282
+Local Epoch [3/3] - Loss: 0.0198
+Client 3 done.
+Round 10/10
+Local Epoch [1/3] - Loss: 0.0350
+Local Epoch [2/3] - Loss: 0.0252
+Local Epoch [3/3] - Loss: 0.0167
+Client 1 done.
+Local Epoch [1/3] - Loss: 0.0426
+Local Epoch [2/3] - Loss: 0.0264
+Local Epoch [3/3] - Loss: 0.0189
+Client 2 done.
+Local Epoch [1/3] - Loss: 0.0442
+Local Epoch [2/3] - Loss: 0.0237
+Local Epoch [3/3] - Loss: 0.0197
+Client 3 done.
+0.0 0.09375
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 26778450: <train> in cluster <dcc> Done
+
+Job <train> was submitted from host <n-62-27-20> by user <s224227> in cluster <dcc> at Tue Nov  4 12:08:53 2025
+Job was executed on host(s) <n-62-31-3>, in queue <hpc>, as user <s224227> in cluster <dcc> at Tue Nov  4 12:08:53 2025
+</zhome/d1/b/187261> was used as the home directory.
+</zhome/d1/b/187261/Desktop/Bachelor/Bachelor> was used as the working directory.
+Started at Tue Nov  4 12:08:53 2025
+Terminated at Tue Nov  4 12:54:56 2025
+Results reported at Tue Nov  4 12:54:56 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+
+#BSUB -J train
+#BSUB -q hpc
+#BSUB -W 220
+#BSUB -R "rusage[mem=30G]"
+#BSUB -R "select[model == XeonGold6126]"
+#BSUB -R "span[hosts=1]"
+#BSUB -n 1
+#BSUB -o train_%J.out
+#BSUB -e train_%J.err
+
+# # Load Python if needed (depends on DTU module system)
+module load python/3.10.12  
+
+# Activate your virtual environment
+source ~/torch-env/bin/activate
+
+python main_imnet.py 3 10 3 8 1
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   2752.90 sec.
+    Max Memory :                                 3904 MB
+    Average Memory :                             3603.15 MB
+    Total Requested Memory :                     30720.00 MB
+    Delta Memory :                               26816.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                6
+    Run time :                                   2773 sec.
+    Turnaround time :                            2763 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <train_26778450.err> for stderr output of this job.
+
