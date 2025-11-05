@@ -7,7 +7,7 @@ import numpy as np
 
 model = get_model()
 
-leaked_grads = torch.load("state_dicts/local_state_client0_2.pt", weights_only=True)
+leaked_grads = torch.load("state_dicts/local_state_client1_cifarbatch2.pt", weights_only=True)
 
 infered_label = infer_labels_from_bias_grad(leaked_grads, model)
 
