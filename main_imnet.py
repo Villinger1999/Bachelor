@@ -13,7 +13,7 @@ num_clients = int(sys.argv[1]) # e.g 3
 num_rounds = int(sys.argv[2]) # e.g 2
 local_epochs = int(sys.argv[3]) # e.g 1
 batch_size = int(sys.argv[4]) # e.g 24
-C = int(sys.argv[5]) # e.g 1
+C = float(sys.argv[5]) # e.g 1
 
 # make label map from train folder names
 synsets = sorted({os.path.basename(os.path.dirname(p)) for p in train})
@@ -21,13 +21,13 @@ class_to_idx = {s: i for i, s in enumerate(synsets)}
 
 # Take % of the total dataset
 total_size = len(train)
-subset_size = int(0.01 * total_size)  # % of data
+subset_size = int(0.05 * total_size)  # % of data
 subset = random.sample(train, subset_size)
 print(subset_size)
 
 # Assume testset is a part of the train dataset
 total_size = len(train)
-subset_size = int(0.00005 * total_size)     # % subset
+subset_size = int(0.005 * total_size)     # % subset
 test_subset = random.sample(train, subset_size)
 print(subset_size)
 
@@ -99,7 +99,7 @@ acc_df = pd.DataFrame({
 })
 acc_df.to_csv("model_accuracies.csv", mode='a', index=False)
 
-state = local_train(model, trainloader, testloader, epochs=local_epochs*num_clients, device=device, defense_function=None) 
+state = local_train(model, trainloader, testloader, epochs=local_epochs*num_rounds, device=device, defense_function=None) 
 model.load_state_dict(state)
 acc_resnet = evaluate_global(model, testloader, device=device)
 

@@ -1,0 +1,52 @@
+Loaded dependency [python3/3.12.11]: sqlite3/3.50.1
+Loaded dependency [python3/3.12.11]: gcc/14.3.0-binutils-2.44
+Loaded module: python3/3.12.11
+
+Loading python3/3.12.11
+  Loading requirement: sqlite3/3.50.1 gcc/14.3.0-binutils-2.44
+2025-11-05 14:11:00.480498: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:477] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+E0000 00:00:1762348260.667073 3215350 cuda_dnn.cc:8310] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+E0000 00:00:1762348260.724090 3215350 cuda_blas.cc:1418] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2025-11-05 14:11:01.186430: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+/usr/lib64/python3.9/tarfile.py:2288: RuntimeWarning: The default behavior of tarfile extraction has been changed to disallow common exploits (including CVE-2007-4559). By default, absolute/parent paths are disallowed and some mode bits are cleared. See https://access.redhat.com/articles/7004769 for more details.
+  warnings.warn(
+Traceback (most recent call last):
+  File "/zhome/d1/b/187261/Desktop/Bachelor/Bachelor/main_cifar.py", line 51, in <module>
+    local_states, global_model = fl_training(
+  File "/zhome/d1/b/187261/Desktop/Bachelor/Bachelor/models/central_model.py", line 135, in fl_training
+    local_state = local_train(
+  File "/zhome/d1/b/187261/Desktop/Bachelor/Bachelor/models/central_model.py", line 72, in local_train
+    outputs = local_model(images)                                                       # send the images through the model
+  File "/zhome/d1/b/187261/bachelor-env/lib64/python3.9/site-packages/torch/nn/modules/module.py", line 1553, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/zhome/d1/b/187261/bachelor-env/lib64/python3.9/site-packages/torch/nn/modules/module.py", line 1562, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/zhome/d1/b/187261/bachelor-env/lib64/python3.9/site-packages/torchvision/models/resnet.py", line 285, in forward
+    return self._forward_impl(x)
+  File "/zhome/d1/b/187261/bachelor-env/lib64/python3.9/site-packages/torchvision/models/resnet.py", line 276, in _forward_impl
+    x = self.layer4(x)
+  File "/zhome/d1/b/187261/bachelor-env/lib64/python3.9/site-packages/torch/nn/modules/module.py", line 1553, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/zhome/d1/b/187261/bachelor-env/lib64/python3.9/site-packages/torch/nn/modules/module.py", line 1562, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/zhome/d1/b/187261/bachelor-env/lib64/python3.9/site-packages/torch/nn/modules/container.py", line 219, in forward
+    input = module(input)
+  File "/zhome/d1/b/187261/bachelor-env/lib64/python3.9/site-packages/torch/nn/modules/module.py", line 1553, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/zhome/d1/b/187261/bachelor-env/lib64/python3.9/site-packages/torch/nn/modules/module.py", line 1562, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/zhome/d1/b/187261/bachelor-env/lib64/python3.9/site-packages/torchvision/models/resnet.py", line 93, in forward
+    out = self.bn1(out)
+  File "/zhome/d1/b/187261/bachelor-env/lib64/python3.9/site-packages/torch/nn/modules/module.py", line 1553, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/zhome/d1/b/187261/bachelor-env/lib64/python3.9/site-packages/torch/nn/modules/module.py", line 1562, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/zhome/d1/b/187261/bachelor-env/lib64/python3.9/site-packages/torch/nn/modules/batchnorm.py", line 176, in forward
+    return F.batch_norm(
+  File "/zhome/d1/b/187261/bachelor-env/lib64/python3.9/site-packages/torch/nn/functional.py", line 2510, in batch_norm
+    _verify_batch_size(input.size())
+  File "/zhome/d1/b/187261/bachelor-env/lib64/python3.9/site-packages/torch/nn/functional.py", line 2478, in _verify_batch_size
+    raise ValueError(f"Expected more than 1 value per channel when training, got input size {size}")
+ValueError: Expected more than 1 value per channel when training, got input size torch.Size([1, 512, 1, 1])

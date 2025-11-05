@@ -14,6 +14,6 @@
 module load python/3.10.12  
 
 # Activate your virtual environment
-source /zhome/8e/8/187047/Documents/Bachelor/bachelor/bin/activate
+source ~/bachelor/bin/activate
 
 python main_iDLG.py
