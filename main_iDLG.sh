@@ -14,6 +14,6 @@
 module load python/3.10.12  
 
 # Activate your virtual environment
-source ~/torch-env/bin/activate
+source ~/bachelor/bin/activate
 
 python main_iDLG.py

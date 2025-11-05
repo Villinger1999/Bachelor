@@ -1,18 +1,18 @@
 #!/bin/bash
 
-#BSUB -J train
+#BSUB -J batch1
 #BSUB -q gpua10 
-#BSUB -W 200
-#BSUB -R "rusage[mem=15G]"
+#BSUB -W 260
+#BSUB -R "rusage[mem=30G]"
 #BSUB -R "span[hosts=1]"
-#BSUB -n 1
-#BSUB -o train_%J.out
-#BSUB -e train_%J.err
+#BSUB -n 3
+#BSUB -o batch1_%J.out
+#BSUB -e batch1_%J.err
 
-# # Load Python if needed (depends on DTU module system)
-module load python/3.10.12  
+# Load Python 
+module load python/3.9.21  
 
 # Activate your virtual environment
 source ~/torch-env/bin/activate
 
-python main_imnet.py 5 20 5 64 1
+python batchloader.py 2 10 5 1 1

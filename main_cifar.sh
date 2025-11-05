@@ -1,24 +1,18 @@
 #!/bin/bash
 
-#BSUB -J train
-#BSUB -q hpc
-#BSUB -W 120
+#BSUB -J cifar_batch2
+#BSUB -q gpua10 
+#BSUB -W 200
 #BSUB -R "rusage[mem=20G]"
-#BSUB -R "select[model == XeonGold6126]"
 #BSUB -R "span[hosts=1]"
 #BSUB -n 1
-#BSUB -o train_%J.out
-#BSUB -e train_%J.err
+#BSUB -o cifar_batch2_%J.out
+#BSUB -e cifar_batch2_%J.err
 
-<<<<<<< HEAD:main_cifar.sh
-# # Load Python 
-module load python/3.10.12  
-=======
-# # Load Python if needed (depends on DTU module system)
-module load python/3.9.21  
->>>>>>> main:main.sh
+# Load Python
+module load python3/3.12.11  
 
 # Activate your virtual environment
-source /zhome/8e/8/187047/Documents/Bachelor/bachelor/bin/activate
+source ~/bachelor-env/bin/activate
 
-python main.py 3 3 4 1 1
+python main_cifar.py 5 10 3 2 1 5c_10r_batch2
