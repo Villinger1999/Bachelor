@@ -15,6 +15,6 @@ x_shape = (2,3,32,32)
 
 image_tensor = iDLG(model, leaked_grads, infered_label, x_shape)
 
-save_image(image_tensor[0], "reconstructions/Infered_image00_2.png")
-save_image(image_tensor[1], "reconstructions/Infered_image01_2.png")
+save_image(image_tensor[0], "reconstructions/Infered_image000_2.png")
+save_image(image_tensor[1], "reconstructions/Infered_image001_2.png")
 print(infered_label)

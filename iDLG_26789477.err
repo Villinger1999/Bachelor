@@ -5,3 +5,14 @@ E0000 00:00:1762359528.224044 1621063 cuda_dnn.cc:8310] Unable to register cuDNN
 E0000 00:00:1762359528.474085 1621063 cuda_blas.cc:1418] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
 2025-11-05 17:18:50.737066: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
 To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+/usr/lib64/python3.9/tarfile.py:2288: RuntimeWarning: The default behavior of tarfile extraction has been changed to disallow common exploits (including CVE-2007-4559). By default, absolute/parent paths are disallowed and some mode bits are cleared. See https://access.redhat.com/articles/7004769 for more details.
+  warnings.warn(
+Traceback (most recent call last):
+  File "/zhome/d1/b/187261/Desktop/Bachelor/Bachelor/main_iDLG.py", line 10, in <module>
+    leaked_grads = torch.load("state_dicts/local_state_client1_cifarbatch2.pt", weights_only=True)
+  File "/zhome/d1/b/187261/bachelor-env/lib64/python3.9/site-packages/torch/serialization.py", line 1096, in load
+    raise pickle.UnpicklingError(_get_wo_message(str(e))) from None
+_pickle.UnpicklingError: Weights only load failed. Re-running `torch.load` with `weights_only` set to `False` will likely succeed, but it can result in arbitrary code execution. Do it only if you got the file from a trusted source.
+ Please file an issue with the following so that we can make `weights_only=True` compatible with your use case: WeightsUnpickler error: Attempting to deserialize object on a CUDA device but torch.cuda.is_available() is False. If you are running on a CPU-only machine, please use torch.load with map_location=torch.device('cpu') to map your storages to the CPU.
+
+Check the documentation of torch.load to learn more about types accepted by default with weights_only https://pytorch.org/docs/stable/generated/torch.load.html.
