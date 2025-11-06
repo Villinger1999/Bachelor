@@ -146,7 +146,7 @@ def fl_training(num_rounds, local_epochs, batch_size, testloader, C, client_data
                 if round == (num_rounds-1):
                     # Save local_states
                     try:
-                        torch.save(local_state, f"state_dicts/local_state_client{i}{time.time()}.pt")
+                        torch.save(local_state, f"state_dicts/local_state_client{i}{str(sys.argv[6])}.pt")
                     except Exception as e:
                         print("Error saving local_state:", e)
                                                         
