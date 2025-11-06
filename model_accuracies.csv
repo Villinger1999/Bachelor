@@ -70,3 +70,6 @@ Global Model,0.0875
 "Model5,10,3,2:",Accuracy
 Initial Model,0.0867
 Global Model,0.0998
+"Model5,10,3,2:",Accuracy
+Initial Model,0.1018
+Global Model,0.1081
