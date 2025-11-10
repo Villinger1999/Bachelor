@@ -324,7 +324,7 @@ if __name__ == "__main__":
     # User-adjustable parameters
     DATASET_SIZE = 1000  # Set to None for full CIFAR-10 (slow!)
     BATCH_SIZE = 10
-    EPOCHS = 2  # Increase for better results, but will be slow
+    EPOCHS = 10  # Increase for better results, but will be slow
     LEARNING_RATE = 0.01
 
     print("Loading CIFAR-10 from OpenML...")
