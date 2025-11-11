@@ -41,6 +41,22 @@ def fedavg(states, C, client_datasets):
         )
     return avg_state
 
+import torch
+
+def grad_state_dict(model):
+    """
+    Return a dict with the same keys as model.state_dict() but values 
+    are the corresponding gradients (detached & cloned). If a parameter
+    has no grad, it is skipped.
+    """
+    grad_dict = {}
+    for name, param in model.named_parameters():
+        if param.grad is None:
+            continue
+        grad_dict[name] = param.grad.detach().clone()
+    return grad_dict
+
+
 def local_train(model, trainloader, testloader, epochs=1, device=device, lr=0.01, defense_function=None):
     """
     Performs local training on a client using its local dataset.
@@ -62,6 +78,8 @@ def local_train(model, trainloader, testloader, epochs=1, device=device, lr=0.01
 
     criterion = torch.nn.CrossEntropyLoss()                                                     # objective function
     optimizer = torch.optim.SGD(local_model.parameters(), lr=lr, momentum=0.9)                  # set stochastic gradient decent as optimizer function
+    
+    captured_grads = None
 
     # Local training loop
     for epoch in range(epochs):
@@ -73,17 +91,24 @@ def local_train(model, trainloader, testloader, epochs=1, device=device, lr=0.01
             outputs = local_model(images)                                                       # send the images through the model
             loss = criterion(outputs, labels)                                                   # Compare predictions to labels using CrossEntropyLoss
             loss.backward()                                                                     # Compute gradients of the loss for each weight using autograd and store them in param.grad for each parameter
+            
+            if captured_grads == None:
+                captured_grads = grad_state_dict(model)
+                # copy labels to CPU for later use (IDLG might need labels)
+                captured_labels = labels.detach().cpu().clone()
+            
             optimizer.step()                                                                    # optimize the weights using SGD
 
             running_loss += loss.item()                                                         # Accumulates total loss to compute the average later
 
+        grads_dict = {"grads": captured_grads, "labels": captured_labels}
         avg_loss = running_loss / len(trainloader)                                              # calculate average loss
         acc = evaluate_global(local_model, testloader, device)
         local_model.train()
         print(f"Local Epoch [{epoch+1}/{epochs}] - Loss: {avg_loss:.4f} - Acc: {acc}") 
 
     # Return the trained model weights
-    return local_model.state_dict()
+    return local_model.state_dict(), grads_dict
 
 # Function for simulation of the full Federated Learning proces 
 def fl_training(num_rounds, local_epochs, batch_size, testloader, C, client_datasets, client_loader=None,defense_function=None, fedtype=fedavg):
