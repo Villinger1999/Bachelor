@@ -178,6 +178,10 @@ def fl_training(num_rounds, local_epochs, batch_size, testloader, C, client_data
                                                         
                 print(f"Client {i+1} done.")
 
+        # Add defense, if applied
+        if defense_function != None: 
+            local_states = defense_function(local_states)                                  
+
         global_state = fedtype(local_states, C, client_datasets)                                # update the weights using fedavg
         global_model.load_state_dict(global_state)                                              # update global model with updated weigths
         eval = evaluate_global(global_model, testloader, device)
