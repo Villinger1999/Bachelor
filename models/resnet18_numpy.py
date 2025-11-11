@@ -322,8 +322,8 @@ if __name__ == "__main__":
     from sklearn.datasets import fetch_openml
     np.random.seed(42)
     # User-adjustable parameters
-    DATASET_SIZE = 1000  # Set to None for full CIFAR-10 (slow!)
-    BATCH_SIZE = 10
+    DATASET_SIZE = 2000  # Set to None for full CIFAR-10 (slow!)
+    BATCH_SIZE = 20
     EPOCHS = 10  # Increase for better results, but will be slow
     LEARNING_RATE = 0.01
 
@@ -334,7 +334,7 @@ if __name__ == "__main__":
     X = X.to_numpy().reshape(-1, 3, 32, 32).astype(np.float32) / 255.0
     if DATASET_SIZE is not None:
         X, y = X[:DATASET_SIZE], y[:DATASET_SIZE]
-    split = int(0.8 * len(X))
+    split = int(0.9 * len(X))
     X_train, y_train = X[:split], y[:split]
     X_val, y_val = X[split:], y[split:]
 
