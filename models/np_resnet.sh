@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#BSUB -J resnet
+#BSUB -J resnetn5000e10
 #BSUB -q hpc
 #BSUB -W 180
 #BSUB -R "rusage[mem=32G]"
