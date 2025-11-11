@@ -136,7 +136,7 @@ def fl_training(num_rounds, local_epochs, batch_size, testloader, C, client_data
             for i, client_data in enumerate(client_loader):  # but now it's actually loaders
                 trainloader = client_data
                 # now client_data IS a DataLoader, don't wrap it again
-                local_state = local_train(
+                local_state, local_grads = local_train(
                     global_model,
                     trainloader,
                     testloader,
@@ -149,6 +149,7 @@ def fl_training(num_rounds, local_epochs, batch_size, testloader, C, client_data
                 if round == (num_rounds-1):
                     # Save local_states
                     try:
+                        torch.save(local_grads, f"grads_dict/local_state_client{i}{sys.argv[6]}.pt")
                         torch.save(local_state, f"state_dicts/local_state_client{i}_{str(sys.argv[6])}.pt") # {time.time()}
                     except Exception as e:
                         print("Error saving local_state:", e)
@@ -159,7 +160,7 @@ def fl_training(num_rounds, local_epochs, batch_size, testloader, C, client_data
                 trainloader = DataLoader(client_data, batch_size=batch_size, shuffle=True)       # load the clients data
                 # now client_data IS a DataLoader, don't wrap it again
 
-                local_state = local_train(
+                local_state, local_grads = local_train(
                     global_model,
                     trainloader,
                     testloader,
@@ -169,18 +170,20 @@ def fl_training(num_rounds, local_epochs, batch_size, testloader, C, client_data
                 )
                 local_states.append(local_state)
                 
+                # Add defense, if applied
+                if defense_function != None: 
+                    local_grads = defense_function(local_grads)
+                    local_states = defense_function(local_states)     
+
                 if round == (num_rounds-1):
                     # Save local_states
                     try:
+                        torch.save(local_grads, f"grads_dict/local_state_client{i}{sys.argv[6]}.pt")
                         torch.save(local_state, f"state_dicts/local_state_client{i}{str(sys.argv[6])}.pt")
                     except Exception as e:
                         print("Error saving local_state:", e)
                                                         
-                print(f"Client {i+1} done.")
-
-        # Add defense, if applied
-        if defense_function != None: 
-            local_states = defense_function(local_states)                                  
+                print(f"Client {i+1} done.")                             
 
         global_state = fedtype(local_states, C, client_datasets)                                # update the weights using fedavg
         global_model.load_state_dict(global_state)                                              # update global model with updated weigths
