@@ -42,8 +42,6 @@ def fedavg(states, C, client_datasets):
         )
     return avg_state
 
-import torch
-
 def grad_state_dict(model):
     """
     Return a dict with the same keys as model.state_dict() but values 
