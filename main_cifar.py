@@ -47,6 +47,7 @@ test_subset, _ = random_split(testset, [subset_size, remaining_size])
 
 # Create DataLoader for the smaller test subset
 testloader = DataLoader(test_subset, batch_size=batch_size, shuffle=False)
+trainloader = DataLoader(trainset, batch_size=batch_size, shuffle=False)
 
 local_states, global_model = fl_training(
     num_rounds, 
@@ -65,11 +66,15 @@ model = get_model()
 acc_model = evaluate_global(model, testloader)
 acc_global_model = evaluate_global(global_model, testloader)
 
-print(acc_model, acc_global_model)
-
 # Save accuracies
 acc_df = pd.DataFrame({
     f"Model{num_clients},{num_rounds},{local_epochs},{batch_size}:": ["Initial Model", "Global Model"],
     "Accuracy": [acc_model, acc_global_model]
 })
 acc_df.to_csv("model_accuracies.csv", mode='a', index=False)
+
+state = local_train(model, trainloader, testloader, epochs=local_epochs*num_rounds, device=device, defense_function=None) 
+model.load_state_dict(state)
+acc_resnet = evaluate_global(model, testloader, device=device)
+
+print(f"Accuracy before training: {acc_model}, Accurracy after FL: {acc_global_model}, Accuracy ResNet: {acc_resnet}")

@@ -91,7 +91,8 @@ def iDLG(model: torch.nn.Module, leaked_grads:dict[str, torch.Tensor], infered_l
     x_dummy = torch.nn.Parameter(data_init) # makes the dummy data into a trainable parameter
     
     # uptimizing the dummy data using Adam
-    optimizer = LBFGS([x_dummy], lr = learning_rate,max_iter=train_ite, tolerance_grad=1e-5, tolerance_change=1e-5, history_size=100,line_search_fn='strong_wolfe')
+    optimizer = Adam([x_dummy], lr=learning_rate)
+    # optimizer = LBFGS([x_dummy], lr = learning_rate,max_iter=train_ite, tolerance_grad=1e-5, tolerance_change=1e-5, history_size=100,line_search_fn='strong_wolfe')
     
     # loss function
     loss_func = torch.nn.CrossEntropyLoss(reduction="mean")
@@ -101,43 +102,47 @@ def iDLG(model: torch.nn.Module, leaked_grads:dict[str, torch.Tensor], infered_l
     y_hat = torch.full((x_shape[0],), infered_label, device=device, dtype=torch.long)
     
     for i in range(train_ite):
-        # optimizer.zero_grad(set_to_none=True) # clears the optimizers buffers
+        optimizer.zero_grad(set_to_none=True) # clears the optimizers buffers
         
-        # # pass the image forward and compute the loss
-        # logits = model(x_dummy) # get the logits by inputing the dummy image into the model
-        # loss = loss_func(logits,y_hat) # compute the loss
+        # pass the image forward and compute the loss
+        logits = model(x_dummy) # get the logits by inputing the dummy image into the model
+        loss = loss_func(logits,y_hat) # compute the loss
         
-        # # compute gradients w.r.t. model parameters (convert iterator to a sequence)
-        # dummy_grads = torch.autograd.grad(loss, tuple(model.parameters()), create_graph=True, retain_graph=True)
+        # compute gradients w.r.t. model parameters (convert iterator to a sequence)
+        dummy_grads = torch.autograd.grad(loss, tuple(model.parameters()), create_graph=True, retain_graph=True)
         
-        # # gradient matching loss
-        # g_loss = torch.tensor(0.0, device=device)
+        # gradient matching loss
+        g_loss = torch.tensor(0.0, device=device)
         
-        # leaked_grads_list = []
-        # for name, _ in model.named_parameters():
-        #     leaked_grads_list.append(leaked_grads[name].detach().to(device))
+        leaked_grads_list = []
+        for name, _ in model.named_parameters():
+            leaked_grads_list.append(leaked_grads[name].detach().to(device))
         
-        # for dummy_grad, leaked_grad in zip(dummy_grads, leaked_grads_list):
-        #     g_loss = g_loss + ((dummy_grad - leaked_grad) ** 2).sum() # compute element-wise squared difference between the gradient produced by the dummy and the leaked gradient, then sum.
+        for dummy_grad, leaked_grad in zip(dummy_grads, leaked_grads_list):
+            g_loss = g_loss + ((dummy_grad - leaked_grad) ** 2).sum() # compute element-wise squared difference between the gradient produced by the dummy and the leaked gradient, then sum.
          
-        # total = g_loss
-        # total.backward()
-        def closure():
-            optimizer.zero_grad(set_to_none=True)
-            logits = model(x_dummy)
-            loss = loss_func(logits, y_hat)
-            dummy_grads = torch.autograd.grad(loss, tuple(model.parameters()), create_graph=True, retain_graph=True)
-            g_loss = torch.tensor(0.0, device=device)
-            leaked_grads_list = []
-            for name, _ in model.named_parameters():
-                leaked_grads_list.append(leaked_grads[name].detach().to(device))
-            for dummy_grad, leaked_grad in zip(dummy_grads, leaked_grads_list):
-                g_loss = g_loss + ((dummy_grad - leaked_grad) ** 2).sum()
-            total = g_loss
-            total.backward()
-            return total
-        optimizer.step(closure) 
+        total = g_loss
+        total.backward()
+        optimizer.step() 
         with torch.no_grad():
             x_dummy.clamp_(0, 255)  # Keep pixel values in valid range [0, 255]
+            
+        # def closure():
+        #     optimizer.zero_grad(set_to_none=True)
+        #     logits = model(x_dummy)
+        #     loss = loss_func(logits, y_hat)
+        #     dummy_grads = torch.autograd.grad(loss, tuple(model.parameters()), create_graph=True, retain_graph=True)
+        #     g_loss = torch.tensor(0.0, device=device)
+        #     leaked_grads_list = []
+        #     for name, _ in model.named_parameters():
+        #         leaked_grads_list.append(leaked_grads[name].detach().to(device))
+        #     for dummy_grad, leaked_grad in zip(dummy_grads, leaked_grads_list):
+        #         g_loss = g_loss + ((dummy_grad - leaked_grad) ** 2).sum()
+        #     total = g_loss
+        #     total.backward()
+        #     return total
+        # optimizer.step(closure) 
+        # with torch.no_grad():
+        #     x_dummy.clamp_(0, 255)  # Keep pixel values in valid range [0, 255]
 
     return x_dummy.detach()
