@@ -15,4 +15,4 @@ module load python3/3.12.11
 # Activate your virtual environment
 source ~/bachelor-env/bin/activate
 
-python main_cifar.py 5 10 3 2 1 5c_10r_batch2
+python main_cifar.py 3 5 3 2 1 3c_5r_b2_size6
