@@ -95,7 +95,6 @@ def local_train(model, trainloader, testloader, epochs=1, device=device, lr=0.01
             
             if captured_grads == None:
                 captured_grads = grad_state_dict(model)
-                # copy labels to CPU for later use (IDLG might need labels)
                 captured_labels = labels.detach().cpu().clone()
             
             optimizer.step()                                                                    # optimize the weights using SGD
@@ -145,11 +144,15 @@ def fl_training(num_rounds, local_epochs, batch_size, testloader, C, client_data
                     defense_function=None
                 )
                 local_states.append(local_state)
+                # Add defense, if applied
+                if defense_function != None: 
+                    local_grads = defense_function(local_grads)
+                    local_states = defense_function(local_states)                    
                 
                 if round == (num_rounds-1):
                     # Save local_states
                     try:
-                        torch.save(local_grads, f"grads_dict/local_state_client{i}{sys.argv[6]}.pt")
+                        torch.save(local_grads, f"state_dict/local_grads_client{i}{str(sys.argv[6])}.pt")
                         torch.save(local_state, f"state_dicts/local_state_client{i}_{str(sys.argv[6])}.pt") # {time.time()}
                     except Exception as e:
                         print("Error saving local_state:", e)
@@ -178,7 +181,7 @@ def fl_training(num_rounds, local_epochs, batch_size, testloader, C, client_data
                 if round == (num_rounds-1):
                     # Save local_states
                     try:
-                        torch.save(local_grads, f"grads_dict/local_state_client{i}{sys.argv[6]}.pt")
+                        torch.save(local_grads, f"state_dict/local_grads_client{i}{str(sys.argv[6])}.pt")
                         torch.save(local_state, f"state_dicts/local_state_client{i}{str(sys.argv[6])}.pt")
                     except Exception as e:
                         print("Error saving local_state:", e)

@@ -8,7 +8,6 @@ class iDLG:
     def __init__(
         self,
         model,
-        orig_img,
         label,
         device,
         *,
@@ -18,7 +17,7 @@ class iDLG:
         # Respect provided device and keep original dtype of the model/weights
         self.device = device if isinstance(device, str) else (device.type if hasattr(device, "type") else "cpu")
         self.model = model.to(self.device)
-        self.orig_img = orig_img.to(self.device)
+        # self.orig_img = orig_img.to(self.device)
         self.criterion = nn.CrossEntropyLoss().to(self.device)
         self.label = label.to(self.device)
         self.tt = transforms.ToPILImage()
@@ -26,8 +25,8 @@ class iDLG:
 
         # Align image dtype to model parameter dtype (usually float32)
         self.param_dtype = next(self.model.parameters()).dtype
-        if self.orig_img.dtype != self.param_dtype:
-            self.orig_img = self.orig_img.to(self.param_dtype)
+        # if self.orig_img.dtype != self.param_dtype:
+        #     self.orig_img = self.orig_img.to(self.param_dtype)
 
         if seed is not None:
             torch.manual_seed(seed)
