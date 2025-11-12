@@ -1,6 +1,7 @@
 from models.central_model import get_model, device
 import numpy as np
 import torch as torch
+from torch.optim.adam import Adam
 
 def cross_entropy_loss(y_c:float, y_j:list[float]) -> float:
     """cross entropy loss funtion on one hot labels
@@ -89,7 +90,7 @@ def iDLG(model: torch.nn.Module, leaked_grads:dict[str, torch.Tensor], x_shape:t
     x_dummy = torch.nn.Parameter(data_init) # makes the dummy data into a trainable parameter
     
     # optimizing the dummy data using Adam
-    optimizer = torch.optim.Adam([x_dummy], lr=learning_rate)
+    optimizer = Adam([x_dummy], lr=learning_rate)
     
     # loss function
     loss_func = torch.nn.CrossEntropyLoss(reduction="mean")
