@@ -129,12 +129,61 @@ class BatchNorm2D:
 
 class ReLU:
     def forward(self, X):
-        self.mask = X > 0
-        return X * self.mask
-    def backward(self, d_out):
-        return d_out * self.mask
+        return np.maximum(0, X)
+    def backward(self, d_out, X):
+        mask = X > 0
+        return d_out * mask
     def step(self, lr):
         pass
+
+class MaxPool2D:
+    def __init__(self, kernel_size=2, stride=2):
+        self.kernel_size = kernel_size
+        self.stride = stride
+
+    def forward(self, X):
+        self.X = X
+        N, C, H, W = X.shape
+        k = self.kernel_size
+        s = self.stride
+        out_h = (H - k) // s + 1
+        out_w = (W - k) // s + 1
+
+        out = np.zeros((N, C, out_h, out_w))
+        # mask stores argmax positions for backward
+        self.mask = np.zeros_like(X, dtype=bool)
+
+        for i in range(out_h):
+            for j in range(out_w):
+                h_start, h_end = i * s, i * s + k
+                w_start, w_end = j * s, j * s + k
+                window = X[:, :, h_start:h_end, w_start:w_end]  # (N,C,k,k)
+                m = (window == np.max(window, axis=(2,3), keepdims=True))  # (N,C,k,k)
+                out[:, :, i, j] = window.max(axis=(2,3))
+                # write mask slice
+                self.mask[:, :, h_start:h_end, w_start:w_end] |= m
+        return out
+
+    def backward(self, d_out):
+        N, C, H, W = self.X.shape
+        k = self.kernel_size
+        s = self.stride
+        out_h = d_out.shape[2]
+        out_w = d_out.shape[3]
+
+        dX = np.zeros_like(self.X)
+        for i in range(out_h):
+            for j in range(out_w):
+                h_start, h_end = i * s, i * s + k
+                w_start, w_end = j * s, j * s + k
+                m = self.mask[:, :, h_start:h_end, w_start:w_end]  # (N,C,k,k)
+                # distribute gradient only to max positions
+                dX[:, :, h_start:h_end, w_start:w_end] += m * d_out[:, :, i, j][:, :, None, None]
+        return dX
+
+    def step(self, lr):
+        pass
+
 
 class GlobalAvgPool:
     def forward(self, X):
@@ -190,6 +239,7 @@ class BasicBlock:
         self.X = X
         out = self.conv1.forward(X)
         out = self.bn1.forward(out, train)
+        self.relu1_input = out
         out = self.relu1.forward(out)
         out = self.conv2.forward(out)
         out = self.bn2.forward(out, train)
@@ -200,17 +250,19 @@ class BasicBlock:
             shortcut = X
         self.shortcut = shortcut
         out += shortcut
+        self.relu2_input = out
         out = self.relu2.forward(out)
         self.out = out
         return out
+    
     def backward(self, d_out):
-        d_out = self.relu2.backward(d_out)
+        d_out = self.relu2.backward(d_out, self.relu2_input)
         d_shortcut = d_out.copy()
         d_main = d_out.copy()
         # Main path
         d_main = self.bn2.backward(d_main)
         d_main = self.conv2.backward(d_main)
-        d_main = self.relu1.backward(d_main)
+        d_main = self.relu1.backward(d_main, self.relu1_input)
         d_main = self.bn1.backward(d_main)
         d_main = self.conv1.backward(d_main)
         # Shortcut path
@@ -230,6 +282,7 @@ class BasicBlock:
         if self.proj is not None:
             self.proj.step(lr)
             self.bn_proj.step(lr)
+
 # --- ResNet18 Model ---
 class ResNet18:
     def __init__(self, num_classes=10):
@@ -237,6 +290,7 @@ class ResNet18:
         self.conv1 = Conv2D(3, 64, 3, stride=1, padding=1)
         self.bn1 = BatchNorm2D(64)
         self.relu1 = ReLU()
+        self.maxpool = MaxPool2D(kernel_size=3,stride=2)
         # Stages: (channels, num_blocks, stride for first block)
         self.stage1 = [BasicBlock(64, 64, stride=1), BasicBlock(64, 64, stride=1)]
         self.stage2 = [BasicBlock(64, 128, stride=2, use_projection=True), BasicBlock(128, 128, stride=1)]
@@ -249,7 +303,9 @@ class ResNet18:
     def forward(self, X, train=True):
         out = self.conv1.forward(X)
         out = self.bn1.forward(out, train)
+        self.relu1_input = out
         out = self.relu1.forward(out)
+        out = self.maxpool.forward(out)
         for block in self.stage1:
             out = block.forward(out, train)
         for block in self.stage2:
@@ -276,7 +332,8 @@ class ResNet18:
             d_out = block.backward(d_out)
         for block in reversed(self.stage1):
             d_out = block.backward(d_out)
-        d_out = self.relu1.backward(d_out)
+        d_out = self.maxpool.backward(d_out) 
+        d_out = self.relu1.backward(d_out, self.relu1_input)
         d_out = self.bn1.backward(d_out)
         d_out = self.conv1.backward(d_out)
         return d_out
@@ -322,18 +379,28 @@ if __name__ == "__main__":
     from sklearn.datasets import fetch_openml
     np.random.seed(42)
     # User-adjustable parameters
-    DATASET_SIZE = 2000  # Set to None for full CIFAR-10 (slow!)
-    BATCH_SIZE = 20
+    DATASET_SIZE = 1000  # Set to None for full CIFAR-10 (slow!)
+    IMAGES_PER_CLASS = DATASET_SIZE // 10
+    BATCH_SIZE = 10
     EPOCHS = 10  # Increase for better results, but will be slow
-    LEARNING_RATE = 0.01
+    LEARNING_RATE = 0.2
 
     print("Loading CIFAR-10 from OpenML...")
     cifar10 = fetch_openml('CIFAR_10_small', version=1)
     X = cifar10.data  # shape (60000, 3072)
     y = cifar10.target.astype(int)
     X = X.to_numpy().reshape(-1, 3, 32, 32).astype(np.float32) / 255.0
+    y = y.to_numpy()
     if DATASET_SIZE is not None:
-        X, y = X[:DATASET_SIZE], y[:DATASET_SIZE]
+        selected_indices = []
+        for class_idx in range(10):
+            class_indices = np.where(y == class_idx)[0]
+            np.random.shuffle(class_indices)
+            selected_indices.extend(class_indices[:IMAGES_PER_CLASS])
+
+        selected_indices = np.array(selected_indices)
+        np.random.shuffle(selected_indices)
+        X, y = X[selected_indices], y[selected_indices]
     split = int(0.9 * len(X))
     X_train, y_train = X[:split], y[:split]
     X_val, y_val = X[split:], y[split:]
