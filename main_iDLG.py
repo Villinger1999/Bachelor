@@ -1,11 +1,13 @@
 from attack_function.iDLG import iDLG, infer_labels_from_bias_grad
 from models.central_model import get_model
+from models.lenet import LeNet
 import torch
 from test_train_noiseadd import x_train
 from torchvision.utils import save_image
 import numpy as np
 
-model = get_model()
+# model = get_model()
+model = LeNet()
 
 leaked_grads = torch.load("state_dicts/local_grads_client0_5c_5r_b2_size10.pt", map_location=torch.device('cpu'), weights_only=True)
 

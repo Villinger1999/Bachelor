@@ -47,7 +47,7 @@ for idx, label in zip(subset_indices, subset_labels):
 client_indices = [[] for _ in range(num_clients)]
 for label, indices in label_to_indices.items():
     random.shuffle(indices)
-    for i, global_idx in enumerate(indices[:batch_size * num_clients]):  # take first 2*num_clients
+    for i, global_idx in enumerate(indices): 
         client_indices[i % num_clients].append(global_idx)
 
 # Create Subset datasets for each client
@@ -95,8 +95,8 @@ acc_df = pd.DataFrame({
 })
 acc_df.to_csv("model_accuracies.csv", mode='a', index=False)
 
-state = local_train(model, trainloader, testloader, epochs=local_epochs*num_rounds, device=device, defense_function=None) 
-model.load_state_dict(state)
-acc_resnet = evaluate_global(model, testloader, device=device)
+# state = local_train(model, trainloader, testloader, epochs=local_epochs*num_rounds, device=device, defense_function=None) 
+# model.load_state_dict(state)
+# acc_resnet = evaluate_global(model, testloader, device=device)
 
-print(f"Accuracy before training: {acc_model}, Accurracy after FL: {acc_global_model}, Accuracy ResNet: {acc_resnet}")
+print(f"Accuracy before training: {acc_model}, Accurracy after FL: {acc_global_model}") # Accuracy ResNet: {acc_resnet}
