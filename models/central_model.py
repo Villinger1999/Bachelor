@@ -7,7 +7,6 @@ import copy
 import random
 import time
 import sys
-import sys
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -120,7 +119,7 @@ def local_train(model, trainloader, testloader, epochs=1, device=device, lr=0.01
     return local_model.state_dict(), grads_dict
 
 # Function for simulation of the full Federated Learning proces 
-def fl_training(num_rounds, local_epochs, batch_size, testloader, C, client_datasets, client_loader=None,defense_function=None, fedtype=fedavg):
+def fl_training(model, num_rounds, local_epochs, batch_size, testloader, C, client_datasets, client_loader=None,defense_function=None, fedtype=fedavg):
     """
     Args:
         num_rounds: number of training rounds
@@ -134,7 +133,7 @@ def fl_training(num_rounds, local_epochs, batch_size, testloader, C, client_data
     Returns:
         The updated global model
     """
-    global_model = get_model().to(device)
+    global_model = model.to(device)
 
     for round in range(num_rounds): # for loop for number of training rounds
         print(f"Round {round+1}/{num_rounds}")

@@ -3,6 +3,7 @@ import torch
 import torch.nn as nn
 from torchvision import transforms
 from torch.optim.lbfgs import LBFGS
+import sys
 
 class iDLG:
     def __init__(
@@ -42,19 +43,19 @@ class iDLG:
         # compute original gradients
         orig_grads = self.grads
         
-        B = 2  # <--- NEW
-        dummy_data = torch.randn(
-            (B, *self.orig_img.shape[1:]),
-            dtype=self.param_dtype, device=self.device, requires_grad=True
-        )
+        # B = 2
+        # dummy_data = torch.randn(
+        #     (B, *self.orig_img.shape[1:]),
+        #     dtype=self.param_dtype, device=self.device, requires_grad=True
+        # )
 
         # initialize dummy in the correct iteration, respecting the random seed
         dummy_data = (torch.randn(self.orig_img.size(), dtype=self.param_dtype, device=self.device).requires_grad_(True))
 
         # init with ground truth:
-        # label_pred = torch.argmin(torch.sum(orig_grads[-2], dim=-1), dim=-1).detach().reshape((1,)).requires_grad_(False)
-        label_single = torch.argmin(torch.sum(orig_grads[-2], dim=-1), dim=-1).detach()
-        label_pred = label_single.repeat(B).requires_grad_(False)  
+        label_pred = torch.argmin(torch.sum(orig_grads[-2], dim=-1), dim=-1).detach().reshape((1,)).requires_grad_(False)
+        # label_single = torch.argmin(torch.sum(orig_grads[-2], dim=-1), dim=-1).detach()
+        # label_pred = label_single.repeat(B).requires_grad_(False)  
         
         optimizer = LBFGS(
             [dummy_data], lr=.1, max_iter=50,
@@ -87,6 +88,6 @@ class iDLG:
             if iters % 1 == 0:
                 current_loss = closure()
                 losses.append(current_loss.item())
-                history.append([self.tt(dummy_data[i].detach().cpu()) for i in range(B)])
+                history.append(self.tt(dummy_data[0].detach().cpu()))
                 
         return dummy_data.detach().numpy().squeeze(), label_pred, history, losses
