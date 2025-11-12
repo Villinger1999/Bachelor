@@ -32,9 +32,9 @@ def preprocess_torch(X):
 
 def main():
     # --- Load and prepare data ---
-    DATASET_SIZE = 1000
+    DATASET_SIZE = 2000
     IMAGES_PER_CLASS = DATASET_SIZE // 10
-    BATCH_SIZE = 10
+    BATCH_SIZE = 20
     EPOCHS = 10
     LR = 0.2
 
