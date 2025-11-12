@@ -16,4 +16,4 @@ module load python/3.12.11
 # Activate your virtual environment
 source ~/bachelor-env/bin/activate
 
-python main_Tommy.py
+python main_Tommy.py 

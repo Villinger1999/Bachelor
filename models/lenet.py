@@ -1,6 +1,8 @@
 import torch
 import torch.nn as nn
 
+# https://www.kaggle.com/code/shravankumar147/lenet-pytorch-implementation
+
 class LeNet(nn.Module):
     
     def __init__(self):
