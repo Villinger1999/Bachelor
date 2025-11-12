@@ -7,11 +7,12 @@ import copy
 import random
 import time
 import sys
+import sys
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-def get_model(num_classes=1000):
-    model = models.resnet18(weights='IMAGENET1K_V1') # 'IMAGENET1K_V1' or None
+def get_model(num_classes=10):
+    model = models.resnet18(weights=None) # 'IMAGENET1K_V1' or None
     model.fc = nn.Linear(model.fc.in_features, num_classes)
     return model
 
@@ -94,7 +95,6 @@ def local_train(model, trainloader, testloader, epochs=1, device=device, lr=0.01
             
             if captured_grads == None:
                 captured_grads = grad_state_dict(model)
-                # copy labels to CPU for later use (IDLG might need labels)
                 captured_labels = labels.detach().cpu().clone()
             
             optimizer.step()                                                                    # optimize the weights using SGD
@@ -111,7 +111,7 @@ def local_train(model, trainloader, testloader, epochs=1, device=device, lr=0.01
     return local_model.state_dict(), grads_dict
 
 # Function for simulation of the full Federated Learning proces 
-def fl_training(num_rounds, local_epochs, batch_size, client_datasets, testloader, C, defense_function=None, fedtype=fedavg):
+def fl_training(num_rounds, local_epochs, batch_size, testloader, C, client_datasets, client_loader=None,defense_function=None, fedtype=fedavg):
     """
     Args:
         num_rounds: number of training rounds
@@ -131,26 +131,62 @@ def fl_training(num_rounds, local_epochs, batch_size, client_datasets, testloade
         print(f"Round {round+1}/{num_rounds}")
 
         local_states = []
-        for i, client_dataset in enumerate(client_datasets):                                    # for loop to simulate the training of each local client
-            trainloader = DataLoader(client_dataset, batch_size=batch_size, shuffle=True)       # load the clients data
-            
-            # Train local model
-            local_state, local_grads = local_train(global_model, trainloader, testloader, epochs=local_epochs, device=device, defense_function=None) 
-            local_states.append(local_state)        
-                     
-            # Add defense, if applied
-            if defense_function != None: 
-                local_states = defense_function(local_states) 
-            
-            if round == (num_rounds-1):
-                # Save local_states and local_grads
-                try:
-                    torch.save(local_grads, f"grads_dict/local_state_client{i}{sys.argv[6]}.pt")
-                    torch.save(local_state, f"state_dicts/local_state_client{i}{sys.argv[6]}.pt")
-                except Exception as e:
-                    print("Error saving local_state:", e)
-                                                    
-            print(f"Client {i+1} done.")                               
+        if client_loader != None:
+            for i, client_data in enumerate(client_loader):  # but now it's actually loaders
+                trainloader = client_data
+                # now client_data IS a DataLoader, don't wrap it again
+                local_state, local_grads = local_train(
+                    global_model,
+                    trainloader,
+                    testloader,
+                    epochs=local_epochs,
+                    device=device,
+                    defense_function=None
+                )
+                local_states.append(local_state)
+                # Add defense, if applied
+                if defense_function != None: 
+                    local_grads = defense_function(local_grads)
+                    local_states = defense_function(local_states)                    
+                
+                if round == (num_rounds-1):
+                    # Save local_states
+                    try:
+                        torch.save(local_grads, f"state_dict/local_grads_client{i}{str(sys.argv[6])}.pt")
+                        torch.save(local_state, f"state_dicts/local_state_client{i}_{str(sys.argv[6])}.pt") # {time.time()}
+                    except Exception as e:
+                        print("Error saving local_state:", e)
+                                                        
+                print(f"Client {i+1} done.")
+        else:
+            for i, client_data in enumerate(client_datasets):  # but now it's actually loaders
+                trainloader = DataLoader(client_data, batch_size=batch_size, shuffle=True)       # load the clients data
+                # now client_data IS a DataLoader, don't wrap it again
+
+                local_state, local_grads = local_train(
+                    global_model,
+                    trainloader,
+                    testloader,
+                    epochs=local_epochs,
+                    device=device,
+                    defense_function=None
+                )
+                local_states.append(local_state)
+                
+                # Add defense, if applied
+                if defense_function != None: 
+                    local_grads = defense_function(local_grads)
+                    local_states = defense_function(local_states)     
+
+                if round == (num_rounds-1):
+                    # Save local_states
+                    try:
+                        torch.save(local_grads, f"state_dict/local_grads_client{i}{str(sys.argv[6])}.pt")
+                        torch.save(local_state, f"state_dicts/local_state_client{i}{str(sys.argv[6])}.pt")
+                    except Exception as e:
+                        print("Error saving local_state:", e)
+                                                        
+                print(f"Client {i+1} done.")                             
 
         global_state = fedtype(local_states, C, client_datasets)                                # update the weights using fedavg
         global_model.load_state_dict(global_state)                                              # update global model with updated weigths

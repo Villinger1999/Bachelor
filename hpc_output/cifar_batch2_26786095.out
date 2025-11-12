@@ -1,0 +1,175 @@
+Train: (50000, 32, 32, 3) (50000, 1)
+Test: (10000, 32, 32, 3) (10000, 1)
+Round 1/8
+Local Epoch [1/3] - Loss: 2.7704 - Acc: 0.1152
+Local Epoch [2/3] - Loss: 2.3164 - Acc: 0.132
+Local Epoch [3/3] - Loss: 2.3665 - Acc: 0.1228
+Client 1 done.
+Local Epoch [1/3] - Loss: 2.8244 - Acc: 0.1028
+Local Epoch [2/3] - Loss: 2.3398 - Acc: 0.1036
+Local Epoch [3/3] - Loss: 2.5167 - Acc: 0.092
+Client 2 done.
+Local Epoch [1/3] - Loss: 3.3383 - Acc: 0.1081
+Local Epoch [2/3] - Loss: 2.2842 - Acc: 0.0983
+Local Epoch [3/3] - Loss: 2.5644 - Acc: 0.1088
+Client 3 done.
+eval:0.1
+Round 2/8
+Local Epoch [1/3] - Loss: 7.2269 - Acc: 0.1282
+Local Epoch [2/3] - Loss: 2.3486 - Acc: 0.0975
+Local Epoch [3/3] - Loss: 2.3200 - Acc: 0.0984
+Client 1 done.
+Local Epoch [1/3] - Loss: 106.0603 - Acc: 0.1132
+Local Epoch [2/3] - Loss: 2.3739 - Acc: 0.099
+Local Epoch [3/3] - Loss: 2.3062 - Acc: 0.1165
+Client 2 done.
+Local Epoch [1/3] - Loss: 2.9302 - Acc: 0.1138
+Local Epoch [2/3] - Loss: 2.3144 - Acc: 0.0883
+Local Epoch [3/3] - Loss: 2.3101 - Acc: 0.1007
+Client 3 done.
+eval:0.1
+Round 3/8
+Local Epoch [1/3] - Loss: 2.3116 - Acc: 0.1106
+Local Epoch [2/3] - Loss: 2.3149 - Acc: 0.0898
+Local Epoch [3/3] - Loss: 2.3141 - Acc: 0.0952
+Client 1 done.
+Local Epoch [1/3] - Loss: 2.3049 - Acc: 0.114
+Local Epoch [2/3] - Loss: 2.3001 - Acc: 0.0924
+Local Epoch [3/3] - Loss: 2.3126 - Acc: 0.1062
+Client 2 done.
+Local Epoch [1/3] - Loss: 2.3142 - Acc: 0.0921
+Local Epoch [2/3] - Loss: 2.3137 - Acc: 0.0946
+Local Epoch [3/3] - Loss: 2.3147 - Acc: 0.1083
+Client 3 done.
+eval:0.099
+Round 4/8
+Local Epoch [1/3] - Loss: 2.3146 - Acc: 0.098
+Local Epoch [2/3] - Loss: 2.3132 - Acc: 0.0916
+Local Epoch [3/3] - Loss: 2.3138 - Acc: 0.0833
+Client 1 done.
+Local Epoch [1/3] - Loss: 2.3150 - Acc: 0.096
+Local Epoch [2/3] - Loss: 2.3137 - Acc: 0.0932
+Local Epoch [3/3] - Loss: 2.3144 - Acc: 0.0999
+Client 2 done.
+Local Epoch [1/3] - Loss: 2.3139 - Acc: 0.0959
+Local Epoch [2/3] - Loss: 2.3137 - Acc: 0.1092
+Local Epoch [3/3] - Loss: 2.3137 - Acc: 0.0929
+Client 3 done.
+eval:0.0944
+Round 5/8
+Local Epoch [1/3] - Loss: 2.3149 - Acc: 0.0998
+Local Epoch [2/3] - Loss: 2.3142 - Acc: 0.0911
+Local Epoch [3/3] - Loss: 2.3144 - Acc: 0.0906
+Client 1 done.
+Local Epoch [1/3] - Loss: 2.3135 - Acc: 0.1011
+Local Epoch [2/3] - Loss: 2.3134 - Acc: 0.0934
+Local Epoch [3/3] - Loss: 2.3133 - Acc: 0.0901
+Client 2 done.
+Local Epoch [1/3] - Loss: 2.3151 - Acc: 0.0923
+Local Epoch [2/3] - Loss: 2.3138 - Acc: 0.1006
+Local Epoch [3/3] - Loss: 2.3129 - Acc: 0.09
+Client 3 done.
+eval:0.1019
+Round 6/8
+Local Epoch [1/3] - Loss: 2.3138 - Acc: 0.1094
+Local Epoch [2/3] - Loss: 2.3146 - Acc: 0.102
+Local Epoch [3/3] - Loss: 2.3141 - Acc: 0.0943
+Client 1 done.
+Local Epoch [1/3] - Loss: 2.3131 - Acc: 0.0886
+Local Epoch [2/3] - Loss: 2.3127 - Acc: 0.0888
+Local Epoch [3/3] - Loss: 2.3143 - Acc: 0.0871
+Client 2 done.
+Local Epoch [1/3] - Loss: 2.3148 - Acc: 0.0971
+Local Epoch [2/3] - Loss: 2.3130 - Acc: 0.1137
+Local Epoch [3/3] - Loss: 2.3147 - Acc: 0.0887
+Client 3 done.
+eval:0.0894
+Round 7/8
+Local Epoch [1/3] - Loss: 2.3134 - Acc: 0.1054
+Local Epoch [2/3] - Loss: 2.3137 - Acc: 0.0893
+Local Epoch [3/3] - Loss: 2.3144 - Acc: 0.0979
+Client 1 done.
+Local Epoch [1/3] - Loss: 2.3132 - Acc: 0.0865
+Local Epoch [2/3] - Loss: 2.3137 - Acc: 0.0928
+Local Epoch [3/3] - Loss: 2.3139 - Acc: 0.0996
+Client 2 done.
+Local Epoch [1/3] - Loss: 2.3130 - Acc: 0.0869
+Local Epoch [2/3] - Loss: 2.3138 - Acc: 0.0963
+Local Epoch [3/3] - Loss: 2.3132 - Acc: 0.1054
+Client 3 done.
+eval:0.0993
+Round 8/8
+Local Epoch [1/3] - Loss: 2.3140 - Acc: 0.1107
+Local Epoch [2/3] - Loss: 2.3133 - Acc: 0.112
+Local Epoch [3/3] - Loss: 2.3136 - Acc: 0.0891
+Client 1 done.
+Local Epoch [1/3] - Loss: 2.3130 - Acc: 0.0868
+Local Epoch [2/3] - Loss: 2.3145 - Acc: 0.0951
+Local Epoch [3/3] - Loss: 2.3142 - Acc: 0.0859
+Client 2 done.
+Local Epoch [1/3] - Loss: 2.3145 - Acc: 0.0935
+Local Epoch [2/3] - Loss: 2.3140 - Acc: 0.1122
+Local Epoch [3/3] - Loss: 2.3134 - Acc: 0.0969
+Client 3 done.
+eval:0.0875
+0.0999 0.0875
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 26786095: <cifar_batch2> in cluster <dcc> Done
+
+Job <cifar_batch2> was submitted from host <n-62-30-6> by user <s224227> in cluster <dcc> at Wed Nov  5 14:12:32 2025
+Job was executed on host(s) <n-62-18-5>, in queue <gpua10>, as user <s224227> in cluster <dcc> at Wed Nov  5 14:12:34 2025
+</zhome/d1/b/187261> was used as the home directory.
+</zhome/d1/b/187261/Desktop/Bachelor/Bachelor> was used as the working directory.
+Started at Wed Nov  5 14:12:34 2025
+Terminated at Wed Nov  5 15:21:33 2025
+Results reported at Wed Nov  5 15:21:33 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+
+#BSUB -J cifar_batch2
+#BSUB -q gpua10 
+#BSUB -W 200
+#BSUB -R "rusage[mem=20G]"
+#BSUB -R "span[hosts=1]"
+#BSUB -n 1
+#BSUB -o cifar_batch2_%J.out
+#BSUB -e cifar_batch2_%J.err
+
+# Load Python
+module load python3/3.12.11  
+
+# Activate your virtual environment
+source ~/bachelor-env/bin/activate
+
+python main_cifar.py 3 8 3 2 1
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   4109.26 sec.
+    Max Memory :                                 2685 MB
+    Average Memory :                             2288.62 MB
+    Total Requested Memory :                     20480.00 MB
+    Delta Memory :                               17795.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                8
+    Run time :                                   4141 sec.
+    Turnaround time :                            4141 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <cifar_batch2_26786095.err> for stderr output of this job.
+

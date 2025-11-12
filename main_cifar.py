@@ -25,7 +25,7 @@ testset = TensorDataset(x_test_torch, y_test_torch)
 
 # Take 10% of the total dataset
 total_size = len(trainset)
-subset_size = int(0.03 * total_size)  # % of data
+subset_size = int(1 * total_size)  # % of data
 remaining_size = total_size - subset_size
 
 # Randomly split 10% subset and discard the rest
@@ -37,13 +37,9 @@ client_sizes[-1] += subset_size - sum(client_sizes)
 
 client_datasets = random_split(subset, client_sizes)
 
-local_states, global_model = fl_training(num_rounds, local_epochs, batch_size, client_datasets, C, defense_function=None, fedtype=fedavg)
-
-model = get_model()
-
 # Assume testset is a PyTorch Dataset (e.g., CIFAR10(test=True))
 total_size = len(testset)
-subset_size = int(0.02 * total_size)     # % subset
+subset_size = int(1 * total_size)     # % subset
 remaining_size = total_size - subset_size
 
 # Split: keep 10%, discard 90%
@@ -51,11 +47,24 @@ test_subset, _ = random_split(testset, [subset_size, remaining_size])
 
 # Create DataLoader for the smaller test subset
 testloader = DataLoader(test_subset, batch_size=batch_size, shuffle=False)
+trainloader = DataLoader(trainset, batch_size=batch_size, shuffle=False)
+
+local_states, global_model = fl_training(
+    num_rounds, 
+    local_epochs, 
+    batch_size, 
+    testloader, 
+    C, 
+    client_datasets, 
+    client_loader=None,
+    defense_function=None, 
+    fedtype=fedavg
+)
+
+model = get_model()
 
 acc_model = evaluate_global(model, testloader)
 acc_global_model = evaluate_global(global_model, testloader)
-
-print(acc_model, acc_global_model)
 
 # Save accuracies
 acc_df = pd.DataFrame({
@@ -63,3 +72,9 @@ acc_df = pd.DataFrame({
     "Accuracy": [acc_model, acc_global_model]
 })
 acc_df.to_csv("model_accuracies.csv", mode='a', index=False)
+
+state = local_train(model, trainloader, testloader, epochs=local_epochs*num_rounds, device=device, defense_function=None) 
+model.load_state_dict(state)
+acc_resnet = evaluate_global(model, testloader, device=device)
+
+print(f"Accuracy before training: {acc_model}, Accurracy after FL: {acc_global_model}, Accuracy ResNet: {acc_resnet}")

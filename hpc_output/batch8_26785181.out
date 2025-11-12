@@ -1,0 +1,603 @@
+Train subset size: 12811
+Test subset size: 1281
+Round 1/10
+Local Epoch [1/5] - Loss: 7.3735 - Acc: 0.00078064012490242
+Local Epoch [2/5] - Loss: 7.0098 - Acc: 0.00078064012490242
+Local Epoch [3/5] - Loss: 6.8265 - Acc: 0.00156128024980484
+Local Epoch [4/5] - Loss: 6.7262 - Acc: 0.00156128024980484
+Local Epoch [5/5] - Loss: 6.5813 - Acc: 0.00546448087431694
+Client 1 done.
+Local Epoch [1/5] - Loss: 7.4279 - Acc: 0.00312256049960968
+Local Epoch [2/5] - Loss: 6.9756 - Acc: 0.00078064012490242
+Local Epoch [3/5] - Loss: 6.8306 - Acc: 0.00078064012490242
+Local Epoch [4/5] - Loss: 6.7638 - Acc: 0.00078064012490242
+Local Epoch [5/5] - Loss: 6.6980 - Acc: 0.00156128024980484
+Client 2 done.
+Local Epoch [1/5] - Loss: 7.5483 - Acc: 0.00078064012490242
+Local Epoch [2/5] - Loss: 7.0892 - Acc: 0.00156128024980484
+Local Epoch [3/5] - Loss: 6.9381 - Acc: 0.00078064012490242
+Local Epoch [4/5] - Loss: 6.8401 - Acc: 0.00078064012490242
+Local Epoch [5/5] - Loss: 6.7936 - Acc: 0.00234192037470726
+Client 3 done.
+Local Epoch [1/5] - Loss: 7.4880 - Acc: 0.00078064012490242
+Local Epoch [2/5] - Loss: 6.9864 - Acc: 0.00156128024980484
+Local Epoch [3/5] - Loss: 6.7835 - Acc: 0.00156128024980484
+Local Epoch [4/5] - Loss: 6.7575 - Acc: 0.00156128024980484
+Local Epoch [5/5] - Loss: 6.8045 - Acc: 0.00156128024980484
+Client 4 done.
+Local Epoch [1/5] - Loss: 7.4913 - Acc: 0.0
+Local Epoch [2/5] - Loss: 7.1266 - Acc: 0.0039032006245121
+Local Epoch [3/5] - Loss: 6.9123 - Acc: 0.00234192037470726
+Local Epoch [4/5] - Loss: 6.7975 - Acc: 0.00156128024980484
+Local Epoch [5/5] - Loss: 6.6225 - Acc: 0.00078064012490242
+Client 5 done.
+Local Epoch [1/5] - Loss: 7.4869 - Acc: 0.00078064012490242
+Local Epoch [2/5] - Loss: 7.0001 - Acc: 0.00078064012490242
+Local Epoch [3/5] - Loss: 6.8602 - Acc: 0.00156128024980484
+Local Epoch [4/5] - Loss: 6.7612 - Acc: 0.00078064012490242
+Local Epoch [5/5] - Loss: 6.6643 - Acc: 0.00156128024980484
+Client 6 done.
+Local Epoch [1/5] - Loss: 7.5445 - Acc: 0.00156128024980484
+Local Epoch [2/5] - Loss: 7.0550 - Acc: 0.00156128024980484
+Local Epoch [3/5] - Loss: 6.8959 - Acc: 0.00078064012490242
+Local Epoch [4/5] - Loss: 6.7574 - Acc: 0.00156128024980484
+Local Epoch [5/5] - Loss: 6.7365 - Acc: 0.0
+Client 7 done.
+Local Epoch [1/5] - Loss: 7.4440 - Acc: 0.0
+Local Epoch [2/5] - Loss: 6.9737 - Acc: 0.00078064012490242
+Local Epoch [3/5] - Loss: 6.8135 - Acc: 0.00078064012490242
+Local Epoch [4/5] - Loss: 6.6949 - Acc: 0.0
+Local Epoch [5/5] - Loss: 6.5347 - Acc: 0.00156128024980484
+Client 8 done.
+eval:0.00156128024980484
+Round 2/10
+Local Epoch [1/5] - Loss: 7.0209 - Acc: 0.00078064012490242
+Local Epoch [2/5] - Loss: 6.8146 - Acc: 0.00312256049960968
+Local Epoch [3/5] - Loss: 6.7625 - Acc: 0.00156128024980484
+Local Epoch [4/5] - Loss: 6.7481 - Acc: 0.00156128024980484
+Local Epoch [5/5] - Loss: 6.6951 - Acc: 0.0
+Client 1 done.
+Local Epoch [1/5] - Loss: 6.9590 - Acc: 0.00156128024980484
+Local Epoch [2/5] - Loss: 6.7496 - Acc: 0.0
+Local Epoch [3/5] - Loss: 6.6193 - Acc: 0.00234192037470726
+Local Epoch [4/5] - Loss: 6.4338 - Acc: 0.00546448087431694
+Local Epoch [5/5] - Loss: 6.2295 - Acc: 0.0117096018735363
+Client 2 done.
+Local Epoch [1/5] - Loss: 7.0264 - Acc: 0.00156128024980484
+Local Epoch [2/5] - Loss: 6.8232 - Acc: 0.00078064012490242
+Local Epoch [3/5] - Loss: 6.7485 - Acc: 0.00156128024980484
+Local Epoch [4/5] - Loss: 6.6583 - Acc: 0.00156128024980484
+Local Epoch [5/5] - Loss: 6.5261 - Acc: 0.00312256049960968
+Client 3 done.
+Local Epoch [1/5] - Loss: 7.0312 - Acc: 0.00078064012490242
+Local Epoch [2/5] - Loss: 6.7925 - Acc: 0.0
+Local Epoch [3/5] - Loss: 6.6396 - Acc: 0.00078064012490242
+Local Epoch [4/5] - Loss: 6.5088 - Acc: 0.00078064012490242
+Local Epoch [5/5] - Loss: 6.3094 - Acc: 0.00234192037470726
+Client 4 done.
+Local Epoch [1/5] - Loss: 6.9366 - Acc: 0.0039032006245121
+Local Epoch [2/5] - Loss: 6.6705 - Acc: 0.0039032006245121
+Local Epoch [3/5] - Loss: 6.4697 - Acc: 0.00468384074941452
+Local Epoch [4/5] - Loss: 6.2571 - Acc: 0.00546448087431694
+Local Epoch [5/5] - Loss: 6.0418 - Acc: 0.0078064012490242
+Client 5 done.
+Local Epoch [1/5] - Loss: 7.0079 - Acc: 0.00156128024980484
+Local Epoch [2/5] - Loss: 6.8314 - Acc: 0.00156128024980484
+Local Epoch [3/5] - Loss: 6.6818 - Acc: 0.00468384074941452
+Local Epoch [4/5] - Loss: 6.5870 - Acc: 0.00468384074941452
+Local Epoch [5/5] - Loss: 6.4438 - Acc: 0.00624512099921936
+Client 6 done.
+Local Epoch [1/5] - Loss: 6.9461 - Acc: 0.00234192037470726
+Local Epoch [2/5] - Loss: 6.8258 - Acc: 0.00156128024980484
+Local Epoch [3/5] - Loss: 6.6643 - Acc: 0.00468384074941452
+Local Epoch [4/5] - Loss: 6.5447 - Acc: 0.00624512099921936
+Local Epoch [5/5] - Loss: 6.4239 - Acc: 0.0
+Client 7 done.
+Local Epoch [1/5] - Loss: 7.0273 - Acc: 0.0
+Local Epoch [2/5] - Loss: 6.8536 - Acc: 0.00078064012490242
+Local Epoch [3/5] - Loss: 6.7858 - Acc: 0.00078064012490242
+Local Epoch [4/5] - Loss: 6.7224 - Acc: 0.00078064012490242
+Local Epoch [5/5] - Loss: 6.6901 - Acc: 0.0
+Client 8 done.
+eval:0.00156128024980484
+Round 3/10
+Local Epoch [1/5] - Loss: 6.7773 - Acc: 0.0039032006245121
+Local Epoch [2/5] - Loss: 6.3516 - Acc: 0.01092896174863388
+Local Epoch [3/5] - Loss: 5.8007 - Acc: 0.02107728337236534
+Local Epoch [4/5] - Loss: 4.9636 - Acc: 0.02498048399687744
+Local Epoch [5/5] - Loss: 4.0842 - Acc: 0.0312256049960968
+Client 1 done.
+Local Epoch [1/5] - Loss: 6.8349 - Acc: 0.00624512099921936
+Local Epoch [2/5] - Loss: 6.3384 - Acc: 0.01873536299765808
+Local Epoch [3/5] - Loss: 5.6854 - Acc: 0.02654176424668228
+Local Epoch [4/5] - Loss: 4.8327 - Acc: 0.02888368462138954
+Local Epoch [5/5] - Loss: 3.9761 - Acc: 0.02419984387197502
+Client 2 done.
+Local Epoch [1/5] - Loss: 6.7298 - Acc: 0.00702576112412178
+Local Epoch [2/5] - Loss: 6.2902 - Acc: 0.01092896174863388
+Local Epoch [3/5] - Loss: 5.7630 - Acc: 0.02419984387197502
+Local Epoch [4/5] - Loss: 5.0246 - Acc: 0.02498048399687744
+Local Epoch [5/5] - Loss: 4.1667 - Acc: 0.02263856362217018
+Client 3 done.
+Local Epoch [1/5] - Loss: 6.6407 - Acc: 0.00624512099921936
+Local Epoch [2/5] - Loss: 6.1187 - Acc: 0.00858704137392662
+Local Epoch [3/5] - Loss: 5.5191 - Acc: 0.0234192037470726
+Local Epoch [4/5] - Loss: 4.6994 - Acc: 0.0195160031225605
+Local Epoch [5/5] - Loss: 3.7985 - Acc: 0.03590944574551132
+Client 4 done.
+Local Epoch [1/5] - Loss: 6.5578 - Acc: 0.01092896174863388
+Local Epoch [2/5] - Loss: 6.0386 - Acc: 0.01639344262295082
+Local Epoch [3/5] - Loss: 5.4132 - Acc: 0.02263856362217018
+Local Epoch [4/5] - Loss: 4.6620 - Acc: 0.02419984387197502
+Local Epoch [5/5] - Loss: 3.6860 - Acc: 0.02654176424668228
+Client 5 done.
+Local Epoch [1/5] - Loss: 6.8120 - Acc: 0.00546448087431694
+Local Epoch [2/5] - Loss: 6.3548 - Acc: 0.0078064012490242
+Local Epoch [3/5] - Loss: 5.7120 - Acc: 0.01405152224824356
+Local Epoch [4/5] - Loss: 4.8386 - Acc: 0.03278688524590164
+Local Epoch [5/5] - Loss: 3.8576 - Acc: 0.02419984387197502
+Client 6 done.
+Local Epoch [1/5] - Loss: 6.8164 - Acc: 0.0078064012490242
+Local Epoch [2/5] - Loss: 6.2782 - Acc: 0.02185792349726776
+Local Epoch [3/5] - Loss: 5.5741 - Acc: 0.0312256049960968
+Local Epoch [4/5] - Loss: 4.6641 - Acc: 0.02498048399687744
+Local Epoch [5/5] - Loss: 3.7198 - Acc: 0.03278688524590164
+Client 7 done.
+Local Epoch [1/5] - Loss: 6.8377 - Acc: 0.00156128024980484
+Local Epoch [2/5] - Loss: 6.4131 - Acc: 0.00234192037470726
+Local Epoch [3/5] - Loss: 5.9463 - Acc: 0.01483216237314598
+Local Epoch [4/5] - Loss: 5.5160 - Acc: 0.01249024199843872
+Local Epoch [5/5] - Loss: 4.6513 - Acc: 0.02029664324746292
+Client 8 done.
+eval:0.08040593286494926
+Round 4/10
+Local Epoch [1/5] - Loss: 5.8886 - Acc: 0.04527712724434036
+Local Epoch [2/5] - Loss: 4.5872 - Acc: 0.0585480093676815
+Local Epoch [3/5] - Loss: 3.3528 - Acc: 0.06167056986729118
+Local Epoch [4/5] - Loss: 2.0741 - Acc: 0.07650273224043716
+Local Epoch [5/5] - Loss: 1.0363 - Acc: 0.08899297423887588
+Client 1 done.
+Local Epoch [1/5] - Loss: 5.1371 - Acc: 0.04449648711943794
+Local Epoch [2/5] - Loss: 3.6538 - Acc: 0.06947697111631537
+Local Epoch [3/5] - Loss: 2.2493 - Acc: 0.0702576112412178
+Local Epoch [4/5] - Loss: 1.1426 - Acc: 0.09289617486338798
+Local Epoch [5/5] - Loss: 0.4482 - Acc: 0.09523809523809523
+Client 2 done.
+Local Epoch [1/5] - Loss: 5.8329 - Acc: 0.0468384074941452
+Local Epoch [2/5] - Loss: 4.4806 - Acc: 0.06088992974238876
+Local Epoch [3/5] - Loss: 3.2774 - Acc: 0.06557377049180328
+Local Epoch [4/5] - Loss: 2.1790 - Acc: 0.078064012490242
+Local Epoch [5/5] - Loss: 1.1190 - Acc: 0.09836065573770492
+Client 3 done.
+Local Epoch [1/5] - Loss: 5.0766 - Acc: 0.053864168618266976
+Local Epoch [2/5] - Loss: 3.6041 - Acc: 0.04918032786885246
+Local Epoch [3/5] - Loss: 2.4185 - Acc: 0.06713505074160812
+Local Epoch [4/5] - Loss: 1.3337 - Acc: 0.08821233411397346
+Local Epoch [5/5] - Loss: 0.5555 - Acc: 0.1092896174863388
+Client 4 done.
+Local Epoch [1/5] - Loss: 5.7065 - Acc: 0.04996096799375488
+Local Epoch [2/5] - Loss: 4.4226 - Acc: 0.04527712724434036
+Local Epoch [3/5] - Loss: 3.2184 - Acc: 0.05932864949258392
+Local Epoch [4/5] - Loss: 2.0676 - Acc: 0.07181889149102264
+Local Epoch [5/5] - Loss: 1.0846 - Acc: 0.09289617486338798
+Client 5 done.
+Local Epoch [1/5] - Loss: 5.1381 - Acc: 0.04839968774395004
+Local Epoch [2/5] - Loss: 3.6733 - Acc: 0.04839968774395004
+Local Epoch [3/5] - Loss: 2.3032 - Acc: 0.08821233411397346
+Local Epoch [4/5] - Loss: 1.1445 - Acc: 0.09679937548790007
+Local Epoch [5/5] - Loss: 0.4153 - Acc: 0.1092896174863388
+Client 6 done.
+Local Epoch [1/5] - Loss: 5.9175 - Acc: 0.0507416081186573
+Local Epoch [2/5] - Loss: 4.6230 - Acc: 0.04449648711943794
+Local Epoch [3/5] - Loss: 3.4156 - Acc: 0.05932864949258392
+Local Epoch [4/5] - Loss: 2.1473 - Acc: 0.0936768149882904
+Local Epoch [5/5] - Loss: 1.0200 - Acc: 0.08508977361436378
+Client 7 done.
+Local Epoch [1/5] - Loss: 5.4151 - Acc: 0.03200624512099922
+Local Epoch [2/5] - Loss: 3.8578 - Acc: 0.04918032786885246
+Local Epoch [3/5] - Loss: 2.6640 - Acc: 0.05542544886807182
+Local Epoch [4/5] - Loss: 1.4547 - Acc: 0.09133489461358314
+Local Epoch [5/5] - Loss: 0.6304 - Acc: 0.10070257611241218
+Client 8 done.
+eval:0.1717408274785324
+Round 5/10
+Local Epoch [1/5] - Loss: 4.1748 - Acc: 0.0585480093676815
+Local Epoch [2/5] - Loss: 2.5048 - Acc: 0.08665105386416862
+Local Epoch [3/5] - Loss: 0.9865 - Acc: 0.11241217798594848
+Local Epoch [4/5] - Loss: 0.3222 - Acc: 0.12958626073380172
+Local Epoch [5/5] - Loss: 0.1393 - Acc: 0.14597970335675253
+Client 1 done.
+Local Epoch [1/5] - Loss: 3.4689 - Acc: 0.060109289617486336
+Local Epoch [2/5] - Loss: 2.0298 - Acc: 0.08274785323965651
+Local Epoch [3/5] - Loss: 0.7592 - Acc: 0.12256049960967993
+Local Epoch [4/5] - Loss: 0.2544 - Acc: 0.14207650273224043
+Local Epoch [5/5] - Loss: 0.1324 - Acc: 0.15768930523028885
+Client 2 done.
+Local Epoch [1/5] - Loss: 5.7654 - Acc: 0.06479313036690086
+Local Epoch [2/5] - Loss: 3.8968 - Acc: 0.08040593286494926
+Local Epoch [3/5] - Loss: 2.3216 - Acc: 0.08118657298985169
+Local Epoch [4/5] - Loss: 1.0624 - Acc: 0.11553473848555816
+Local Epoch [5/5] - Loss: 0.3958 - Acc: 0.141295862607338
+Client 3 done.
+Local Epoch [1/5] - Loss: 3.4003 - Acc: 0.0663544106167057
+Local Epoch [2/5] - Loss: 2.0558 - Acc: 0.07572209211553474
+Local Epoch [3/5] - Loss: 0.8917 - Acc: 0.10616705698672912
+Local Epoch [4/5] - Loss: 0.2685 - Acc: 0.1288056206088993
+Local Epoch [5/5] - Loss: 0.1148 - Acc: 0.13505074160811867
+Client 4 done.
+Local Epoch [1/5] - Loss: 5.6432 - Acc: 0.0429352068696331
+Local Epoch [2/5] - Loss: 3.9077 - Acc: 0.06323185011709602
+Local Epoch [3/5] - Loss: 2.3045 - Acc: 0.09679937548790007
+Local Epoch [4/5] - Loss: 1.0414 - Acc: 0.10070257611241218
+Local Epoch [5/5] - Loss: 0.3773 - Acc: 0.141295862607338
+Client 5 done.
+Local Epoch [1/5] - Loss: 3.4761 - Acc: 0.0585480093676815
+Local Epoch [2/5] - Loss: 1.9922 - Acc: 0.0858704137392662
+Local Epoch [3/5] - Loss: 0.8045 - Acc: 0.11163153786104606
+Local Epoch [4/5] - Loss: 0.2599 - Acc: 0.13192818110850899
+Local Epoch [5/5] - Loss: 0.1309 - Acc: 0.13427010148321625
+Client 6 done.
+Local Epoch [1/5] - Loss: 5.7812 - Acc: 0.04918032786885246
+Local Epoch [2/5] - Loss: 4.0224 - Acc: 0.06557377049180328
+Local Epoch [3/5] - Loss: 2.4382 - Acc: 0.07884465261514442
+Local Epoch [4/5] - Loss: 1.2407 - Acc: 0.1092896174863388
+Local Epoch [5/5] - Loss: 0.4632 - Acc: 0.13114754098360656
+Client 7 done.
+Local Epoch [1/5] - Loss: 5.3464 - Acc: 0.05542544886807182
+Local Epoch [2/5] - Loss: 3.4791 - Acc: 0.06947697111631537
+Local Epoch [3/5] - Loss: 2.0179 - Acc: 0.08196721311475409
+Local Epoch [4/5] - Loss: 0.8456 - Acc: 0.10694769711163153
+Local Epoch [5/5] - Loss: 0.2247 - Acc: 0.13817330210772832
+Client 8 done.
+eval:0.21389539422326306
+Round 6/10
+Local Epoch [1/5] - Loss: 4.4842 - Acc: 0.0702576112412178
+Local Epoch [2/5] - Loss: 2.5279 - Acc: 0.09133489461358314
+Local Epoch [3/5] - Loss: 1.0229 - Acc: 0.11943793911007025
+Local Epoch [4/5] - Loss: 0.3072 - Acc: 0.1366120218579235
+Local Epoch [5/5] - Loss: 0.1248 - Acc: 0.1483216237314598
+Client 1 done.
+Local Epoch [1/5] - Loss: 4.0140 - Acc: 0.0585480093676815
+Local Epoch [2/5] - Loss: 2.0990 - Acc: 0.09914129586260734
+Local Epoch [3/5] - Loss: 0.7880 - Acc: 0.11943793911007025
+Local Epoch [4/5] - Loss: 0.2377 - Acc: 0.15066354410616706
+Local Epoch [5/5] - Loss: 0.1285 - Acc: 0.14285714285714285
+Client 2 done.
+Local Epoch [1/5] - Loss: 4.0375 - Acc: 0.06557377049180328
+Local Epoch [2/5] - Loss: 2.2893 - Acc: 0.0936768149882904
+Local Epoch [3/5] - Loss: 0.8904 - Acc: 0.12958626073380172
+Local Epoch [4/5] - Loss: 0.2878 - Acc: 0.15534738485558158
+Local Epoch [5/5] - Loss: 0.1222 - Acc: 0.16393442622950818
+Client 3 done.
+Local Epoch [1/5] - Loss: 2.0493 - Acc: 0.078064012490242
+Local Epoch [2/5] - Loss: 1.0445 - Acc: 0.11475409836065574
+Local Epoch [3/5] - Loss: 0.3645 - Acc: 0.1451990632318501
+Local Epoch [4/5] - Loss: 0.1330 - Acc: 0.13817330210772832
+Local Epoch [5/5] - Loss: 0.0871 - Acc: 0.17017954722872755
+Client 4 done.
+Local Epoch [1/5] - Loss: 4.0435 - Acc: 0.0585480093676815
+Local Epoch [2/5] - Loss: 2.1935 - Acc: 0.1014832162373146
+Local Epoch [3/5] - Loss: 0.7730 - Acc: 0.1209992193598751
+Local Epoch [4/5] - Loss: 0.2546 - Acc: 0.15690866510538642
+Local Epoch [5/5] - Loss: 0.1261 - Acc: 0.16393442622950818
+Client 5 done.
+Local Epoch [1/5] - Loss: 2.0444 - Acc: 0.07572209211553474
+Local Epoch [2/5] - Loss: 0.9951 - Acc: 0.1249024199843872
+Local Epoch [3/5] - Loss: 0.3219 - Acc: 0.15144418423106948
+Local Epoch [4/5] - Loss: 0.1178 - Acc: 0.1678376268540203
+Local Epoch [5/5] - Loss: 0.0892 - Acc: 0.15690866510538642
+Client 6 done.
+Local Epoch [1/5] - Loss: 5.7795 - Acc: 0.04527712724434036
+Local Epoch [2/5] - Loss: 3.6902 - Acc: 0.07884465261514442
+Local Epoch [3/5] - Loss: 1.9461 - Acc: 0.09133489461358314
+Local Epoch [4/5] - Loss: 0.7494 - Acc: 0.13427010148321625
+Local Epoch [5/5] - Loss: 0.2514 - Acc: 0.13895394223263074
+Client 7 done.
+Local Epoch [1/5] - Loss: 5.3668 - Acc: 0.0507416081186573
+Local Epoch [2/5] - Loss: 3.2905 - Acc: 0.07338017174082748
+Local Epoch [3/5] - Loss: 1.6674 - Acc: 0.0936768149882904
+Local Epoch [4/5] - Loss: 0.5653 - Acc: 0.13192818110850899
+Local Epoch [5/5] - Loss: 0.1668 - Acc: 0.15768930523028885
+Client 8 done.
+eval:0.26307572209211555
+Round 7/10
+Local Epoch [1/5] - Loss: 2.7833 - Acc: 0.04605776736924278
+Local Epoch [2/5] - Loss: 1.4028 - Acc: 0.1131928181108509
+Local Epoch [3/5] - Loss: 0.4074 - Acc: 0.15846994535519127
+Local Epoch [4/5] - Loss: 0.1618 - Acc: 0.1522248243559719
+Local Epoch [5/5] - Loss: 0.0932 - Acc: 0.16549570647931303
+Client 1 done.
+Local Epoch [1/5] - Loss: 2.2552 - Acc: 0.060109289617486336
+Local Epoch [2/5] - Loss: 1.1838 - Acc: 0.13505074160811867
+Local Epoch [3/5] - Loss: 0.3399 - Acc: 0.15846994535519127
+Local Epoch [4/5] - Loss: 0.1133 - Acc: 0.15846994535519127
+Local Epoch [5/5] - Loss: 0.0973 - Acc: 0.16237314597970337
+Client 2 done.
+Local Epoch [1/5] - Loss: 2.3518 - Acc: 0.08118657298985169
+Local Epoch [2/5] - Loss: 1.2108 - Acc: 0.11397345823575332
+Local Epoch [3/5] - Loss: 0.3100 - Acc: 0.13973458235753317
+Local Epoch [4/5] - Loss: 0.1475 - Acc: 0.1600312256049961
+Local Epoch [5/5] - Loss: 0.0826 - Acc: 0.17330210772833723
+Client 3 done.
+Local Epoch [1/5] - Loss: 2.8759 - Acc: 0.039032006245121
+Local Epoch [2/5] - Loss: 1.4427 - Acc: 0.1249024199843872
+Local Epoch [3/5] - Loss: 0.3846 - Acc: 0.1358313817330211
+Local Epoch [4/5] - Loss: 0.1624 - Acc: 0.15768930523028885
+Local Epoch [5/5] - Loss: 0.1030 - Acc: 0.16237314597970337
+Client 4 done.
+Local Epoch [1/5] - Loss: 4.4574 - Acc: 0.06167056986729118
+Local Epoch [2/5] - Loss: 2.2405 - Acc: 0.10226385636221702
+Local Epoch [3/5] - Loss: 0.8625 - Acc: 0.13973458235753317
+Local Epoch [4/5] - Loss: 0.2442 - Acc: 0.15300546448087432
+Local Epoch [5/5] - Loss: 0.1202 - Acc: 0.15768930523028885
+Client 5 done.
+Local Epoch [1/5] - Loss: 2.8566 - Acc: 0.06791569086651054
+Local Epoch [2/5] - Loss: 1.2062 - Acc: 0.12802498048399688
+Local Epoch [3/5] - Loss: 0.3276 - Acc: 0.15768930523028885
+Local Epoch [4/5] - Loss: 0.1383 - Acc: 0.1725214676034348
+Local Epoch [5/5] - Loss: 0.0933 - Acc: 0.17096018735362997
+Client 6 done.
+Local Epoch [1/5] - Loss: 5.7286 - Acc: 0.06323185011709602
+Local Epoch [2/5] - Loss: 3.3966 - Acc: 0.10850897736143637
+Local Epoch [3/5] - Loss: 1.7258 - Acc: 0.11085089773614364
+Local Epoch [4/5] - Loss: 0.6165 - Acc: 0.13036690085870414
+Local Epoch [5/5] - Loss: 0.2119 - Acc: 0.16237314597970337
+Client 7 done.
+Local Epoch [1/5] - Loss: 3.6798 - Acc: 0.053864168618266976
+Local Epoch [2/5] - Loss: 1.9121 - Acc: 0.09914129586260734
+Local Epoch [3/5] - Loss: 0.6140 - Acc: 0.12646370023419204
+Local Epoch [4/5] - Loss: 0.1480 - Acc: 0.15378610460577674
+Local Epoch [5/5] - Loss: 0.0520 - Acc: 0.16705698672911787
+Client 8 done.
+eval:0.2544886807181889
+Round 8/10
+Local Epoch [1/5] - Loss: 3.6548 - Acc: 0.07338017174082748
+Local Epoch [2/5] - Loss: 1.5881 - Acc: 0.1131928181108509
+Local Epoch [3/5] - Loss: 0.4589 - Acc: 0.12958626073380172
+Local Epoch [4/5] - Loss: 0.1390 - Acc: 0.15456674473067916
+Local Epoch [5/5] - Loss: 0.0929 - Acc: 0.1678376268540203
+Client 1 done.
+Local Epoch [1/5] - Loss: 0.9617 - Acc: 0.14754098360655737
+Local Epoch [2/5] - Loss: 0.5804 - Acc: 0.13817330210772832
+Local Epoch [3/5] - Loss: 0.2124 - Acc: 0.18110850897736144
+Local Epoch [4/5] - Loss: 0.0892 - Acc: 0.19672131147540983
+Local Epoch [5/5] - Loss: 0.0806 - Acc: 0.20140515222482436
+Client 2 done.
+Local Epoch [1/5] - Loss: 1.0642 - Acc: 0.12802498048399688
+Local Epoch [2/5] - Loss: 0.5612 - Acc: 0.14597970335675253
+Local Epoch [3/5] - Loss: 0.1909 - Acc: 0.17876658860265418
+Local Epoch [4/5] - Loss: 0.0892 - Acc: 0.1912568306010929
+Local Epoch [5/5] - Loss: 0.0808 - Acc: 0.1990632318501171
+Client 3 done.
+Local Epoch [1/5] - Loss: 3.4084 - Acc: 0.04918032786885246
+Local Epoch [2/5] - Loss: 1.4198 - Acc: 0.13348946135831383
+Local Epoch [3/5] - Loss: 0.4075 - Acc: 0.1405152224824356
+Local Epoch [4/5] - Loss: 0.1557 - Acc: 0.1483216237314598
+Local Epoch [5/5] - Loss: 0.1099 - Acc: 0.1600312256049961
+Client 4 done.
+Local Epoch [1/5] - Loss: 2.6437 - Acc: 0.05542544886807182
+Local Epoch [2/5] - Loss: 1.3311 - Acc: 0.12021857923497267
+Local Epoch [3/5] - Loss: 0.3269 - Acc: 0.16315378610460576
+Local Epoch [4/5] - Loss: 0.1152 - Acc: 0.16939890710382513
+Local Epoch [5/5] - Loss: 0.0773 - Acc: 0.1678376268540203
+Client 5 done.
+Local Epoch [1/5] - Loss: 3.4854 - Acc: 0.07884465261514442
+Local Epoch [2/5] - Loss: 1.4531 - Acc: 0.1092896174863388
+Local Epoch [3/5] - Loss: 0.3648 - Acc: 0.1678376268540203
+Local Epoch [4/5] - Loss: 0.1292 - Acc: 0.1756440281030445
+Local Epoch [5/5] - Loss: 0.0872 - Acc: 0.18188914910226386
+Client 6 done.
+Local Epoch [1/5] - Loss: 5.7280 - Acc: 0.07962529274004684
+Local Epoch [2/5] - Loss: 3.3533 - Acc: 0.10694769711163153
+Local Epoch [3/5] - Loss: 1.5065 - Acc: 0.11553473848555816
+Local Epoch [4/5] - Loss: 0.4668 - Acc: 0.13505074160811867
+Local Epoch [5/5] - Loss: 0.1752 - Acc: 0.1600312256049961
+Client 7 done.
+Local Epoch [1/5] - Loss: 2.0380 - Acc: 0.06479313036690086
+Local Epoch [2/5] - Loss: 0.9866 - Acc: 0.12177985948477751
+Local Epoch [3/5] - Loss: 0.2996 - Acc: 0.15066354410616706
+Local Epoch [4/5] - Loss: 0.0797 - Acc: 0.17017954722872755
+Local Epoch [5/5] - Loss: 0.0237 - Acc: 0.16939890710382513
+Client 8 done.
+eval:0.26697892271662765
+Round 9/10
+Local Epoch [1/5] - Loss: 3.9888 - Acc: 0.06323185011709602
+Local Epoch [2/5] - Loss: 1.7833 - Acc: 0.09133489461358314
+Local Epoch [3/5] - Loss: 0.5123 - Acc: 0.14207650273224043
+Local Epoch [4/5] - Loss: 0.1802 - Acc: 0.14363778298204527
+Local Epoch [5/5] - Loss: 0.1352 - Acc: 0.15144418423106948
+Client 1 done.
+Local Epoch [1/5] - Loss: 0.4180 - Acc: 0.1717408274785324
+Local Epoch [2/5] - Loss: 0.2672 - Acc: 0.19359875097580015
+Local Epoch [3/5] - Loss: 0.1455 - Acc: 0.20608899297423888
+Local Epoch [4/5] - Loss: 0.0822 - Acc: 0.20608899297423888
+Local Epoch [5/5] - Loss: 0.0819 - Acc: 0.209992193598751
+Client 2 done.
+Local Epoch [1/5] - Loss: 0.4572 - Acc: 0.17876658860265418
+Local Epoch [2/5] - Loss: 0.2746 - Acc: 0.19750195160031225
+Local Epoch [3/5] - Loss: 0.1509 - Acc: 0.19359875097580015
+Local Epoch [4/5] - Loss: 0.1051 - Acc: 0.20608899297423888
+Local Epoch [5/5] - Loss: 0.0706 - Acc: 0.21233411397345825
+Client 3 done.
+Local Epoch [1/5] - Loss: 3.8584 - Acc: 0.060109289617486336
+Local Epoch [2/5] - Loss: 1.6948 - Acc: 0.09914129586260734
+Local Epoch [3/5] - Loss: 0.5252 - Acc: 0.14597970335675253
+Local Epoch [4/5] - Loss: 0.1553 - Acc: 0.1451990632318501
+Local Epoch [5/5] - Loss: 0.1078 - Acc: 0.1600312256049961
+Client 4 done.
+Local Epoch [1/5] - Loss: 1.0447 - Acc: 0.13036690085870414
+Local Epoch [2/5] - Loss: 0.6857 - Acc: 0.13505074160811867
+Local Epoch [3/5] - Loss: 0.3299 - Acc: 0.1600312256049961
+Local Epoch [4/5] - Loss: 0.1282 - Acc: 0.1834504293520687
+Local Epoch [5/5] - Loss: 0.0872 - Acc: 0.18188914910226386
+Client 5 done.
+Local Epoch [1/5] - Loss: 3.8620 - Acc: 0.0546448087431694
+Local Epoch [2/5] - Loss: 1.6818 - Acc: 0.09914129586260734
+Local Epoch [3/5] - Loss: 0.4429 - Acc: 0.15066354410616706
+Local Epoch [4/5] - Loss: 0.1527 - Acc: 0.15534738485558158
+Local Epoch [5/5] - Loss: 0.0943 - Acc: 0.14910226385636222
+Client 6 done.
+Local Epoch [1/5] - Loss: 6.0290 - Acc: 0.05230288836846214
+Local Epoch [2/5] - Loss: 3.2796 - Acc: 0.09289617486338798
+Local Epoch [3/5] - Loss: 1.5652 - Acc: 0.08899297423887588
+Local Epoch [4/5] - Loss: 0.4232 - Acc: 0.13348946135831383
+Local Epoch [5/5] - Loss: 0.1474 - Acc: 0.14754098360655737
+Client 7 done.
+Local Epoch [1/5] - Loss: 0.7749 - Acc: 0.12177985948477751
+Local Epoch [2/5] - Loss: 0.5220 - Acc: 0.15066354410616706
+Local Epoch [3/5] - Loss: 0.1806 - Acc: 0.1717408274785324
+Local Epoch [4/5] - Loss: 0.0417 - Acc: 0.1873536299765808
+Local Epoch [5/5] - Loss: 0.0215 - Acc: 0.19437939110070257
+Client 8 done.
+eval:0.26697892271662765
+Round 10/10
+Local Epoch [1/5] - Loss: 4.2497 - Acc: 0.06791569086651054
+Local Epoch [2/5] - Loss: 1.8128 - Acc: 0.09914129586260734
+Local Epoch [3/5] - Loss: 0.5279 - Acc: 0.1451990632318501
+Local Epoch [4/5] - Loss: 0.1541 - Acc: 0.16237314597970337
+Local Epoch [5/5] - Loss: 0.0885 - Acc: 0.17330210772833723
+Client 1 done.
+Local Epoch [1/5] - Loss: 0.2512 - Acc: 0.20608899297423888
+Local Epoch [2/5] - Loss: 0.1786 - Acc: 0.2154566744730679
+Local Epoch [3/5] - Loss: 0.1016 - Acc: 0.20843091334894615
+Local Epoch [4/5] - Loss: 0.0929 - Acc: 0.22482435597189696
+Local Epoch [5/5] - Loss: 0.0886 - Acc: 0.209992193598751
+Client 2 done.
+Local Epoch [1/5] - Loss: 0.1796 - Acc: 0.24121779859484777
+Local Epoch [2/5] - Loss: 0.1174 - Acc: 0.22872755659640906
+Local Epoch [3/5] - Loss: 0.1103 - Acc: 0.24824355971896955
+Local Epoch [4/5] - Loss: 0.0618 - Acc: 0.22170179547228727
+Local Epoch [5/5] - Loss: 0.0719 - Acc: 0.22092115534738485
+Client 3 done.
+Local Epoch [1/5] - Loss: 4.0663 - Acc: 0.0507416081186573
+Local Epoch [2/5] - Loss: 1.7336 - Acc: 0.11241217798594848
+Local Epoch [3/5] - Loss: 0.5163 - Acc: 0.12568306010928962
+Local Epoch [4/5] - Loss: 0.2112 - Acc: 0.15378610460577674
+Local Epoch [5/5] - Loss: 0.1053 - Acc: 0.16315378610460576
+Client 4 done.
+Local Epoch [1/5] - Loss: 2.1757 - Acc: 0.07728337236533958
+Local Epoch [2/5] - Loss: 1.0830 - Acc: 0.12958626073380172
+Local Epoch [3/5] - Loss: 0.2667 - Acc: 0.17017954722872755
+Local Epoch [4/5] - Loss: 0.1080 - Acc: 0.17017954722872755
+Local Epoch [5/5] - Loss: 0.0772 - Acc: 0.18032786885245902
+Client 5 done.
+Local Epoch [1/5] - Loss: 1.5434 - Acc: 0.07728337236533958
+Local Epoch [2/5] - Loss: 1.0760 - Acc: 0.12256049960967993
+Local Epoch [3/5] - Loss: 0.3007 - Acc: 0.1451990632318501
+Local Epoch [4/5] - Loss: 0.1283 - Acc: 0.16705698672911787
+Local Epoch [5/5] - Loss: 0.0767 - Acc: 0.1795472287275566
+Client 6 done.
+Local Epoch [1/5] - Loss: 5.9562 - Acc: 0.06869633099141297
+Local Epoch [2/5] - Loss: 3.4265 - Acc: 0.07259953161592506
+Local Epoch [3/5] - Loss: 1.6094 - Acc: 0.12021857923497267
+Local Epoch [4/5] - Loss: 0.5441 - Acc: 0.11943793911007025
+Local Epoch [5/5] - Loss: 0.1455 - Acc: 0.15300546448087432
+Client 7 done.
+Local Epoch [1/5] - Loss: 0.2133 - Acc: 0.2185792349726776
+Local Epoch [2/5] - Loss: 0.0833 - Acc: 0.22170179547228727
+Local Epoch [3/5] - Loss: 0.0316 - Acc: 0.23106947697111632
+Local Epoch [4/5] - Loss: 0.0175 - Acc: 0.23263075722092116
+Local Epoch [5/5] - Loss: 0.0116 - Acc: 0.23185011709601874
+Client 8 done.
+eval:0.2568306010928962
+Local Epoch [1/40] - Loss: 7.0553 - Acc: 0.00078064012490242
+Local Epoch [2/40] - Loss: 6.8935 - Acc: 0.00312256049960968
+Local Epoch [3/40] - Loss: 6.8929 - Acc: 0.00624512099921936
+Local Epoch [4/40] - Loss: 6.8335 - Acc: 0.00312256049960968
+Local Epoch [5/40] - Loss: 6.8079 - Acc: 0.00234192037470726
+Local Epoch [6/40] - Loss: 6.7691 - Acc: 0.00312256049960968
+Local Epoch [7/40] - Loss: 6.7208 - Acc: 0.00624512099921936
+Local Epoch [8/40] - Loss: 6.6446 - Acc: 0.00858704137392662
+Local Epoch [9/40] - Loss: 6.5090 - Acc: 0.0078064012490242
+Local Epoch [10/40] - Loss: 6.2516 - Acc: 0.02107728337236534
+Local Epoch [11/40] - Loss: 5.8740 - Acc: 0.03278688524590164
+Local Epoch [12/40] - Loss: 5.4818 - Acc: 0.03356752537080406
+Local Epoch [13/40] - Loss: 5.1086 - Acc: 0.0429352068696331
+Local Epoch [14/40] - Loss: 4.7415 - Acc: 0.06323185011709602
+Local Epoch [15/40] - Loss: 4.3813 - Acc: 0.08743169398907104
+Local Epoch [16/40] - Loss: 3.9980 - Acc: 0.10460577673692428
+Local Epoch [17/40] - Loss: 3.6209 - Acc: 0.10382513661202186
+Local Epoch [18/40] - Loss: 3.2303 - Acc: 0.10850897736143637
+Local Epoch [19/40] - Loss: 2.8186 - Acc: 0.11475409836065574
+Local Epoch [20/40] - Loss: 2.3767 - Acc: 0.1131928181108509
+Local Epoch [21/40] - Loss: 1.9586 - Acc: 0.11865729898516784
+Local Epoch [22/40] - Loss: 1.5591 - Acc: 0.11553473848555816
+Local Epoch [23/40] - Loss: 1.1532 - Acc: 0.12568306010928962
+Local Epoch [24/40] - Loss: 0.8308 - Acc: 0.1053864168618267
+Local Epoch [25/40] - Loss: 0.6015 - Acc: 0.12256049960967993
+Local Epoch [26/40] - Loss: 0.3838 - Acc: 0.13114754098360656
+Local Epoch [27/40] - Loss: 0.2943 - Acc: 0.13973458235753317
+Local Epoch [28/40] - Loss: 0.1944 - Acc: 0.1366120218579235
+Local Epoch [29/40] - Loss: 0.1341 - Acc: 0.1405152224824356
+Local Epoch [30/40] - Loss: 0.1183 - Acc: 0.15066354410616706
+Local Epoch [31/40] - Loss: 0.0889 - Acc: 0.14207650273224043
+Local Epoch [32/40] - Loss: 0.0644 - Acc: 0.15144418423106948
+Local Epoch [33/40] - Loss: 0.0475 - Acc: 0.15690866510538642
+Local Epoch [34/40] - Loss: 0.0245 - Acc: 0.141295862607338
+Local Epoch [35/40] - Loss: 0.0244 - Acc: 0.14754098360655737
+Local Epoch [36/40] - Loss: 0.0224 - Acc: 0.16081186572989853
+Local Epoch [37/40] - Loss: 0.0111 - Acc: 0.15534738485558158
+Local Epoch [38/40] - Loss: 0.0066 - Acc: 0.1592505854800937
+Local Epoch [39/40] - Loss: 0.0080 - Acc: 0.16315378610460576
+Local Epoch [40/40] - Loss: 0.0060 - Acc: 0.16705698672911787
+Accuracy before training: 0.00156128024980484, Accuracy after FL: 0.2568306010928962, Accuracy ResNet: 0.16705698672911787
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 26785181: <batch8> in cluster <dcc> Done
+
+Job <batch8> was submitted from host <n-62-30-6> by user <s224227> in cluster <dcc> at Wed Nov  5 11:00:57 2025
+Job was executed on host(s) <3*n-62-18-5>, in queue <gpua10>, as user <s224227> in cluster <dcc> at Wed Nov  5 11:04:04 2025
+</zhome/d1/b/187261> was used as the home directory.
+</zhome/d1/b/187261/Desktop/Bachelor/Bachelor> was used as the working directory.
+Started at Wed Nov  5 11:04:04 2025
+Terminated at Wed Nov  5 12:38:30 2025
+Results reported at Wed Nov  5 12:38:30 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+
+#BSUB -J batch8
+#BSUB -q gpua10 
+#BSUB -W 260
+#BSUB -R "rusage[mem=30G]"
+#BSUB -R "span[hosts=1]"
+#BSUB -n 3
+#BSUB -o batch8_%J.out
+#BSUB -e batch8_%J.err
+
+# Load Python 
+module load python/3.9.21  
+
+# Activate your virtual environment
+source ~/torch-env/bin/activate
+
+python batchloader.py 8 10 5 8 0.5
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   13782.03 sec.
+    Max Memory :                                 1481 MB
+    Average Memory :                             1303.79 MB
+    Total Requested Memory :                     92160.00 MB
+    Delta Memory :                               90679.00 MB
+    Max Swap :                                   -
+    Max Processes :                              6
+    Max Threads :                                18
+    Run time :                                   5667 sec.
+    Turnaround time :                            5853 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <batch8_26785181.err> for stderr output of this job.
+
