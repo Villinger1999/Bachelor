@@ -6,4 +6,4 @@ __pycache__/
 results/assessment/
 data/
 .vscode/settings.json
-bachelor/
+bachelor-env/
