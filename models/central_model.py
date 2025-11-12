@@ -42,8 +42,6 @@ def fedavg(states, C, client_datasets):
         )
     return avg_state
 
-import torch
-
 def grad_state_dict(model):
     """
     Return a dict with the same keys as model.state_dict() but values 
@@ -56,6 +54,16 @@ def grad_state_dict(model):
             continue
         grad_dict[name] = param.grad.detach().clone()
     return grad_dict
+
+def normalize_keys_strip_module(d: dict[str, torch.Tensor]) -> dict[str, torch.Tensor]:
+    new = {}
+    for k, v in d.items():
+        if k.startswith("module."):
+            new_k = k.replace("module.", "", 1)
+        else:
+            new_k = k
+        new[new_k] = v
+    return new
 
 
 def local_train(model, trainloader, testloader, epochs=1, device=device, lr=0.01, defense_function=None):
@@ -94,7 +102,8 @@ def local_train(model, trainloader, testloader, epochs=1, device=device, lr=0.01
             loss.backward()                                                                     # Compute gradients of the loss for each weight using autograd and store them in param.grad for each parameter
             
             if captured_grads == None:
-                captured_grads = grad_state_dict(model)
+                captured_grads = grad_state_dict(local_model)
+                captured_grads = normalize_keys_strip_module(captured_grads)
                 captured_labels = labels.detach().cpu().clone()
             
             optimizer.step()                                                                    # optimize the weights using SGD
@@ -152,7 +161,7 @@ def fl_training(num_rounds, local_epochs, batch_size, testloader, C, client_data
                 if round == (num_rounds-1):
                     # Save local_states
                     try:
-                        torch.save(local_grads, f"state_dict/local_grads_client{i}{str(sys.argv[6])}.pt")
+                        torch.save(local_grads, f"state_dicts/local_grads_client{i}_{str(sys.argv[6])}.pt")
                         torch.save(local_state, f"state_dicts/local_state_client{i}_{str(sys.argv[6])}.pt") # {time.time()}
                     except Exception as e:
                         print("Error saving local_state:", e)
@@ -181,8 +190,8 @@ def fl_training(num_rounds, local_epochs, batch_size, testloader, C, client_data
                 if round == (num_rounds-1):
                     # Save local_states
                     try:
-                        torch.save(local_grads, f"state_dict/local_grads_client{i}{str(sys.argv[6])}.pt")
-                        torch.save(local_state, f"state_dicts/local_state_client{i}{str(sys.argv[6])}.pt")
+                        torch.save(local_grads, f"state_dicts/local_grads_client{i}_{str(sys.argv[6])}.pt")
+                        torch.save(local_state, f"state_dicts/local_state_client{i}_{str(sys.argv[6])}.pt")
                     except Exception as e:
                         print("Error saving local_state:", e)
                                                         
