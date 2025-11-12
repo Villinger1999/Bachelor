@@ -5,6 +5,9 @@ import sys
 from torch.utils.data import random_split, DataLoader, TensorDataset
 import torch
 import pandas as pd
+from models.lenet import LeNet
+from collections import defaultdict
+from models.central_model import get_model
 
 num_clients = int(sys.argv[1]) # e.g 3
 num_rounds = int(sys.argv[2]) # e.g 2
@@ -30,8 +33,6 @@ remaining_size = total_size - subset_size
 
 # Randomly split 10% subset and discard the rest
 subset, _ = random_split(trainset, [subset_size, remaining_size])
-
-from collections import defaultdict
 
 # Get subset indices and labels
 subset_indices = subset.indices
@@ -65,7 +66,11 @@ test_subset, _ = random_split(testset, [subset_size, remaining_size])
 testloader = DataLoader(test_subset, batch_size=batch_size, shuffle=False)
 trainloader = DataLoader(trainset, batch_size=batch_size, shuffle=False)
 
+model = LeNet()
+# model = get_model()
+
 local_states, global_model = fl_training(
+    model,
     num_rounds, 
     local_epochs, 
     batch_size, 
@@ -77,7 +82,8 @@ local_states, global_model = fl_training(
     fedtype=fedavg
 )
 
-model = get_model()
+model = LeNet()
+# model = get_model()
 
 acc_model = evaluate_global(model, testloader)
 acc_global_model = evaluate_global(global_model, testloader)
