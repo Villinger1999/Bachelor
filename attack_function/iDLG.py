@@ -41,6 +41,9 @@ def infer_labels_from_bias_grad(leaked_grads:dict[str, torch.Tensor], model: tor
         int: index of the inferred label (same for all images in batch)
     """
     
+    if isinstance(leaked_grads, dict) and 'grads' in leaked_grads:
+       leaked_grads = leaked_grads['grads']
+    
     # find the name of the last bias
     for name, parameter in model.named_parameters(): #loop through the names and parameters in the model 
         if name.endswith(".bias") and parameter.ndim == 1: # if it's a bias parameter and it's 1 dimentional. 
@@ -80,6 +83,9 @@ def iDLG(model: torch.nn.Module, leaked_grads:dict[str, torch.Tensor], infered_l
     
     # Extract batch size from x_shape
     batch_size = x_shape[0]
+    
+    if isinstance(leaked_grads, dict) and 'grads' in leaked_grads:
+       leaked_grads = leaked_grads['grads']
     
     # for all the leaked gradients, detach them i.e. ensures grads are treated as constant tensors, and moves them to the chosen device 
     for k in leaked_grads:

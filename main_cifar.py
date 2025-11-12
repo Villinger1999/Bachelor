@@ -25,21 +25,37 @@ testset = TensorDataset(x_test_torch, y_test_torch)
 
 # Take 10% of the total dataset
 total_size = len(trainset)
-subset_size = int(1 * total_size)  # % of data
+subset_size = int(0.5 * total_size)  # % of data
 remaining_size = total_size - subset_size
 
 # Randomly split 10% subset and discard the rest
 subset, _ = random_split(trainset, [subset_size, remaining_size])
 
-# Now split that 10% subset among 3 clients
-client_sizes = [subset_size // num_clients] * num_clients
-client_sizes[-1] += subset_size - sum(client_sizes)
+from collections import defaultdict
 
-client_datasets = random_split(subset, client_sizes)
+# Get subset indices and labels
+subset_indices = subset.indices
+subset_labels = y_train_torch[subset_indices].cpu().numpy()
+
+# Group indices by label
+label_to_indices = defaultdict(list)
+for idx, label in zip(subset_indices, subset_labels):
+        label_to_indices[int(label)].append(int(idx))
+
+# Distribute: each client gets 2 images per label (round-robin)
+client_indices = [[] for _ in range(num_clients)]
+for label, indices in label_to_indices.items():
+    random.shuffle(indices)
+    for i, global_idx in enumerate(indices[:batch_size * num_clients]):  # take first 2*num_clients
+        client_indices[i % num_clients].append(global_idx)
+
+# Create Subset datasets for each client
+client_datasets = [torch.utils.data.Subset(trainset, inds) for inds in client_indices]
+print(f"Client dataset sizes: {[len(c) for c in client_datasets]}")
 
 # Assume testset is a PyTorch Dataset (e.g., CIFAR10(test=True))
 total_size = len(testset)
-subset_size = int(1 * total_size)     # % subset
+subset_size = int(20)     # % subset
 remaining_size = total_size - subset_size
 
 # Split: keep 10%, discard 90%

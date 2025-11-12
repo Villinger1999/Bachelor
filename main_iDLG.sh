@@ -2,7 +2,7 @@
 
 #BSUB -J iDLG
 #BSUB -q hpc
-#BSUB -W 60
+#BSUB -W 120
 #BSUB -R "rusage[mem=10G]"
 #BSUB -R "select[model == XeonGold6126]"
 #BSUB -R "span[hosts=1]"
