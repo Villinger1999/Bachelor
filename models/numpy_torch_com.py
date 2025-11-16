@@ -73,41 +73,25 @@ def main():
     y_train_torch = torch.from_numpy(y_train).long()
     y_val_torch = torch.from_numpy(y_val).long()
 
-    # --- Training loop ---
-    for epoch in range(EPOCHS):
-        # --- Numpy training ---
-        idx = np.random.permutation(len(X_train))
-        X_train_np, y_train_np = X_train[idx], y_train[idx]
-        for i in range(0, len(X_train_np), BATCH_SIZE):
-            X_batch = preprocess_numpy(X_train_np[i:i+BATCH_SIZE])
-            y_batch = y_train_np[i:i+BATCH_SIZE]
-            logits = model_np.forward(X_batch, train=True)
-            loss, d_logits = cross_entropy_loss(logits, y_batch)
-            model_np.backward(d_logits)
-            model_np.step(LR)
-        logits_val_np = model_np.forward(preprocess_numpy(X_val), train=False)
-        acc_val_np = np_accuracy(logits_val_np, y_val)
 
-        # --- Torch training ---
-        model_torch.train()
-        perm = torch.randperm(len(X_train_torch))
-        X_train_torch_shuf = X_train_torch[perm]
-        y_train_torch_shuf = y_train_torch[perm]
-        for i in range(0, len(X_train_torch_shuf), BATCH_SIZE):
-            xb = X_train_torch_shuf[i:i+BATCH_SIZE].to(device)
-            yb = y_train_torch_shuf[i:i+BATCH_SIZE].to(device)
-            optimizer.zero_grad()
-            out = model_torch(xb)
-            loss_torch = criterion(out, yb)
-            loss_torch.backward()
-            optimizer.step()
-        model_torch.eval()
-        with torch.no_grad():
-            out_val = model_torch(X_val_torch.to(device))
-            preds = out_val.argmax(dim=1).cpu().numpy()
-            acc_val_torch = np.mean(preds == y_val)
+    # --- Forward pass comparison ---
+    # Use a batch from validation set
+    X_batch_np = preprocess_numpy(X_val[:BATCH_SIZE])
+    X_batch_torch = preprocess_torch(X_val[:BATCH_SIZE]).to(device)
 
-        print(f"Epoch {epoch+1}/{EPOCHS} | Numpy ResNet18 Val Acc: {acc_val_np:.4f} | Torch ResNet18 Val Acc: {acc_val_torch:.4f}")
+    # NumPy ResNet18 forward
+    logits_np = model_np.forward(X_batch_np, train=False)
+    print("NumPy ResNet18 logits (first batch):\n", logits_np)
+
+    # Torch ResNet18 forward
+    model_torch.eval()
+    with torch.no_grad():
+        logits_torch = model_torch(X_batch_torch).cpu().numpy()
+    print("Torch ResNet18 logits (first batch):\n", logits_torch)
+
+    # Optionally, compare outputs
+    diff = np.abs(logits_np - logits_torch)
+    print("Max absolute difference:", diff.max())
 
 if __name__ == "__main__":
     main()
