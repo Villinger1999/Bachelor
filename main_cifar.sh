@@ -15,4 +15,4 @@ module load python3/3.12.11
 # Activate your virtual environment
 source ~/bachelor-env/bin/activate
 
-python main_cifar.py 5 5 3 8 1 5c_5r_b8_lenet
+python main_cifar.py 5 5 3 8 1 5c_5r_b8_lenet_per_sample_grads

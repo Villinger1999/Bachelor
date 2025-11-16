@@ -14,21 +14,19 @@ model = LeNet()
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 model = model.to(device)
-leaked_grads = torch.load("state_dicts/local_grads_client0_5c_5r_b8_lenet.pt", map_location=torch.device('cpu'), weights_only=True)
-grads_dict = leaked_grads["grads"]
+leaked_grads = torch.load("state_dicts/local_grads_client0_5c_5r_b8_lenet_per_sample_grads.pt", map_location=torch.device('cpu'), weights_only=True)
+grads_dict = leaked_grads["grads_per_step"][0]
 grads_list = [v for v in grads_dict.values() if isinstance(v, torch.Tensor)]
-label = torch.tensor([leaked_grads['labels'][0].item()], dtype=torch.long, device=device)
+label = torch.tensor([leaked_grads['labels_per_step'][0].item()], dtype=torch.long, device=device)
 dummy_img = torch.randn(1, 3, 32, 32, device=device, dtype=torch.float32)
 
-# Average gradients across batch dimension
-avg_grads_list = [g / 8 for g in grads_list]
 
 attacker = iDLG(
     model=model,
     orig_img=dummy_img,      
     label=label,
     device=device,
-    grads=avg_grads_list,
+    grads=grads_list,
     seed=10,             
     clamp=(0.0, 1.0),   
 )
@@ -72,7 +70,7 @@ axes[1].set_ylabel("Loss")
 axes[1].grid()
 
 plt.tight_layout()
-plt.savefig("reconstruction_result_5c_5r_b8_lenet.png", dpi=100)
+plt.savefig("reconstruction_result_5c_5r_b8_lenet_per_sample.png", dpi=100)
 plt.show()
 
 print(f"Reconstructed image shape: {recon_tensor.shape}")
