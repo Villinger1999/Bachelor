@@ -54,16 +54,6 @@ def grad_state_dict(model):
         grad_dict[name] = param.grad.detach().clone()
     return grad_dict
 
-def normalize_keys_strip_module(d: dict[str, torch.Tensor]) -> dict[str, torch.Tensor]:
-    new = {}
-    for k, v in d.items():
-        if k.startswith("module."):
-            new_k = k.replace("module.", "", 1)
-        else:
-            new_k = k
-        new[new_k] = v
-    return new
-
 
 def local_train(model, trainloader, testloader, epochs=1, device="cpu", lr=0.01, defense_function=None):
     """
@@ -83,8 +73,9 @@ def local_train(model, trainloader, testloader, epochs=1, device="cpu", lr=0.01,
     optimizer = torch.optim.SGD(local_model.parameters(), lr=lr, momentum=0.9)
 
     # Store gradients and labels for *every* step
-    all_grads = []      # list of dicts (one dict per step)
-    all_labels = []     # list of tensors, each shape [1]
+    # all_grads = []      # list of dicts (one dict per step)
+    # all_labels = []     # list of tensors, each shape [1]
+    captured_grads = None
 
     for epoch in range(epochs):
         running_loss = 0.0
@@ -93,35 +84,48 @@ def local_train(model, trainloader, testloader, epochs=1, device="cpu", lr=0.01,
         for batch_idx, (images, labels) in enumerate(trainloader):
             images = images.to(device)      # shape [B, C, H, W]
             labels = labels.to(device)      # shape [B]
+            
+            optimizer.zero_grad()                                                               # Clear old gradients from the previous step
+            outputs = local_model(images)                                                       # send the images through the model
+            loss = criterion(outputs, labels)                                                   # Compare predictions to labels using CrossEntropyLoss
+            loss.backward()                                                                     # Compute gradients of the loss for each weight using autograd and store them in param.grad for each parameter
+            
+            captured_grads = grad_state_dict(local_model)
+            # copy labels to CPU for later use (IDLG might need labels)
+            captured_labels = labels.detach().cpu().clone()
+            state_for_attack = copy.deepcopy(local_model.state_dict())
+            
+            optimizer.step()                                                                    # optimize the weights using SGD
 
-            batch_size = images.size(0)
+            running_loss += loss.item()                                                         # Accumulates total loss to compute the average later
 
-            # Loop over samples inside the batch
-            for i in range(batch_size):
-                x_i = images[i:i+1]        # keep batch-dim: [1, C, H, W]
-                y_i = labels[i:i+1]        # shape [1]
+            # batch_size = images.size(0)
 
-                optimizer.zero_grad()
-                outputs = local_model(x_i)
-                loss = criterion(outputs, y_i)
-                loss.backward()
+            # # Loop over samples inside the batch
+            # for i in range(batch_size):
+            #     x_i = images[i:i+1]        # keep batch-dim: [1, C, H, W]
+            #     y_i = labels[i:i+1]        # shape [1]
 
-                # Optionally apply a defense function on gradients *before* capturing
-                if defense_function is not None:
-                    defense_function(local_model)
+            #     optimizer.zero_grad()
+            #     outputs = local_model(x_i)
+            #     loss = criterion(outputs, y_i)
+            #     loss.backward()
 
-                # Capture per-step gradients
-                grad_dict = grad_state_dict(local_model)
-                grad_dict = normalize_keys_strip_module(grad_dict)
+            #     # Optionally apply a defense function on gradients *before* capturing
+            #     if defense_function is not None:
+            #         defense_function(local_model)
 
-                all_grads.append(grad_dict)
-                all_labels.append(y_i.detach().cpu().clone())
+            #     # Capture per-step gradients
+            #     grad_dict = grad_state_dict(local_model)
 
-                # One SGD step per sample
-                optimizer.step()
+            #     all_grads.append(grad_dict)
+            #     all_labels.append(y_i.detach().cpu().clone())
 
-                running_loss += loss.item()
-                num_steps += 1
+            #     # One SGD step per sample
+            #     optimizer.step()
+
+            #     running_loss += loss.item()
+            #     num_steps += 1
 
         # Epoch summary
         avg_loss = running_loss / max(1, num_steps)
@@ -130,11 +134,15 @@ def local_train(model, trainloader, testloader, epochs=1, device="cpu", lr=0.01,
         print(f"Local Epoch [{epoch+1}/{epochs}] - Loss: {avg_loss:.4f} - Acc: {acc}")
 
     # Package gradients + labels
+    # grads_dict = {
+    #     "grads_per_step": all_grads,          # list[dict[str, Tensor]]
+    #     "labels_per_step": all_labels         # list[Tensor of shape [1]]
+    # }
     grads_dict = {
-        "grads_per_step": all_grads,          # list[dict[str, Tensor]]
-        "labels_per_step": all_labels         # list[Tensor of shape [1]]
-    }
-
+    "grads_per_sample": captured_grads,
+    "labels_per_sample": captured_labels,
+    "model_state": state_for_attack
+}
     return local_model.state_dict(), grads_dict
 
 
@@ -175,13 +183,13 @@ def fl_training(model, num_rounds, local_epochs, batch_size, testloader, C, clie
                 # Add defense, if applied
                 if defense_function != None: 
                     local_grads = defense_function(local_grads)
-                    local_states = defense_function(local_states)                    
+                    # local_states = defense_function(local_states)                    
                 
                 if round == (num_rounds-1):
                     # Save local_states
                     try:
                         torch.save(local_grads, f"state_dicts/local_grads_client{i}_{str(sys.argv[6])}.pt")
-                        torch.save(local_state, f"state_dicts/local_state_client{i}_{str(sys.argv[6])}.pt") # {time.time()}
+                        # torch.save(local_state, f"state_dicts/local_state_client{i}_{str(sys.argv[6])}.pt") # {time.time()}
                     except Exception as e:
                         print("Error saving local_state:", e)
                                                         
@@ -204,13 +212,13 @@ def fl_training(model, num_rounds, local_epochs, batch_size, testloader, C, clie
                 # Add defense, if applied
                 if defense_function != None: 
                     local_grads = defense_function(local_grads)
-                    local_states = defense_function(local_states)     
+                    # local_states = defense_function(local_states)     
 
                 if round == (num_rounds-1):
                     # Save local_states
                     try:
                         torch.save(local_grads, f"state_dicts/local_grads_client{i}_{str(sys.argv[6])}.pt")
-                        torch.save(local_state, f"state_dicts/local_state_client{i}_{str(sys.argv[6])}.pt")
+                        # torch.save(local_state, f"state_dicts/local_state_client{i}_{str(sys.argv[6])}.pt")
                     except Exception as e:
                         print("Error saving local_state:", e)
                                                         
