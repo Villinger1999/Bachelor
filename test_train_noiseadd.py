@@ -13,8 +13,8 @@ path = os.getcwd() + "/"
 # Download CIFAR-10 and load it into memory
 (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
 
-print("Train:", x_train.shape, y_train.shape)
-print("Test:", x_test.shape, y_test.shape)
+# print("Train:", x_train.shape, y_train.shape)
+# print("Test:", x_test.shape, y_test.shape)
 
 # Variances for Gaussian noise
 variances = [0, 0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5]

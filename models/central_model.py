@@ -54,69 +54,97 @@ def grad_state_dict(model):
         grad_dict[name] = param.grad.detach().clone()
     return grad_dict
 
-def normalize_keys_strip_module(d: dict[str, torch.Tensor]) -> dict[str, torch.Tensor]:
-    new = {}
-    for k, v in d.items():
-        if k.startswith("module."):
-            new_k = k.replace("module.", "", 1)
-        else:
-            new_k = k
-        new[new_k] = v
-    return new
 
-
-def local_train(model, trainloader, testloader, epochs=1, device=device, lr=0.01, defense_function=None):
+def local_train(model, trainloader, testloader, epochs=1, device="cpu", lr=0.01, defense_function=None):
     """
-    Performs local training on a client using its local dataset.
-
-    Args:
-        model: global model (to be copied for local training)
-        trainloader: DataLoader with the client's local dataset
-        epochs: number of local epochs, default is set to 1
-        device: 'cuda' or 'cpu'
-        lr: local learning rate, default is set to 0.01
-        defense_function: optional; for gradient manipulation, default is None
+    Performs local training on a client using its local dataset, but:
+    - Even if trainloader.batch_size > 1, we do *per-sample* SGD steps.
+    - For each sample/step we capture and store the gradient dict.
 
     Returns:
-        state_dict: the updated model weights after local training
+        state_dict: updated model weights after local training
+        grads_dict: dict containing a list of per-step gradients + labels
     """
-    # Create a copy so the global model isn’t modified in-place
-    local_model = copy.deepcopy(model).to(device)                                               # ensure each client trains on it's own model
-    local_model.train() 
+    # Copy the global model so we don't modify it in-place
+    local_model = copy.deepcopy(model).to(device)
+    local_model.train()
 
-    criterion = torch.nn.CrossEntropyLoss()                                                     # objective function
-    optimizer = torch.optim.SGD(local_model.parameters(), lr=lr, momentum=0.9)                  # set stochastic gradient decent as optimizer function
-    
+    criterion = torch.nn.CrossEntropyLoss()
+    optimizer = torch.optim.SGD(local_model.parameters(), lr=lr, momentum=0.9)
+
+    # Store gradients and labels for *every* step
+    # all_grads = []      # list of dicts (one dict per step)
+    # all_labels = []     # list of tensors, each shape [1]
     captured_grads = None
 
-    # Local training loop
     for epoch in range(epochs):
         running_loss = 0.0
-        for batch_idx, (images, labels) in enumerate(trainloader):
-            images, labels = images.to(device), labels.to(device)                               # Move both inputs and labels to GPU (or CPU), matching model device
+        num_steps = 0
 
+        for batch_idx, (images, labels) in enumerate(trainloader):
+            images = images.to(device)      # shape [B, C, H, W]
+            labels = labels.to(device)      # shape [B]
+            
             optimizer.zero_grad()                                                               # Clear old gradients from the previous step
             outputs = local_model(images)                                                       # send the images through the model
             loss = criterion(outputs, labels)                                                   # Compare predictions to labels using CrossEntropyLoss
             loss.backward()                                                                     # Compute gradients of the loss for each weight using autograd and store them in param.grad for each parameter
             
-            if captured_grads == None:
-                captured_grads = grad_state_dict(local_model)
-                captured_grads = normalize_keys_strip_module(captured_grads)
-                captured_labels = labels.detach().cpu().clone()
+            captured_grads = grad_state_dict(local_model)
+            # copy labels to CPU for later use (IDLG might need labels)
+            captured_labels = labels.detach().cpu().clone()
+            state_for_attack = copy.deepcopy(local_model.state_dict())
             
             optimizer.step()                                                                    # optimize the weights using SGD
 
             running_loss += loss.item()                                                         # Accumulates total loss to compute the average later
 
-        grads_dict = {"grads": captured_grads, "labels": captured_labels}
-        avg_loss = running_loss / len(trainloader)                                              # calculate average loss
+            # batch_size = images.size(0)
+
+            # # Loop over samples inside the batch
+            # for i in range(batch_size):
+            #     x_i = images[i:i+1]        # keep batch-dim: [1, C, H, W]
+            #     y_i = labels[i:i+1]        # shape [1]
+
+            #     optimizer.zero_grad()
+            #     outputs = local_model(x_i)
+            #     loss = criterion(outputs, y_i)
+            #     loss.backward()
+
+            #     # Optionally apply a defense function on gradients *before* capturing
+            #     if defense_function is not None:
+            #         defense_function(local_model)
+
+            #     # Capture per-step gradients
+            #     grad_dict = grad_state_dict(local_model)
+
+            #     all_grads.append(grad_dict)
+            #     all_labels.append(y_i.detach().cpu().clone())
+
+            #     # One SGD step per sample
+            #     optimizer.step()
+
+            #     running_loss += loss.item()
+            #     num_steps += 1
+
+        # Epoch summary
+        avg_loss = running_loss / max(1, num_steps)
         acc = evaluate_global(local_model, testloader, device)
         local_model.train()
-        print(f"Local Epoch [{epoch+1}/{epochs}] - Loss: {avg_loss:.4f} - Acc: {acc}") 
+        print(f"Local Epoch [{epoch+1}/{epochs}] - Loss: {avg_loss:.4f} - Acc: {acc}")
 
-    # Return the trained model weights
+    # Package gradients + labels
+    # grads_dict = {
+    #     "grads_per_step": all_grads,          # list[dict[str, Tensor]]
+    #     "labels_per_step": all_labels         # list[Tensor of shape [1]]
+    # }
+    grads_dict = {
+    "grads_per_sample": captured_grads,
+    "labels_per_sample": captured_labels,
+    "model_state": state_for_attack
+}
     return local_model.state_dict(), grads_dict
+
 
 # Function for simulation of the full Federated Learning proces 
 def fl_training(model, num_rounds, local_epochs, batch_size, testloader, C, client_datasets, client_loader=None,defense_function=None, fedtype=fedavg):
@@ -155,13 +183,13 @@ def fl_training(model, num_rounds, local_epochs, batch_size, testloader, C, clie
                 # Add defense, if applied
                 if defense_function != None: 
                     local_grads = defense_function(local_grads)
-                    local_states = defense_function(local_states)                    
+                    # local_states = defense_function(local_states)                    
                 
                 if round == (num_rounds-1):
                     # Save local_states
                     try:
                         torch.save(local_grads, f"state_dicts/local_grads_client{i}_{str(sys.argv[6])}.pt")
-                        torch.save(local_state, f"state_dicts/local_state_client{i}_{str(sys.argv[6])}.pt") # {time.time()}
+                        # torch.save(local_state, f"state_dicts/local_state_client{i}_{str(sys.argv[6])}.pt") # {time.time()}
                     except Exception as e:
                         print("Error saving local_state:", e)
                                                         
@@ -184,13 +212,13 @@ def fl_training(model, num_rounds, local_epochs, batch_size, testloader, C, clie
                 # Add defense, if applied
                 if defense_function != None: 
                     local_grads = defense_function(local_grads)
-                    local_states = defense_function(local_states)     
+                    # local_states = defense_function(local_states)     
 
                 if round == (num_rounds-1):
                     # Save local_states
                     try:
                         torch.save(local_grads, f"state_dicts/local_grads_client{i}_{str(sys.argv[6])}.pt")
-                        torch.save(local_state, f"state_dicts/local_state_client{i}_{str(sys.argv[6])}.pt")
+                        # torch.save(local_state, f"state_dicts/local_state_client{i}_{str(sys.argv[6])}.pt")
                     except Exception as e:
                         print("Error saving local_state:", e)
                                                         
