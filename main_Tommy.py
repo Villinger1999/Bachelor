@@ -9,26 +9,28 @@ from torchvision import utils as vutils
 import numpy as np
 from models.lenet import LeNet
 import matplotlib.image as mpimg
+from PIL import Image
+import sys
 
 # model = get_model()
 device = "cuda" if torch.cuda.is_available() else "cpu"
-leaked_grads = torch.load("state_dicts/local_grads_client0_c1_b1_e1_emptyLeNet.pt", map_location=torch.device('cpu'), weights_only=True)
 model = LeNet()
-state = leaked_grads["model_state"]
-model.load_state_dict(state)
 model = model.to(device)
-grads_dict = leaked_grads["grads_per_sample"]
-grads_list = [grads_dict[name] for name, _ in model.named_parameters()]
-# grads_list = [v for v in grads_dict.values() if isinstance(v, torch.Tensor)]
-label = torch.tensor([leaked_grads['labels_per_sample'].item()], dtype=torch.long, device=device)
-dummy_img = torch.randn(1, 3, 32, 32, device=device, dtype=torch.float32)
+label = torch.Tensor([6]).long() 
+
+img_path = "test.png"
+# load and convert to RGB
+img = Image.open(img_path).convert("RGB")
+# convert directly to tensor (no resizing)
+transform = transforms.ToTensor()
+img_tensor = transform(img).unsqueeze(0)  # -> (1, 3, 32, 32)
+orig_img = img_tensor.to(device=device, dtype=torch.float32) 
 
 attacker = iDLG(
     model=model,
-    orig_img=dummy_img,      
+    orig_img=orig_img,      
     label=label,
     device=device,
-    grads=grads_list,
     seed=10,             
     clamp=(0.0, 1.0),   
 )
@@ -75,11 +77,9 @@ axes[2].set_ylabel("Loss")
 axes[2].grid(True)
 
 plt.tight_layout()
-plt.savefig("reconstruction_33_adam.png", dpi=100)
+plt.savefig(f"reconstruction_{sys.argv[2]}.png", dpi=100)
 plt.show()
 
 print(f"Reconstructed image shape: {recon_tensor.shape}")
 print(f"Predicted label: {pred_label}")
 print(f"Final loss: {losses[-1]:.6f}")
-
-# problemer med dimensionerne og batch size - læs op på iDLG

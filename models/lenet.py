@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 
-# https://www.kaggle.com/code/shravankumar147/lenet-pytorch-implementation
+# # https://www.kaggle.com/code/shravankumar147/lenet-pytorch-implementation
 
 class LeNet(nn.Module):
     
@@ -31,3 +31,25 @@ class LeNet(nn.Module):
         a1 = torch.flatten(a1,1)
         a2=self.classifier(a1)
         return a2
+
+# class LeNet(nn.Module):
+#     def __init__(self, channel: int = 3, hidden: int = 768, num_classes: int = 10):
+#         super(LeNet, self).__init__()
+#         act = nn.Sigmoid
+#         self.body = nn.Sequential(
+#             nn.Conv2d(channel, 12, kernel_size=5, padding=5 // 2, stride=2),
+#             act(),
+#             nn.Conv2d(12, 12, kernel_size=5, padding=5 // 2, stride=2),
+#             act(),
+#             nn.Conv2d(12, 12, kernel_size=5, padding=5 // 2, stride=1),
+#             act(),
+#         )
+#         self.fc = nn.Sequential(
+#             nn.Linear(hidden, num_classes)
+#         )
+
+#     def forward(self, x):
+#         out = self.body(x)
+#         out = out.view(out.size(0), -1)
+#         out = self.fc(out)
+#         return out
