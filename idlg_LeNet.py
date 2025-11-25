@@ -4,7 +4,7 @@ from torchvision import datasets, transforms, utils
 from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
 from models.central_model import get_model
-from attack_function.iDLG_Tommy import iDLG
+from attack_function.iDLG_FL import iDLG
 from torchvision import utils as vutils
 import numpy as np
 from models.lenet import LeNet
@@ -15,9 +15,11 @@ import sys
 # model = get_model()
 device = "cuda" if torch.cuda.is_available() else "cpu"
 model = LeNet()
-model.load_state_dict(torch.load("state_dicts/state_dict_2_b64_e2.pt"))
 model = model.to(device)
-label = torch.Tensor([6]).long() 
+leaked_grads = torch.load("state_dicts/local_grads_client0_c1_b1_e1_pretrained.pt", map_location=torch.device('cpu'), weights_only=True)
+grads_dict = leaked_grads["grads_per_sample"]
+grads_list = [v for v in grads_dict.values() if isinstance(v, torch.Tensor)]
+label = torch.tensor([leaked_grads['labels_per_sample'][0].item()], dtype=torch.long, device=device)
 
 img_path = "test.png"
 # load and convert to RGB
@@ -32,6 +34,7 @@ attacker = iDLG(
     orig_img=orig_img,      
     label=label,
     device=device,
+    grads=grads_list,
     seed=10,             
     clamp=(0.0, 1.0),   
 )

@@ -71,10 +71,7 @@ def local_train(model, trainloader, testloader, epochs=1, device="cpu", lr=0.01,
 
     criterion = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(local_model.parameters(), lr=lr, momentum=0.9)
-
-    # Store gradients and labels for *every* step
-    # all_grads = []      # list of dicts (one dict per step)
-    # all_labels = []     # list of tensors, each shape [1]
+    
     captured_grads = None
 
     for epoch in range(epochs):
@@ -99,50 +96,17 @@ def local_train(model, trainloader, testloader, epochs=1, device="cpu", lr=0.01,
 
             running_loss += loss.item()                                                         # Accumulates total loss to compute the average later
 
-            # batch_size = images.size(0)
-
-            # # Loop over samples inside the batch
-            # for i in range(batch_size):
-            #     x_i = images[i:i+1]        # keep batch-dim: [1, C, H, W]
-            #     y_i = labels[i:i+1]        # shape [1]
-
-            #     optimizer.zero_grad()
-            #     outputs = local_model(x_i)
-            #     loss = criterion(outputs, y_i)
-            #     loss.backward()
-
-            #     # Optionally apply a defense function on gradients *before* capturing
-            #     if defense_function is not None:
-            #         defense_function(local_model)
-
-            #     # Capture per-step gradients
-            #     grad_dict = grad_state_dict(local_model)
-
-            #     all_grads.append(grad_dict)
-            #     all_labels.append(y_i.detach().cpu().clone())
-
-            #     # One SGD step per sample
-            #     optimizer.step()
-
-            #     running_loss += loss.item()
-            #     num_steps += 1
-
         # Epoch summary
         avg_loss = running_loss / max(1, num_steps)
         acc = evaluate_global(local_model, testloader, device)
         local_model.train()
         print(f"Local Epoch [{epoch+1}/{epochs}] - Loss: {avg_loss:.4f} - Acc: {acc}")
 
-    # Package gradients + labels
-    # grads_dict = {
-    #     "grads_per_step": all_grads,          # list[dict[str, Tensor]]
-    #     "labels_per_step": all_labels         # list[Tensor of shape [1]]
-    # }
     grads_dict = {
     "grads_per_sample": captured_grads,
     "labels_per_sample": captured_labels,
     "model_state": state_for_attack
-}
+    }
     return local_model.state_dict(), grads_dict
 
 
