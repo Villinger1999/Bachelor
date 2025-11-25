@@ -22,6 +22,6 @@ trainloader = DataLoader(trainset, batch_size=64, shuffle=False)
 
 model = LeNet()
 
-state_dict, _ = local_train(model, trainloader, testloader, epochs=2, device="cpu", lr=0.01, defense_function=None)
+state_dict, _ = local_train(model, trainloader, testloader, epochs=100, device="cpu", lr=0.01, defense_function=None)
 
 torch.save(state_dict, f"state_dict_{str(sys.argv[1])}.pt")
