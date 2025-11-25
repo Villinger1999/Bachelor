@@ -15,6 +15,7 @@ import sys
 # model = get_model()
 device = "cuda" if torch.cuda.is_available() else "cpu"
 model = LeNet()
+model.load_state_dict(torch.load("state_dicts/state_dict_2_b64_e2.pt"))
 model = model.to(device)
 leaked_grads = torch.load("state_dicts/local_grads_client0_c1_b1_e1_pretrained.pt", map_location=torch.device('cpu'), weights_only=True)
 grads_dict = leaked_grads["grads_per_sample"]
@@ -81,7 +82,7 @@ axes[2].set_ylabel("Loss")
 axes[2].grid(True)
 
 plt.tight_layout()
-plt.savefig(f"reconstruction_{sys.argv[2]}.png", dpi=100)
+plt.savefig(f"reconstruction_{sys.argv[1]}.png", dpi=100)
 plt.show()
 
 print(f"Reconstructed image shape: {recon_tensor.shape}")

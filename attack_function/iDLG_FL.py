@@ -41,23 +41,17 @@ class iDLG:
         # iDLG training image reconstruction:
         self.model.eval()
         
-        # # compute original gradients
-        # predicted = self.model(self.orig_img)
-        # loss = self.criterion(predicted, self.label)
-        # orig_grads = torch.autograd.grad(loss, self.model.parameters())
-        # orig_grads = list((_.detach().clone() for _ in orig_grads))
+        # img_path1 = sys.argv[1]
+        # # load and convert to RGB
+        # img = Image.open(img_path1).convert("RGB")
+        # # convert directly to tensor (no resizing)
+        # transform = transforms.ToTensor()
+        # img_tensor = transform(img).unsqueeze(0)  # -> (1, 3, 32, 32)
+        # dummy_img = img_tensor.to(self.device, dtype=self.param_dtype)
+        # dummy_data = dummy_img.clone().detach()
+        # dummy_data.requires_grad_(True)
         
-        img_path1 = sys.argv[1]
-        # load and convert to RGB
-        img = Image.open(img_path1).convert("RGB")
-        # convert directly to tensor (no resizing)
-        transform = transforms.ToTensor()
-        img_tensor = transform(img).unsqueeze(0)  # -> (1, 3, 32, 32)
-        dummy_img = img_tensor.to(self.device, dtype=self.param_dtype)
-        dummy_data = dummy_img.clone().detach()
-        dummy_data.requires_grad_(True)
-        
-        # dummy_data = (torch.randn(self.orig_img.size(), dtype=self.param_dtype, device=self.device).requires_grad_(True))
+        dummy_data = (torch.randn(self.orig_img.size(), dtype=self.param_dtype, device=self.device).requires_grad_(True))
 
         # init with ground truth:
         label_pred = torch.argmin(torch.sum(self.grads[-2], dim=-1), dim=-1).detach().reshape((1,)).requires_grad_(False)
