@@ -4,6 +4,8 @@ import torch.nn as nn
 from torchvision import transforms
 from torch.optim.lbfgs import LBFGS
 from PIL import Image
+from defense_function.clipping import *
+from defense_function.pruning import *
 import sys
 
 class iDLG:
@@ -45,7 +47,6 @@ class iDLG:
         loss = self.criterion(predicted, self.label)
         orig_grads = torch.autograd.grad(loss, self.model.parameters())
         orig_grads = list((_.detach().clone() for _ in orig_grads))
-        print(orig_grads)
         
         img_path1 = sys.argv[1]
         # load and convert to RGB
