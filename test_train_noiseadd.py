@@ -13,35 +13,31 @@ path = os.getcwd() + "/"
 # Download CIFAR-10 and load it into memory
 (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
 
-print("Train:", x_train.shape, y_train.shape)
-print("Test:", x_test.shape, y_test.shape)
+# print("Train:", x_train.shape, y_train.shape)
+# print("Test:", x_test.shape, y_test.shape)
 
 # Variances for Gaussian noise
 variances = [0, 0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5]
 
 resolution = 224 # Resolution, gives a (resolution x resolution) sized image 
 
-# # Store results
-# results = []
-# noisy_img = []
+# Store results
+results = []
+noisy_img = []
 
-# image = Image.open('data/hest.jpg')  
-# img_resized = resize(image)                  
-# img_resized = np.array(img_resized) / 255.0  #normalize
-
-# for var in variances:
-#     noisy0 = util.random_noise(x_train[0], mode='gaussian', var=var)
-#     noisy1 = util.random_noise(x_train[1], mode='gaussian', var=var)
-#     noisy2 = util.random_noise(img_resized, mode='gaussian', var=var) # High resolution image
+for var in variances:
+    noisy0 = util.random_noise(x_train[0], mode='gaussian', var=var)
+    # noisy1 = util.random_noise(x_train[1], mode='gaussian', var=var)
+    # noisy2 = util.random_noise(x_train[2], mode='gaussian', var=var) # High resolution image
     
-#     # Save images
-#     fname0 = f"noisy0_{var}.jpg"
-#     fname1 = f"noisy1_{var}.jpg"
-#     fname2 = f"noisy2_{var}.jpg"
+    # Save images
+    fname0 = f"noisy0_{var}.jpg"
+    # fname1 = f"noisy1_{var}.jpg"
+    # fname2 = f"noisy2_{var}.jpg"
     
-#     io.imsave(path + 'data/noise/' + fname0, (noisy0 * 255).astype("uint8"))
-#     io.imsave(path + 'data/noise/' + fname1, (noisy1 * 255).astype("uint8"))
-#     io.imsave(path + 'data/noise/' + fname2, (noisy2 * 255).astype("uint8")) # High resolution image
+    io.imsave(path + 'data/noise/' + fname0, (noisy0 * 255).astype("uint8"))
+    # io.imsave(path + 'data/noise/' + fname1, (noisy1 * 255).astype("uint8"))
+    # io.imsave(path + 'data/noise/' + fname2, (noisy2 * 255).astype("uint8")) # High resolution image
 
     
 #     # Append metadata for DataFrame

@@ -6,6 +6,9 @@ from torch.optim.lbfgs import LBFGS
 from PIL import Image
 from numpy import asarray
 import numpy as np
+from defense_function.clipping import *
+from defense_function.pruning import *
+import sys
 
 class iDLG:
     def __init__(
@@ -24,6 +27,7 @@ class iDLG:
         self.orig_img = orig_img.to(self.device)
         self.criterion = nn.CrossEntropyLoss(reduction='sum').to(self.device)
         self.label = label.to(self.device)
+        # self.grads = grads
         self.tt = transforms.ToPILImage()
         self.clamp = clamp
 
@@ -74,6 +78,28 @@ class iDLG:
 
         # init with ground truth:
         label_pred = self._infer_label_from_grads(orig_grads).requires_grad_(False)
+        
+        # compute original gradients
+        predicted = self.model(self.orig_img)
+        loss = self.criterion(predicted, self.label)
+        orig_grads = torch.autograd.grad(loss, self.model.parameters())
+        orig_grads = list((_.detach().clone() for _ in orig_grads))
+        
+        img_path1 = sys.argv[1]
+        # load and convert to RGB
+        img = Image.open(img_path1).convert("RGB")
+        # convert directly to tensor (no resizing)
+        transform = transforms.ToTensor()
+        img_tensor = transform(img).unsqueeze(0)  # -> (1, 3, 32, 32)
+        dummy_img = img_tensor.to(self.device, dtype=self.param_dtype)
+        dummy_data = dummy_img.clone().detach()
+        dummy_data.requires_grad_(True)
+        
+        # dummy_data = (torch.randn(self.orig_img.size(), dtype=self.param_dtype, device=self.device).requires_grad_(True))
+
+        # init with ground truth:
+        label_pred = torch.argmin(torch.sum(orig_grads[-2], dim=-1), dim=-1).detach().reshape((1,)).requires_grad_(False)
+        
         optimizer = LBFGS(
             [dummy_data], lr=.1, max_iter=50,
             tolerance_grad=1e-09, tolerance_change=1e-11,
@@ -232,6 +258,7 @@ if __name__ == "__main__":
         for i, (images, labels) in enumerate(trainloader):  
             images = images.to(device)
             labels = labels.to(device)
+                history.append(self.tt(dummy_data[0].detach().cpu()))
                 
             #Forward pass
             outputs = model(images)
