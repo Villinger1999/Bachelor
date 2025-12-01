@@ -1,7 +1,7 @@
 from tqdm import tqdm
 import torch
 import torch.nn as nn
-from torchvision import transforms
+from torchvision import transforms, datasets
 from torch.optim.lbfgs import LBFGS
 from PIL import Image
 from classes.defenses import *
@@ -24,7 +24,6 @@ class iDLG:
         self.model = model.to(self.device)
         self.criterion = nn.CrossEntropyLoss(reduction='sum').to(self.device)
         self.label = label.to(self.device)
-        self.grads = grads
         self.tt = transforms.ToPILImage()
         self.clamp = clamp
         self.defense = defense
@@ -104,4 +103,4 @@ class iDLG:
                 losses.append(current_loss.item())
                 history.append(self.tt(dummy_data[0].detach().cpu()))
                 
-        return dummy_data.detach().numpy().squeeze(), label_pred, history, losses
+        return dummy_data.detach().numpy().squeeze(), label_pred, history, losses 
