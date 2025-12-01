@@ -85,7 +85,7 @@ def iDLG(model: torch.nn.Module, leaked_grads:dict[str, torch.Tensor], infered_l
     batch_size = x_shape[0]
     
     if isinstance(leaked_grads, dict) and 'grads' in leaked_grads:
-       leaked_grads = leaked_grads['grads']
+       leaked_grads = leaked_grads['grads'] 
     
     # for all the leaked gradients, detach them i.e. ensures grads are treated as constant tensors, and moves them to the chosen device 
     for k in leaked_grads:
