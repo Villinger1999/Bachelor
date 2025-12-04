@@ -27,6 +27,7 @@ class iDLG:
         self.tt = transforms.ToPILImage()
         self.clamp = clamp
         self.defense = defense
+        self.grads = grads
         self.param_dtype = next(self.model.parameters()).dtype
         if orig_img is not None:
             self.orig_img = orig_img.to(self.device)
