@@ -1,9 +1,11 @@
-from models.central_model import local_train
-from models.lenet import LeNet
+from classes.federated_learning import Client
+from classes.models import LeNet
 from torch.utils.data import DataLoader, TensorDataset
 import torch
-from test_train_noiseadd import x_train, y_train, x_test, y_test
+import tensorflow as tf
 import sys
+
+(x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
 
 # Convert x_train/x_test to float tensors and normalize to [0, 1]
 x_train_torch = torch.tensor(x_train.transpose((0, 3, 1, 2)), dtype=torch.float32) / 255.0
@@ -22,6 +24,6 @@ trainloader = DataLoader(trainset, batch_size=64, shuffle=False)
 
 model = LeNet()
 
-state_dict, _ = local_train(model, trainloader, testloader, epochs=100, device="cpu", lr=0.01, defense_function=None)
+state_dict, _ = Client.local_train(model, trainloader, testloader, epochs=100, device="cpu", lr=0.01, defense_function=None)
 
 torch.save(state_dict, f"state_dict_{str(sys.argv[1])}.pt")

@@ -16,10 +16,9 @@ module load python/3.12.11
 # Activate your virtual environment
 source ~/bachelor-env/bin/activate
 
-python main_Tommy.py data/noise/noisy0_0.jpg noise_0_pretrained
-python main_Tommy.py data/noise/noisy0_0.01.jpg noise_01_pretrained
-python main_Tommy.py data/noise/noisy0_0.1.jpg noise_1_pretrained
-python main_Tommy.py data/noise/noisy0_0.2.jpg noise_2_pretrained
-python main_Tommy.py data/noise/noisy0_0.3.jpg noise_3_pretrained
-python main_Tommy.py data/noise/noisy0_0.4.jpg noise_4_pretrained
-python main_Tommy.py data/noise/noisy0_0.5.jpg noise_5_pretrained
+python main_Tommy.py None True 0.0 0 img0_origGrads
+python main_Tommy.py None True 0.0 1 img1_origGrads
+python main_Tommy.py None True 0.0 4 img4_origGrads
+python main_Tommy.py None True 0.0 5 img5_origGrads
+python main_Tommy.py None True 0.0 7 img7_origGrads
+python main_Tommy.py None True 0.0 13 img13_origGrads

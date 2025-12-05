@@ -1,8 +1,6 @@
 from attack_function.iDLG import iDLG, infer_labels_from_bias_grad
-from models.central_model import get_model
-from models.lenet import LeNet
+from classes.models import LeNet
 import torch
-from test_train_noiseadd import x_train
 from torchvision.utils import save_image
 import numpy as np
 
