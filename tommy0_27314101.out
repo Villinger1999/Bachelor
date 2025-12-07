@@ -1,0 +1,134 @@
+Predicted label: tensor([6])
+Final loss: 0.000499
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.76234716
+PSNR: 21.156419144840946
+Predicted label: tensor([9])
+Final loss: 0.000156
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.92131215
+PSNR: 23.074528801340204
+Predicted label: tensor([9])
+Final loss: 0.000033
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.94513947
+PSNR: 30.066132060374162
+Predicted label: tensor([4])
+Final loss: 0.000288
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.71257895
+PSNR: 23.06049002328823
+Predicted label: tensor([1])
+Final loss: 0.002414
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.8326709
+PSNR: 21.87573853767833
+Predicted label: tensor([4])
+Final loss: 0.000125
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.54441434
+PSNR: 23.117721477341707
+Predicted label: tensor([7])
+Final loss: 0.000028
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.94643885
+PSNR: 26.32445695785076
+Predicted label: tensor([3])
+Final loss: 0.000126
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.82447267
+PSNR: 22.306811226543882
+Predicted label: tensor([1])
+Final loss: 0.010334
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.7220678
+PSNR: 18.22560469597675
+Predicted label: tensor([7])
+Final loss: 0.000159
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.8267966
+PSNR: 22.82051401314871
+Predicted label: tensor([7])
+Final loss: 0.000075
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.93598866
+PSNR: 24.70070922448666
+Predicted label: tensor([7])
+Final loss: 0.000084
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.9403227
+PSNR: 26.21669354150514
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27314101: <tommy0> in cluster <dcc> Done
+
+Job <tommy0> was submitted from host <n-62-30-1> by user <s224227> in cluster <dcc> at Sun Dec  7 02:00:48 2025
+Job was executed on host(s) <n-62-31-5>, in queue <hpc>, as user <s224227> in cluster <dcc> at Sun Dec  7 02:00:48 2025
+</zhome/d1/b/187261> was used as the home directory.
+</zhome/d1/b/187261/Desktop/Bachelor/Bachelor> was used as the working directory.
+Started at Sun Dec  7 02:00:48 2025
+Terminated at Sun Dec  7 02:14:04 2025
+Results reported at Sun Dec  7 02:14:04 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+
+#BSUB -J tommy0
+#BSUB -q hpc
+#BSUB -W 120
+#BSUB -R "rusage[mem=10G]"
+#BSUB -R "select[model == XeonGold6126]"
+#BSUB -R "span[hosts=1]"
+#BSUB -n 1
+#BSUB -o tommy0_%J.out
+#BSUB -e tommy0_%J.err
+
+# # Load Python if needed 
+module load python/3.12.11  
+
+# Activate your virtual environment
+source ~/bachelor-env/bin/activate
+
+python main_Tommy.py None True 0.0 0 normal_img0_lr2_TV6
+python main_Tommy.py None True 0.0 1 normal_img1_lr2_TV6
+python main_Tommy.py None True 0.0 2 normal_img2_lr2_TV6
+python main_Tommy.py None True 0.0 3 normal_img3_lr2_TV6
+python main_Tommy.py None True 0.0 4 normal_img4_lr2_TV6
+python main_Tommy.py None True 0.0 10 normal_img10_lr2_TV6
+python main_Tommy.py None True 0.0 7 normal_img_7_lr2_TV6
+python main_Tommy.py None True 0.0 33 normal_img_33_lr2_TV6
+python main_Tommy.py None True 0.0 45 normal_img_45_lr2_TV6
+python main_Tommy.py None True 0.0 12 normal_img_12_lr2_TV6
+python main_Tommy.py None True 0.0 11 normal_img_11_lr2_TV6
+python main_Tommy.py None True 0.0 68 normal_img_68_lr2_TV6
+
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   739.69 sec.
+    Max Memory :                                 689 MB
+    Average Memory :                             596.43 MB
+    Total Requested Memory :                     10240.00 MB
+    Delta Memory :                               9551.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                6
+    Run time :                                   856 sec.
+    Turnaround time :                            796 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <tommy0_27314101.err> for stderr output of this job.
+

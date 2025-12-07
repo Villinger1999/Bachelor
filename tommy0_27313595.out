@@ -1,0 +1,70 @@
+Predicted label: tensor([6])
+Final loss: 0.016039
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.6389616
+PSNR: 18.07772423478567
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27313595: <tommy0> in cluster <dcc> Exited
+
+Job <tommy0> was submitted from host <n-62-30-1> by user <s224227> in cluster <dcc> at Sat Dec  6 22:41:01 2025
+Job was executed on host(s) <n-62-31-22>, in queue <hpc>, as user <s224227> in cluster <dcc> at Sat Dec  6 22:41:01 2025
+</zhome/d1/b/187261> was used as the home directory.
+</zhome/d1/b/187261/Desktop/Bachelor/Bachelor> was used as the working directory.
+Started at Sat Dec  6 22:41:01 2025
+Terminated at Sat Dec  6 22:42:46 2025
+Results reported at Sat Dec  6 22:42:46 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+
+#BSUB -J tommy0
+#BSUB -q hpc
+#BSUB -W 120
+#BSUB -R "rusage[mem=10G]"
+#BSUB -R "select[model == XeonGold6126]"
+#BSUB -R "span[hosts=1]"
+#BSUB -n 1
+#BSUB -o tommy0_%J.out
+#BSUB -e tommy0_%J.err
+
+# # Load Python if needed 
+module load python/3.12.11  
+
+# Activate your virtual environment
+source ~/bachelor-env/bin/activate
+
+python main_Tommy.py None True 0.0 0 normal_img0_lr25_TV
+python main_Tommy.py None True 0.0 1 normal_img_1_lr25_TV
+python main_Tommy.py None True 0.0 4 normal_img_4_lr25_TV
+
+------------------------------------------------------------
+
+TERM_OWNER: job killed by owner.
+Exited with exit code 130.
+
+Resource usage summary:
+
+    CPU time :                                   93.57 sec.
+    Max Memory :                                 689 MB
+    Average Memory :                             619.67 MB
+    Total Requested Memory :                     10240.00 MB
+    Delta Memory :                               9551.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                6
+    Run time :                                   212 sec.
+    Turnaround time :                            105 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <tommy0_27313595.err> for stderr output of this job.
+

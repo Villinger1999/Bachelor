@@ -1,0 +1,79 @@
+Predicted label: tensor([6])
+Final loss: 0.000990
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.720824
+PSNR: 20.0513615080838
+Predicted label: tensor([9])
+Final loss: 0.000101
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.8535309
+PSNR: 19.91993497908506
+Predicted label: tensor([1])
+Final loss: 0.002042
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.81249046
+PSNR: 21.04147722059329
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27313472: <tommy0> in cluster <dcc> Done
+
+Job <tommy0> was submitted from host <n-62-30-1> by user <s224227> in cluster <dcc> at Sat Dec  6 22:14:17 2025
+Job was executed on host(s) <n-62-31-22>, in queue <hpc>, as user <s224227> in cluster <dcc> at Sat Dec  6 22:14:19 2025
+</zhome/d1/b/187261> was used as the home directory.
+</zhome/d1/b/187261/Desktop/Bachelor/Bachelor> was used as the working directory.
+Started at Sat Dec  6 22:14:19 2025
+Terminated at Sat Dec  6 22:17:40 2025
+Results reported at Sat Dec  6 22:17:40 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+
+#BSUB -J tommy0
+#BSUB -q hpc
+#BSUB -W 120
+#BSUB -R "rusage[mem=10G]"
+#BSUB -R "select[model == XeonGold6126]"
+#BSUB -R "span[hosts=1]"
+#BSUB -n 1
+#BSUB -o tommy0_%J.out
+#BSUB -e tommy0_%J.err
+
+# # Load Python if needed 
+module load python/3.12.11  
+
+# Activate your virtual environment
+source ~/bachelor-env/bin/activate
+
+python main_Tommy.py None True 0.0 0 normal_img0_lr3
+python main_Tommy.py None True 0.0 1 normal_img_1_lr3
+python main_Tommy.py None True 0.0 4 normal_img_4_lr3
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   187.80 sec.
+    Max Memory :                                 688 MB
+    Average Memory :                             625.75 MB
+    Total Requested Memory :                     10240.00 MB
+    Delta Memory :                               9552.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                6
+    Run time :                                   225 sec.
+    Turnaround time :                            203 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <tommy0_27313472.err> for stderr output of this job.
+
