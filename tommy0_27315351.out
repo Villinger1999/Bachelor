@@ -1,3 +1,13 @@
+Predicted label: tensor([6])
+Final loss: 0.002693
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.6502088
+PSNR: 18.288658268895702
+Predicted label: tensor([9])
+Final loss: 2.985626
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.3789134
+PSNR: 9.919460989735466
 Predicted label: tensor([9])
 Final loss: 0.173797
 Random dummy: True, dummy variance: 0.0, grads_mode: none
@@ -8,6 +18,11 @@ Final loss: 0.000394
 Random dummy: True, dummy variance: 0.0, grads_mode: none
 SSIM: 0.6245958
 PSNR: 21.08573260291315
+Predicted label: tensor([1])
+Final loss: 0.002497
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.7816108
+PSNR: 20.065368576375093
 Predicted label: tensor([4])
 Final loss: 0.000043
 Random dummy: True, dummy variance: 0.0, grads_mode: none
@@ -46,15 +61,15 @@ PSNR: 22.74985985960653
 
 ------------------------------------------------------------
 Sender: LSF System <lsfadmin@hpc.dtu.dk>
-Subject: Job 27313844: <tommy0> in cluster <dcc> Done
+Subject: Job 27315351: <tommy0> in cluster <dcc> Done
 
-Job <tommy0> was submitted from host <n-62-30-1> by user <s224227> in cluster <dcc> at Sun Dec  7 00:35:58 2025
-Job was executed on host(s) <n-62-31-22>, in queue <hpc>, as user <s224227> in cluster <dcc> at Sun Dec  7 00:35:59 2025
+Job <tommy0> was submitted from host <n-62-27-17> by user <s224227> in cluster <dcc> at Sun Dec  7 12:46:53 2025
+Job was executed on host(s) <n-62-31-5>, in queue <hpc>, as user <s224227> in cluster <dcc> at Sun Dec  7 12:46:54 2025
 </zhome/d1/b/187261> was used as the home directory.
 </zhome/d1/b/187261/Desktop/Bachelor/Bachelor> was used as the working directory.
-Started at Sun Dec  7 00:35:59 2025
-Terminated at Sun Dec  7 00:45:45 2025
-Results reported at Sun Dec  7 00:45:45 2025
+Started at Sun Dec  7 12:46:54 2025
+Terminated at Sun Dec  7 13:01:19 2025
+Results reported at Sun Dec  7 13:01:19 2025
 
 Your job looked like:
 
@@ -78,8 +93,11 @@ module load python/3.12.11
 # Activate your virtual environment
 source ~/bachelor-env/bin/activate
 
+python main_Tommy.py None True 0.0 0 normal_img0_lr1
+python main_Tommy.py None True 0.0 1 normal_img1_lr1
 python main_Tommy.py None True 0.0 2 normal_img2_lr1
 python main_Tommy.py None True 0.0 3 normal_img3_lr1
+python main_Tommy.py None True 0.0 4 normal_img4_lr1
 python main_Tommy.py None True 0.0 10 normal_img10_lr1
 python main_Tommy.py None True 0.0 7 normal_img_7_lr1
 python main_Tommy.py None True 0.0 33 normal_img_33_lr1
@@ -95,16 +113,16 @@ Successfully completed.
 
 Resource usage summary:
 
-    CPU time :                                   542.75 sec.
-    Max Memory :                                 686 MB
-    Average Memory :                             515.17 MB
+    CPU time :                                   817.27 sec.
+    Max Memory :                                 689 MB
+    Average Memory :                             527.50 MB
     Total Requested Memory :                     10240.00 MB
-    Delta Memory :                               9554.00 MB
+    Delta Memory :                               9551.00 MB
     Max Swap :                                   -
     Max Processes :                              4
     Max Threads :                                6
-    Run time :                                   616 sec.
-    Turnaround time :                            587 sec.
+    Run time :                                   893 sec.
+    Turnaround time :                            866 sec.
 
 The output (if any) is above this job summary.
 
@@ -112,5 +130,5 @@ The output (if any) is above this job summary.
 
 PS:
 
-Read file <tommy0_27313844.err> for stderr output of this job.
+Read file <tommy0_27315351.err> for stderr output of this job.
 

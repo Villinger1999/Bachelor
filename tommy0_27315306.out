@@ -1,75 +1,75 @@
 Predicted label: tensor([6])
-Final loss: 0.001265
+Final loss: 0.006016
 Random dummy: True, dummy variance: 0.0, grads_mode: none
-SSIM: 0.7060124
-PSNR: 19.512189398755098
+SSIM: 0.87811786
+PSNR: 24.721302700745163
 Predicted label: tensor([9])
-Final loss: 0.000113
+Final loss: 0.697211
 Random dummy: True, dummy variance: 0.0, grads_mode: none
-SSIM: 0.92712593
-PSNR: 23.332450637335445
+SSIM: 0.4723568
+PSNR: 11.461306663019851
 Predicted label: tensor([9])
-Final loss: 0.000155
+Final loss: 0.002744
 Random dummy: True, dummy variance: 0.0, grads_mode: none
-SSIM: 0.8414827
-PSNR: 24.912257215872128
+SSIM: 0.98667186
+PSNR: 35.21474967962255
 Predicted label: tensor([4])
-Final loss: 0.000375
+Final loss: 0.002482
 Random dummy: True, dummy variance: 0.0, grads_mode: none
-SSIM: 0.6604999
-PSNR: 21.833017846039976
+SSIM: 0.9750741
+PSNR: 36.45238899340194
 Predicted label: tensor([1])
-Final loss: 0.006856
+Final loss: 0.007079
 Random dummy: True, dummy variance: 0.0, grads_mode: none
-SSIM: 0.78356177
-PSNR: 20.034558796789344
+SSIM: 0.9399106
+PSNR: 26.876326748858016
 Predicted label: tensor([4])
-Final loss: 0.000127
+Final loss: 0.001181
 Random dummy: True, dummy variance: 0.0, grads_mode: none
-SSIM: 0.5258482
-PSNR: 22.93679345311179
+SSIM: 0.9140242
+PSNR: 34.740913318689735
 Predicted label: tensor([7])
-Final loss: 0.000175
+Final loss: 0.002878
 Random dummy: True, dummy variance: 0.0, grads_mode: none
-SSIM: 0.7902816
-PSNR: 19.92591093379333
+SSIM: 0.8362148
+PSNR: 20.40653432965788
 Predicted label: tensor([3])
-Final loss: 0.000343
+Final loss: 0.003352
 Random dummy: True, dummy variance: 0.0, grads_mode: none
-SSIM: 0.70654863
-PSNR: 19.141859277650642
+SSIM: 0.9729045
+PSNR: 31.465583887154317
 Predicted label: tensor([1])
-Final loss: 0.000164
+Final loss: 0.002896
 Random dummy: True, dummy variance: 0.0, grads_mode: none
-SSIM: 0.7466027
-PSNR: 18.756096674665052
+SSIM: 0.8933138
+PSNR: 23.637476736244892
 Predicted label: tensor([7])
-Final loss: 0.000134
+Final loss: 0.003007
 Random dummy: True, dummy variance: 0.0, grads_mode: none
-SSIM: 0.8211398
-PSNR: 23.01956570198407
+SSIM: 0.98063654
+PSNR: 33.21378140497908
 Predicted label: tensor([7])
-Final loss: 0.000134
+Final loss: 0.004316
 Random dummy: True, dummy variance: 0.0, grads_mode: none
-SSIM: 0.9249328
-PSNR: 23.914571053556276
+SSIM: 0.98943806
+PSNR: 32.80980774718675
 Predicted label: tensor([7])
-Final loss: 0.003648
+Final loss: 0.004159
 Random dummy: True, dummy variance: 0.0, grads_mode: none
-SSIM: 0.86223555
-PSNR: 21.601352102173053
+SSIM: 0.98826265
+PSNR: 33.30313528648265
 
 ------------------------------------------------------------
 Sender: LSF System <lsfadmin@hpc.dtu.dk>
-Subject: Job 27313973: <tommy0> in cluster <dcc> Done
+Subject: Job 27315306: <tommy0> in cluster <dcc> Done
 
-Job <tommy0> was submitted from host <n-62-30-1> by user <s224227> in cluster <dcc> at Sun Dec  7 01:22:01 2025
-Job was executed on host(s) <n-62-31-5>, in queue <hpc>, as user <s224227> in cluster <dcc> at Sun Dec  7 01:22:02 2025
+Job <tommy0> was submitted from host <n-62-27-17> by user <s224227> in cluster <dcc> at Sun Dec  7 12:08:28 2025
+Job was executed on host(s) <n-62-31-5>, in queue <hpc>, as user <s224227> in cluster <dcc> at Sun Dec  7 12:08:29 2025
 </zhome/d1/b/187261> was used as the home directory.
 </zhome/d1/b/187261/Desktop/Bachelor/Bachelor> was used as the working directory.
-Started at Sun Dec  7 01:22:02 2025
-Terminated at Sun Dec  7 01:34:13 2025
-Results reported at Sun Dec  7 01:34:13 2025
+Started at Sun Dec  7 12:08:29 2025
+Terminated at Sun Dec  7 12:24:14 2025
+Results reported at Sun Dec  7 12:24:14 2025
 
 Your job looked like:
 
@@ -93,18 +93,18 @@ module load python/3.12.11
 # Activate your virtual environment
 source ~/bachelor-env/bin/activate
 
-python main_Tommy.py None True 0.0 0 normal_img0_lr15_TV6
-python main_Tommy.py None True 0.0 1 normal_img1_lr15_TV6
-python main_Tommy.py None True 0.0 2 normal_img2_lr15_TV6
-python main_Tommy.py None True 0.0 3 normal_img3_lr15_TV6
-python main_Tommy.py None True 0.0 4 normal_img4_lr15_TV6
-python main_Tommy.py None True 0.0 10 normal_img10_lr15_TV6
-python main_Tommy.py None True 0.0 7 normal_img_7_lr15_TV6
-python main_Tommy.py None True 0.0 33 normal_img_33_lr15_TV6
-python main_Tommy.py None True 0.0 45 normal_img_45_lr15_TV6
-python main_Tommy.py None True 0.0 12 normal_img_12_lr15_TV6
-python main_Tommy.py None True 0.0 11 normal_img_11_lr15_TV6
-python main_Tommy.py None True 0.0 68 normal_img_68_lr15_TV6
+python main_Tommy.py None True 0.0 0 normal_img0_lr1_TV5_fixed
+python main_Tommy.py None True 0.0 1 normal_img1_lr1_TV5_fixed
+python main_Tommy.py None True 0.0 2 normal_img2_lr1_TV5_fixed
+python main_Tommy.py None True 0.0 3 normal_img3_lr1_TV5_fixed
+python main_Tommy.py None True 0.0 4 normal_img4_lr1_TV5_fixed
+python main_Tommy.py None True 0.0 10 normal_img10_lr1_TV5_fixed
+python main_Tommy.py None True 0.0 7 normal_img_7_lr1_TV5_fixed
+python main_Tommy.py None True 0.0 33 normal_img_33_lr1_TV5_fixed
+python main_Tommy.py None True 0.0 45 normal_img_45_lr1_TV5_fixed
+python main_Tommy.py None True 0.0 12 normal_img_12_lr1_TV5_fixed
+python main_Tommy.py None True 0.0 11 normal_img_11_lr1_TV5_fixed
+python main_Tommy.py None True 0.0 68 normal_img_68_lr1_TV5_fixed
 
 
 ------------------------------------------------------------
@@ -113,16 +113,16 @@ Successfully completed.
 
 Resource usage summary:
 
-    CPU time :                                   676.68 sec.
+    CPU time :                                   895.16 sec.
     Max Memory :                                 689 MB
-    Average Memory :                             510.62 MB
+    Average Memory :                             421.20 MB
     Total Requested Memory :                     10240.00 MB
     Delta Memory :                               9551.00 MB
     Max Swap :                                   -
     Max Processes :                              4
     Max Threads :                                6
-    Run time :                                   772 sec.
-    Turnaround time :                            732 sec.
+    Run time :                                   1039 sec.
+    Turnaround time :                            946 sec.
 
 The output (if any) is above this job summary.
 
@@ -130,5 +130,5 @@ The output (if any) is above this job summary.
 
 PS:
 
-Read file <tommy0_27313973.err> for stderr output of this job.
+Read file <tommy0_27315306.err> for stderr output of this job.
 
