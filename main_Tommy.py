@@ -1,18 +1,17 @@
 import sys
 import torch
-import matplotlib.pyplot as plt
 from classes.attacks import iDLG
-import numpy as np
 from classes.models import LeNet
 import tensorflow as tf
-from classes.attacks import visualize
+from skimage.metrics import structural_similarity, peak_signal_noise_ratio
+from classes.helperfunctions import *
 
 (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 model = LeNet()
-model.load_state_dict(torch.load("state_dicts/state_dict_2_b64_e2.pt", map_location=device))
+model.load_state_dict(torch.load("state_dicts/state_dict_2_b64_e2.pt", map_location=device, weights_only=True))
 model = model.to(device)
 
 leaked_grads = torch.load(
@@ -92,3 +91,13 @@ visualize(
     var_str=var_str,
     save_name=f"reconstruction_{sys.argv[5]}.png",
 )
+
+imTrue = fix_dimension(orig_img)
+
+imRecon = fix_dimension(recon)
+
+ssim_val = structural_similarity(imTrue, imRecon, channel_axis=-1, data_range=1.0)
+psnr_val = peak_signal_noise_ratio(imTrue, imRecon, data_range=1.0)
+
+print("SSIM:", ssim_val)
+print("PSNR:", psnr_val)

@@ -1,7 +1,4 @@
 import random
-import torch
-import copy
-import torch.nn as nn
 from torch.utils.data import DataLoader, Subset, random_split
 from torchvision import datasets, transforms
 from torchvision.datasets import ImageFolder

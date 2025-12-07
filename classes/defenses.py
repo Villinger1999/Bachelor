@@ -1,6 +1,4 @@
 from abc import ABC, abstractmethod
-import torch
-
 
 class Defense(ABC):
     """Base class all defenses must inherit from."""

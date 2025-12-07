@@ -16,9 +16,16 @@ module load python/3.12.11
 # Activate your virtual environment
 source ~/bachelor-env/bin/activate
 
-python main_Tommy.py None True 0.0 0 img0_origGrads
-python main_Tommy.py None True 0.0 1 img1_origGrads
-python main_Tommy.py None True 0.0 4 img4_origGrads
-python main_Tommy.py None True 0.0 5 img5_origGrads
-python main_Tommy.py None True 0.0 7 img7_origGrads
-python main_Tommy.py None True 0.0 13 img13_origGrads
+python main_Tommy.py None True 0.0 0 normal_img0_lr15_TV5_fixed
+python main_Tommy.py None True 0.0 1 normal_img1_lr15_TV5_fixed
+python main_Tommy.py None True 0.0 2 normal_img2_lr15_TV5_fixed
+python main_Tommy.py None True 0.0 3 normal_img3_lr15_TV5_fixed
+python main_Tommy.py None True 0.0 4 normal_img4_lr15_TV5_fixed
+python main_Tommy.py None True 0.0 10 normal_img10_lr15_TV5_fixed
+python main_Tommy.py None True 0.0 7 normal_img_7_lr15_TV5_fixed
+python main_Tommy.py None True 0.0 33 normal_img_33_lr15_TV5_fixed
+python main_Tommy.py None True 0.0 45 normal_img_45_lr15_TV5_fixed
+python main_Tommy.py None True 0.0 12 normal_img_12_lr15_TV5_fixed
+python main_Tommy.py None True 0.0 11 normal_img_11_lr15_TV5_fixed
+python main_Tommy.py None True 0.0 68 normal_img_68_lr15_TV5_fixed
+
