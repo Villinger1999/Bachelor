@@ -73,7 +73,7 @@ class iDLG:
         label_pred = torch.argmin(torch.sum(orig_grads[-2], dim=-1), dim=-1).detach().reshape((1,)).requires_grad_(False)
         
         optimizer = LBFGS(
-            [dummy_data], lr=.25, max_iter=50,
+            [dummy_data], lr=1, max_iter=50,
             tolerance_grad=1e-09, tolerance_change=1e-11,
             history_size=100, line_search_fn='strong_wolfe'
         ) 
@@ -91,7 +91,7 @@ class iDLG:
                 for gx, gy in zip(dummy_dy_dx, orig_grads):
                     grad_diff += ((gx - gy) ** 2).sum()
                     
-                # tv_weight = 1e-6
+                # tv_weight = 1e-5
                 # tv = (dummy_data[:, :, :, :-1] - dummy_data[:, :, :, 1:]).abs().sum() + \
                 #     (dummy_data[:, :, :-1, :] - dummy_data[:, :, 1:, :]).abs().sum()
 

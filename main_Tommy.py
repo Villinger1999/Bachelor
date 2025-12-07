@@ -46,7 +46,7 @@ else:
 # String → float for variance
 dummy_var = float(var_str)
 idx = int(img_idx)
-
+ 
 # use true label from CIFAR-10
 label_value = int(y_train[idx][0])
 label = torch.tensor([label_value], dtype=torch.long, device=device)
