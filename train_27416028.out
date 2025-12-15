@@ -1,0 +1,182 @@
+[Epoch 1/150 - Loss: 2.3097 - Acc: 0.1000
+[Epoch 2/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 3/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 4/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 5/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 6/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 7/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 8/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 9/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 10/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 11/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 12/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 13/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 14/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 15/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 16/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 17/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 18/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 19/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 20/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 21/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 22/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 23/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 24/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 25/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 26/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 27/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 28/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 29/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 30/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 31/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 32/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 33/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 34/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 35/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 36/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 37/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 38/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 39/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 40/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 41/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 42/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 43/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 44/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 45/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 46/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 47/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 48/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 49/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 50/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 51/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 52/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 53/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 54/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 55/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 56/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 57/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 58/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 59/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 60/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 61/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 62/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 63/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 64/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 65/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 66/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 67/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 68/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 69/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 70/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 71/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 72/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 73/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 74/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 75/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 76/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 77/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 78/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 79/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 80/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 81/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 82/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 83/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 84/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 85/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 86/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 87/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 88/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 89/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 90/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 91/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 92/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 93/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 94/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 95/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 96/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 97/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 98/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 99/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 100/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 101/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 102/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 103/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 104/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 105/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 106/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 107/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 108/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 109/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 110/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 111/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 112/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 113/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 114/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 115/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 116/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 117/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 118/150 - Loss: 2.3062 - Acc: 0.1000
+[Epoch 119/150 - Loss: 2.3062 - Acc: 0.1000
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27416028: <train> in cluster <dcc> Exited
+
+Job <train> was submitted from host <n-62-27-19> by user <s224227> in cluster <dcc> at Mon Dec 15 12:17:19 2025
+Job was executed on host(s) <n-62-31-9>, in queue <hpc>, as user <s224227> in cluster <dcc> at Mon Dec 15 12:17:20 2025
+</zhome/d1/b/187261> was used as the home directory.
+</zhome/d1/b/187261/Desktop/Bachelor/Bachelor> was used as the working directory.
+Started at Mon Dec 15 12:17:20 2025
+Terminated at Mon Dec 15 12:35:06 2025
+Results reported at Mon Dec 15 12:35:06 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+
+#BSUB -J train
+#BSUB -q hpc
+#BSUB -W 120
+#BSUB -R "rusage[mem=10G]"
+#BSUB -R "select[model == XeonGold6126]"
+#BSUB -R "span[hosts=1]"
+#BSUB -n 1
+#BSUB -o train_%J.out
+#BSUB -e train_%J.err
+
+# # Load Python if needed (depends on DTU module system)
+
+module load python/3.10.21 
+
+# Activate your virtual environment
+source ~/bachelor-env/bin/activate
+
+python train.py model_b64_e150
+------------------------------------------------------------
+
+TERM_OWNER: job killed by owner.
+Exited with exit code 130.
+
+Resource usage summary:
+
+    CPU time :                                   1059.38 sec.
+    Max Memory :                                 1371 MB
+    Average Memory :                             1280.00 MB
+    Total Requested Memory :                     10240.00 MB
+    Delta Memory :                               8869.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                5
+    Run time :                                   1115 sec.
+    Turnaround time :                            1067 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <train_27416028.err> for stderr output of this job.
+

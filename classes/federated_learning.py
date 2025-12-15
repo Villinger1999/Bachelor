@@ -67,6 +67,35 @@ def evaluate_global(model, dataloader, device):
             correct += (predicted == labels).sum().item()
     return correct / total if total > 0 else 0.0
 
+def train(model, trainloader, testloader, epochs=100, lr=0.1, device="cpu", defense = 0):
+    local_model = copy.deepcopy(model).to(device)
+    local_model.train()
+
+    criterion = nn.CrossEntropyLoss()
+    optimizer = optim.SGD(local_model.parameters(), lr=lr, momentum=0.9)
+
+    for epoch in range(epochs):
+        running_loss, num_steps = 0.0, 0
+
+        for images, labels in trainloader:
+            images = images.to(device)
+            labels = labels.to(device)
+
+            optimizer.zero_grad()
+            outputs = local_model(images)
+            loss = criterion(outputs, labels)
+            loss.backward()
+
+            optimizer.step()
+            running_loss += loss.item()
+            num_steps += 1
+
+        avg_loss = running_loss / max(1, num_steps)
+        acc = evaluate_global(local_model, testloader, device)
+        print(f"[Epoch {epoch+1}/{epochs} - Loss: {avg_loss:.4f} - Acc: {acc:.4f}")
+    state = model.state_dict()
+    return state
+
 
 class Client:
     def __init__(self, client_id, dataset, batch_size, device="cpu"):
@@ -207,5 +236,6 @@ class FederatedTrainer:
             print(f"Global eval after round {rnd+1}: {acc:.4f}")
 
             last_local_states = local_states
-
+            
+        torch.save(self.local_model, f"state_dicts/global_state_client_{run_id}.pt")
         return last_local_states, self.global_model

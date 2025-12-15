@@ -91,14 +91,15 @@ class iDLG:
                 for gx, gy in zip(dummy_dy_dx, orig_grads):
                     grad_diff += ((gx - gy) ** 2).sum()
                     
-                # tv_weight = 1e-5
-                # tv = (dummy_data[:, :, :, :-1] - dummy_data[:, :, :, 1:]).abs().sum() + \
-                #     (dummy_data[:, :, :-1, :] - dummy_data[:, :, 1:, :]).abs().sum()
+                tv_weight = 1e-6
+                tv = (dummy_data[:, :, :, :-1] - dummy_data[:, :, :, 1:]).abs().sum() + \
+                    (dummy_data[:, :, :-1, :] - dummy_data[:, :, 1:, :]).abs().sum()
 
-                # loss = grad_diff + tv_weight * tv
-                # loss.backward()
-                grad_diff.backward()
-                return grad_diff
+                loss = grad_diff + tv_weight * tv
+                loss.backward()
+                # grad_diff.backward()
+                # return grad_diff
+                return loss
 
             optimizer.step(closure)
 

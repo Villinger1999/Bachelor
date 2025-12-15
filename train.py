@@ -1,9 +1,10 @@
-from classes.federated_learning import Client
+from classes.federated_learning import Client, train, FederatedTrainer, fedavg
 from classes.models import LeNet
-from torch.utils.data import DataLoader, TensorDataset
+from torch.utils.data import DataLoader, TensorDataset, random_split
 import torch
 import tensorflow as tf
 import sys
+from torchvision import datasets, transforms
 
 (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
 
@@ -24,6 +25,65 @@ trainloader = DataLoader(trainset, batch_size=64, shuffle=False)
 
 model = LeNet()
 
-state_dict, _ = Client.local_train(model, trainloader, testloader, epochs=100, device="cpu", lr=0.01, defense_function=None)
+state_dict = train(model, trainloader, testloader, epochs=150)
 
 torch.save(state_dict, f"state_dict_{str(sys.argv[1])}.pt")
+
+num_clients = 8
+batch_size = 64
+
+transform = transforms.Compose([
+    transforms.ToTensor()
+])
+
+trainset = datasets.CIFAR10(
+    root="./data", train=True, download=True, transform=transform
+)
+
+testset = datasets.CIFAR10(
+    root="./data", train=False, download=True, transform=transform
+)
+
+testloader = torch.utils.data.DataLoader(
+    testset, batch_size=128, shuffle=False
+)
+
+# split trainset across clients
+num_samples = len(trainset)
+client_sizes = [num_samples // num_clients] * num_clients
+client_sizes[-1] += num_samples - sum(client_sizes)
+
+client_datasets = random_split(trainset, client_sizes)
+
+clients = []
+device = "cuda" if torch.cuda.is_available() else "cpu"
+
+for i, ds in enumerate(client_datasets):
+    clients.append(
+        Client(
+            client_id=i,
+            dataset=ds,
+            batch_size=batch_size,
+            device=device
+        )
+    )
+
+
+global_model = LeNet().to(device)
+
+trainer = FederatedTrainer(
+    global_model=global_model,
+    clients=clients,
+    testloader=testloader,
+    C=1.0,                 # fraction of clients
+    device=device,
+    aggregator=fedavg
+)
+
+last_states, trained_global_model = trainer.train(
+    num_rounds=8,
+    local_epochs=100,
+    defense=None,          
+    save_grads=True,       
+    run_id="exp1"
+)

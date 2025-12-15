@@ -17,4 +17,4 @@ module load python/3.10.21
 # Activate your virtual environment
 source ~/bachelor-env/bin/activate
 
-python train.py 2_b64_e2
+python train.py model_b64_e150
