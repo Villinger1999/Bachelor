@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+import torch
 
 class Defense(ABC):
     """Base class all defenses must inherit from."""
@@ -26,15 +27,7 @@ class Clipping(Defense):
             model (nn.Module): model with gradients
             threshold (float): threshold for cutoff
         """
-        clipped_grads = []
-        for grad in grads:      
-            if grad.abs() >= self.threshold:
-                clipped = grad.clamp(min=-self.threshold, max=self.threshold)
-                clipped_grads.append(clipped)  # scale down large grads
-            else:
-                clipped_grads.append(grad)
-        return clipped_grads
-
+        return [grad.clamp(-self.threshold, self.threshold) for grad in grads]
 
 class SGP(Defense):
     """Small Gradient Pruning: zero out small gradients."""
@@ -51,14 +44,11 @@ class SGP(Defense):
             model (nn.Module): model with gradients
             threshold (float): threshold for cutoff
         """   
-        pruned_grads = []
-        for grad in grads:      
-            if grad.abs() <= self.threshold:
-                pruned_grads.append(0.0)  # scale down large grads
-            else:
-                pruned_grads.append(grad)
-        return pruned_grads
-
+        pruned = []
+        for grad in grads:
+            mask = grad.abs() <= self.threshold
+            pruned.append(torch.where(mask, torch.zeros_like(grad), grad))
+        return pruned
 
 class PLGP(Defense):
     """Proportional Large Gradient Pruning."""
@@ -77,10 +67,9 @@ class PLGP(Defense):
             threshold (float): threshold for cutoff
             alpha (float): scaling factor for large gradients (0 < alpha < 1)
         """
-        pruned_grads = []
-        for grad in grads:      
-            if grad.abs() > self.threshold:
-                pruned_grads.append(self.alpha * grad)  # scale down large grads
-            else:
-                pruned_grads.append(grad)
-        return pruned_grads
+        out = []
+        for grad in grads:
+            mask = grad.abs() > self.threshold
+            out.append(torch.where(mask, self.alpha * grad, grad))
+        return out
+

@@ -4,6 +4,7 @@ import copy
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
+import sys
 
 def fedavg(states, C, client_datasets):
     """
@@ -92,7 +93,7 @@ def train(model, trainloader, testloader, epochs=100, lr=0.1, device="cpu", defe
 
         avg_loss = running_loss / max(1, num_steps)
         acc = evaluate_global(local_model, testloader, device)
-        print(f"[Epoch {epoch+1}/{epochs} - Loss: {avg_loss:.4f} - Acc: {acc:.4f}")
+        print(f"Epoch {epoch+1}/{epochs} - Loss: {avg_loss:.4f} - Acc: {acc:.4f}")
     state = model.state_dict()
     return state
 
@@ -237,5 +238,5 @@ class FederatedTrainer:
 
             last_local_states = local_states
             
-        torch.save(self.local_model, f"state_dicts/global_state_client_{run_id}.pt")
+        torch.save(self.global_model, f"state_dicts/global_state_{run_id}_{sys.argv[1]}.pt")
         return last_local_states, self.global_model

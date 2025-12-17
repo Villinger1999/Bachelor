@@ -1,0 +1,96 @@
+Predicted label: tensor([3])
+Final loss: 0.000001
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.77790767
+PSNR: 20.31779954608334
+Predicted label: tensor([8])
+Final loss: 0.000001
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.85079545
+PSNR: 23.482607622850686
+Predicted label: tensor([8])
+Final loss: 123.330917
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.0039731483
+PSNR: 4.566060076735044
+Predicted label: tensor([3])
+Final loss: 124.880547
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.0008198425
+PSNR: 5.4331800093609335
+Predicted label: tensor([3])
+Final loss: nan
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: nan
+PSNR: nan
+Predicted label: tensor([8])
+Final loss: nan
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: nan
+PSNR: nan
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27440443: <iDLGdefense> in cluster <dcc> Done
+
+Job <iDLGdefense> was submitted from host <n-62-30-7> by user <s224227> in cluster <dcc> at Wed Dec 17 11:45:00 2025
+Job was executed on host(s) <n-62-31-9>, in queue <hpc>, as user <s224227> in cluster <dcc> at Wed Dec 17 11:45:01 2025
+</zhome/d1/b/187261> was used as the home directory.
+</zhome/d1/b/187261/Desktop/Bachelor/Bachelor> was used as the working directory.
+Started at Wed Dec 17 11:45:01 2025
+Terminated at Wed Dec 17 11:48:26 2025
+Results reported at Wed Dec 17 11:48:26 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+
+#BSUB -J iDLGdefense
+#BSUB -q hpc
+#BSUB -W 120
+#BSUB -R "rusage[mem=10G]"
+#BSUB -R "select[model == XeonGold6126]"
+#BSUB -R "span[hosts=1]"
+#BSUB -n 1
+#BSUB -o iDLGdefense_%J.out
+#BSUB -e iDLGdefense_%J.err
+
+# # Load Python if needed 
+module load python/3.12.11  
+
+# Activate your virtual environment
+source ~/bachelor-env/bin/activate
+
+python main_Tommy.py None True 0.0 0 SGP e150_img0_SGP
+python main_Tommy.py None True 0.0 1 SGP e150_img1_SGP
+python main_Tommy.py None True 0.0 1 PLGP e150_img1_PLGP
+python main_Tommy.py None True 0.0 0 PLGP e150_img0_PLGP
+python main_Tommy.py None True 0.0 0 Clipping e150_img0_Clipping
+python main_Tommy.py None True 0.0 1 Clipping e150_img1_Clipping
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   164.71 sec.
+    Max Memory :                                 692 MB
+    Average Memory :                             474.00 MB
+    Total Requested Memory :                     10240.00 MB
+    Delta Memory :                               9548.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                6
+    Run time :                                   285 sec.
+    Turnaround time :                            206 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <iDLGdefense_27440443.err> for stderr output of this job.
+

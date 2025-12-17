@@ -56,9 +56,29 @@ class iDLG:
         else:
             raise ValueError("orig_img and grads cannot both be None")
         
+        flat = torch.cat([g.detach().abs().flatten() for g in orig_grads])
+        print(
+            f"grad min = {flat.min().item():.3e}, "
+            f"grad max = {flat.max().item():.3e}"
+        )
+        below_e5 = 0
+        below_e6 = 0
+        below_e7 = 0
+        below_e8 = 0 
+        for i in flat:
+            if i < 0.00000005:
+                below_e8 += 1
+            elif i < 0.0000005:
+                below_e7 += 1
+            elif i < 0.000005:
+                below_e6 += 1
+            elif i < 0.00005:
+                below_e5 += 1
+        
+        print("0.00000005: ", below_e8, "0.0000005: ", below_e7, "0.000005: ", below_e6, "0.000005: ", below_e5)
+        
         if self.defense != None:
             orig_grads = self.defense.apply(orig_grads)
-            
         
         if self.random_dummy == True:
             dummy_data = (torch.randn(self.orig_img.size(), dtype=self.param_dtype, device=self.device).requires_grad_(True))
@@ -91,15 +111,15 @@ class iDLG:
                 for gx, gy in zip(dummy_dy_dx, orig_grads):
                     grad_diff += ((gx - gy) ** 2).sum()
                     
-                tv_weight = 1e-6
-                tv = (dummy_data[:, :, :, :-1] - dummy_data[:, :, :, 1:]).abs().sum() + \
-                    (dummy_data[:, :, :-1, :] - dummy_data[:, :, 1:, :]).abs().sum()
+                # tv_weight = 1e-5
+                # tv = (dummy_data[:, :, :, :-1] - dummy_data[:, :, :, 1:]).abs().sum() + \
+                #     (dummy_data[:, :, :-1, :] - dummy_data[:, :, 1:, :]).abs().sum()
 
-                loss = grad_diff + tv_weight * tv
-                loss.backward()
-                # grad_diff.backward()
-                # return grad_diff
-                return loss
+                # loss = grad_diff + tv_weight * tv
+                # loss.backward()
+                # return loss
+                grad_diff.backward()
+                return grad_diff
 
             optimizer.step(closure)
 

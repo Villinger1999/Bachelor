@@ -1,0 +1,108 @@
+grad min = 9.736e-07, grad max = 9.222e-01
+0.00000001:  0 0.0000001:  0 0.000001:  0 0.000001:  1
+Predicted label: tensor([3])
+Final loss: 0.000017
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.44091406
+PSNR: 13.18172847217715
+grad min = 9.619e-08, grad max = 9.158e-01
+0.00000001:  0 0.0000001:  0 0.000001:  1 0.000001:  3
+Predicted label: tensor([8])
+Final loss: 0.000069
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.37585357
+PSNR: 11.907898608450694
+grad min = 9.619e-08, grad max = 9.158e-01
+0.00000001:  0 0.0000001:  0 0.000001:  1 0.000001:  3
+Predicted label: tensor([8])
+Final loss: 122.846939
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.00014333923
+PSNR: 4.3822479397092104
+grad min = 9.736e-07, grad max = 9.222e-01
+0.00000001:  0 0.0000001:  0 0.000001:  0 0.000001:  1
+Predicted label: tensor([3])
+Final loss: nan
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: nan
+PSNR: nan
+grad min = 9.736e-07, grad max = 9.222e-01
+0.00000001:  0 0.0000001:  0 0.000001:  0 0.000001:  1
+Predicted label: tensor([3])
+Final loss: 195.336990
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.0057070428
+PSNR: 5.440059244637548
+grad min = 9.619e-08, grad max = 9.158e-01
+0.00000001:  0 0.0000001:  0 0.000001:  1 0.000001:  3
+Predicted label: tensor([8])
+Final loss: 192.347641
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.0017445072
+PSNR: 4.410855352236442
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27441635: <iDLGdefense> in cluster <dcc> Done
+
+Job <iDLGdefense> was submitted from host <n-62-30-7> by user <s224227> in cluster <dcc> at Wed Dec 17 12:24:02 2025
+Job was executed on host(s) <n-62-31-9>, in queue <hpc>, as user <s224227> in cluster <dcc> at Wed Dec 17 12:24:03 2025
+</zhome/d1/b/187261> was used as the home directory.
+</zhome/d1/b/187261/Desktop/Bachelor/Bachelor> was used as the working directory.
+Started at Wed Dec 17 12:24:03 2025
+Terminated at Wed Dec 17 12:27:39 2025
+Results reported at Wed Dec 17 12:27:39 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+
+#BSUB -J iDLGdefense
+#BSUB -q hpc
+#BSUB -W 120
+#BSUB -R "rusage[mem=10G]"
+#BSUB -R "select[model == XeonGold6126]"
+#BSUB -R "span[hosts=1]"
+#BSUB -n 1
+#BSUB -o iDLGdefense_%J.out
+#BSUB -e iDLGdefense_%J.err
+
+# # Load Python if needed 
+module load python/3.12.11  
+
+# Activate your virtual environment
+source ~/bachelor-env/bin/activate
+
+python main_Tommy.py None True 0.0 0 SGP e150_img0_SGP_0.0002
+python main_Tommy.py None True 0.0 1 SGP e150_img1_SGP_0.0002
+python main_Tommy.py None True 0.0 1 PLGP e150_img1_PLGP_0.01_a0.2
+python main_Tommy.py None True 0.0 0 PLGP e150_img0_PLGP_0.01_a0.2
+python main_Tommy.py None True 0.0 0 Clipping e150_img0_Clipping_0.00001
+python main_Tommy.py None True 0.0 1 Clipping e150_img1_Clipping_0.00001
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   176.63 sec.
+    Max Memory :                                 692 MB
+    Average Memory :                             638.25 MB
+    Total Requested Memory :                     10240.00 MB
+    Delta Memory :                               9548.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                6
+    Run time :                                   288 sec.
+    Turnaround time :                            217 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <iDLGdefense_27441635.err> for stderr output of this job.
+

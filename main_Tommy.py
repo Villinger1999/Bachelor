@@ -1,6 +1,7 @@
 import sys
 import torch
 from classes.attacks import iDLG
+from classes.defenses import *
 from classes.models import LeNet
 import tensorflow as tf
 from skimage.metrics import structural_similarity, peak_signal_noise_ratio
@@ -11,7 +12,7 @@ from classes.helperfunctions import *
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 model = LeNet()
-model.load_state_dict(torch.load("state_dicts/state_dict_2_b64_e2.pt", map_location=device, weights_only=True))
+model.load_state_dict(torch.load("state_dicts/state_dict_model_b64_e150.pt", map_location=device, weights_only=True))
 model = model.to(device)
 
 leaked_grads = torch.load(
@@ -26,6 +27,7 @@ grads_mode = sys.argv[1].lower()
 dummy_str = sys.argv[2].lower()
 var_str = sys.argv[3]
 img_idx = sys.argv[4]
+defense_input = sys.argv[5]
 
 # Map grads_mode → actual gradients parameter
 if grads_mode == "none":
@@ -43,16 +45,25 @@ elif dummy_str in ("false", "0", "no"):
 else:
     raise ValueError(f"random_dummy must be true/false, got {dummy_str}")
 
+if defense_input == "SGP":
+    defense = SGP(threshold = 0.0002)
+elif defense_input ==  "PLGP":
+    defense = PLGP(threshold = 0.1, alpha = 0.8)
+elif defense_input == "Clipping":
+    defense = Clipping(threshold = 0.00005)
+else:
+    defense = None
+
 # String → float for variance
 dummy_var = float(var_str)
 idx = int(img_idx)
  
 # use true label from CIFAR-10
-label_value = int(y_train[idx][0])
+label_value = int(y_test[idx][0])
 label = torch.tensor([label_value], dtype=torch.long, device=device)
 
 # x_train[0] is (32,32,3) in [0,255]
-orig_np = x_train[idx].astype("float32") / 255.0  # -> (H,W,C) in [0,1]
+orig_np = x_test[idx].astype("float32") / 255.0  # -> (H,W,C) in [0,1]
 orig_tensor = torch.from_numpy(orig_np)        # (H,W,C)
 orig_tensor = orig_tensor.permute(2, 0, 1)     # -> (C,H,W)
 
@@ -67,7 +78,7 @@ attacker = iDLG(
     device=device,
     orig_img=orig_img,
     grads=grads,
-    defense=None,
+    defense=defense,
     random_dummy=random_dummy,
     dummy_var=dummy_var,
 )
@@ -89,7 +100,7 @@ visualize(
     dummy_var=dummy_var,
     grads_mode=grads_mode,
     var_str=var_str,
-    save_name=f"reconstruction_{sys.argv[5]}.png",
+    save_name=f"reconstruction_{sys.argv[6]}.png",
 )
 
 imTrue = fix_dimension(orig_img)
