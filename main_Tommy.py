@@ -60,11 +60,11 @@ dummy_var = float(var_str)
 idx = int(img_idx)
  
 # use true label from CIFAR-10
-label_value = int(y_test[idx][0])
+label_value = int(y_train[idx][0])
 label = torch.tensor([label_value], dtype=torch.long, device=device)
 
 # x_train[0] is (32,32,3) in [0,255]
-orig_np = x_test[idx].astype("float32") / 255.0  # -> (H,W,C) in [0,1]
+orig_np = x_train[idx].astype("float32") / 255.0  # -> (H,W,C) in [0,1]
 orig_tensor = torch.from_numpy(orig_np)        # (H,W,C)
 orig_tensor = orig_tensor.permute(2, 0, 1)     # -> (C,H,W)
 

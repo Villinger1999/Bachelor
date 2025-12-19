@@ -8,3 +8,83 @@ Final loss: 0.000043
 Random dummy: True, dummy variance: 0.0, grads_mode: none
 SSIM: 0.8337078
 PSNR: 23.73083286365686
+Predicted label: tensor([8])
+Final loss: 0.000006
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.71181417
+PSNR: 20.732107930452145
+Predicted label: tensor([0])
+Final loss: 0.000002
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.79471046
+PSNR: 23.08053574812831
+Predicted label: tensor([6])
+Final loss: 0.000004
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.71396214
+PSNR: 20.415036223733594
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27458998: <iDLG_FL> in cluster <dcc> Done
+
+Job <iDLG_FL> was submitted from host <n-62-27-23> by user <s224227> in cluster <dcc> at Fri Dec 19 18:29:47 2025
+Job was executed on host(s) <n-62-31-24>, in queue <hpc>, as user <s224227> in cluster <dcc> at Fri Dec 19 18:29:48 2025
+</zhome/d1/b/187261> was used as the home directory.
+</zhome/d1/b/187261/Desktop/Bachelor/Bachelor> was used as the working directory.
+Started at Fri Dec 19 18:29:48 2025
+Terminated at Fri Dec 19 18:35:20 2025
+Results reported at Fri Dec 19 18:35:20 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+
+#BSUB -J iDLG_FL
+#BSUB -q hpc
+#BSUB -W 120
+#BSUB -R "rusage[mem=10G]"
+#BSUB -R "select[model == XeonGold6126]"
+#BSUB -R "span[hosts=1]"
+#BSUB -n 1
+#BSUB -o iDLG_FL_%J.out
+#BSUB -e iDLG_FL_%J.err
+
+# # Load Python if needed 
+module load python/3.12.11  
+
+# Activate your virtual environment
+source ~/bachelor-env/bin/activate
+
+python main_Tommy.py None True 0.0 0 N c6_b64_e10_img0_FL_seedNone_ex2
+python main_Tommy.py None True 0.0 1 N c6_b64_e10_img1_FL_seedNone_ex2
+python main_Tommy.py None True 0.0 2 N c6_b64_e10_img2_FL_seedNone_ex2
+python main_Tommy.py None True 0.0 3 N c6_b64_e10_img3_FL_seedNone_ex2
+python main_Tommy.py None True 0.0 4 N c6_b64_e10_img4_FL_seedNone_ex2
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   312.56 sec.
+    Max Memory :                                 688 MB
+    Average Memory :                             646.40 MB
+    Total Requested Memory :                     10240.00 MB
+    Delta Memory :                               9552.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                6
+    Run time :                                   352 sec.
+    Turnaround time :                            333 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <iDLG_FL_27458998.err> for stderr output of this job.
+
