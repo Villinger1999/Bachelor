@@ -1,0 +1,90 @@
+Predicted label: tensor([3])
+Final loss: 0.000074
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.45528612
+PSNR: 14.660733413721251
+Predicted label: tensor([8])
+Final loss: 0.000187
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.7852704
+PSNR: 21.65237527699758
+Predicted label: tensor([8])
+Final loss: 0.000044
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.6615968
+PSNR: 19.53674436440695
+Predicted label: tensor([0])
+Final loss: 0.000001
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.7951178
+PSNR: 23.098759308219428
+Predicted label: tensor([6])
+Final loss: 0.000016
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.59461266
+PSNR: 18.060588571059807
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27442874: <iDLG_FL> in cluster <dcc> Done
+
+Job <iDLG_FL> was submitted from host <n-62-30-7> by user <s224227> in cluster <dcc> at Wed Dec 17 13:19:53 2025
+Job was executed on host(s) <n-62-31-24>, in queue <hpc>, as user <s224227> in cluster <dcc> at Wed Dec 17 13:19:55 2025
+</zhome/d1/b/187261> was used as the home directory.
+</zhome/d1/b/187261/Desktop/Bachelor/Bachelor> was used as the working directory.
+Started at Wed Dec 17 13:19:55 2025
+Terminated at Wed Dec 17 13:23:38 2025
+Results reported at Wed Dec 17 13:23:38 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+
+#BSUB -J iDLG_FL
+#BSUB -q hpc
+#BSUB -W 120
+#BSUB -R "rusage[mem=10G]"
+#BSUB -R "select[model == XeonGold6126]"
+#BSUB -R "span[hosts=1]"
+#BSUB -n 1
+#BSUB -o iDLG_FL_%J.out
+#BSUB -e iDLG_FL_%J.err
+
+# # Load Python if needed 
+module load python/3.12.11  
+
+# Activate your virtual environment
+source ~/bachelor-env/bin/activate
+
+python main_Tommy.py None True 0.0 0 N c8_b64_e10_img0_FL
+python main_Tommy.py None True 0.0 1 N c8_b64_e10_img1_FL
+python main_Tommy.py None True 0.0 2 N c8_b64_e10_img2_FL
+python main_Tommy.py None True 0.0 3 N c8_b64_e10_img3_FL
+python main_Tommy.py None True 0.0 4 N c8_b64_e10_img4_FL
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   205.43 sec.
+    Max Memory :                                 689 MB
+    Average Memory :                             397.75 MB
+    Total Requested Memory :                     10240.00 MB
+    Delta Memory :                               9551.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                6
+    Run time :                                   245 sec.
+    Turnaround time :                            225 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <iDLG_FL_27442874.err> for stderr output of this job.
+

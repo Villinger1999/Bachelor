@@ -12,7 +12,8 @@ from classes.helperfunctions import *
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 model = LeNet()
-model.load_state_dict(torch.load("state_dicts/state_dict_model_b64_e150.pt", map_location=device, weights_only=True))
+# model.load_state_dict(torch.load("state_dicts/state_dict_model_b64_e150.pt", map_location=device, weights_only=True))
+model.load_state_dict(torch.load("state_dicts/global_state_exp1_c6_b64_e10_FL.pt", map_location=device, weights_only=True))
 model = model.to(device)
 
 leaked_grads = torch.load(
@@ -73,7 +74,7 @@ orig_img = orig_tensor.unsqueeze(0).to(device=device, dtype=torch.float32)
 attacker = iDLG(
     model=model,
     label=label,
-    seed=1,
+    seed=None,
     clamp=(0.0, 1.0),
     device=device,
     orig_img=orig_img,

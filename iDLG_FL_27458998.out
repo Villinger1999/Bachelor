@@ -1,0 +1,10 @@
+Predicted label: tensor([3])
+Final loss: 0.000004
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.6461746
+PSNR: 17.781463142051493
+Predicted label: tensor([8])
+Final loss: 0.000043
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+SSIM: 0.8337078
+PSNR: 23.73083286365686

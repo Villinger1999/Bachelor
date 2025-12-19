@@ -19,8 +19,8 @@ trainset = TensorDataset(x_train_torch, y_train_torch)
 testset = TensorDataset(x_test_torch, y_test_torch)
 
 # Create DataLoader for the smaller test subset
-testloader = DataLoader(testset, batch_size=8, shuffle=False)
-trainloader = DataLoader(trainset, batch_size=8, shuffle=False)
+testloader = DataLoader(testset, batch_size=64, shuffle=False)
+trainloader = DataLoader(trainset, batch_size=64, shuffle=False)
 
 model = LeNet()
 

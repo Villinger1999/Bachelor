@@ -1,0 +1,62 @@
+e2 0.5923
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27442906: <test> in cluster <dcc> Exited
+
+Job <test> was submitted from host <n-62-30-7> by user <s224227> in cluster <dcc> at Wed Dec 17 13:29:57 2025
+Job was executed on host(s) <n-62-31-24>, in queue <hpc>, as user <s224227> in cluster <dcc> at Wed Dec 17 13:29:58 2025
+</zhome/d1/b/187261> was used as the home directory.
+</zhome/d1/b/187261/Desktop/Bachelor/Bachelor> was used as the working directory.
+Started at Wed Dec 17 13:29:58 2025
+Terminated at Wed Dec 17 13:30:14 2025
+Results reported at Wed Dec 17 13:30:14 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+
+#BSUB -J test
+#BSUB -q hpc
+#BSUB -W 120
+#BSUB -R "rusage[mem=10G]"
+#BSUB -R "select[model == XeonGold6126]"
+#BSUB -R "span[hosts=1]"
+#BSUB -n 1
+#BSUB -o test_%J.out
+#BSUB -e test_%J.err
+
+# # Load Python if needed 
+module load python/3.12.11  
+
+# Activate your virtual environment
+source ~/bachelor-env/bin/activate
+
+python test_dict.py
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   11.71 sec.
+    Max Memory :                                 459 MB
+    Average Memory :                             459.00 MB
+    Total Requested Memory :                     10240.00 MB
+    Delta Memory :                               9781.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                5
+    Run time :                                   125 sec.
+    Turnaround time :                            17 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <test_27442906.err> for stderr output of this job.
+

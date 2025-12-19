@@ -238,5 +238,6 @@ class FederatedTrainer:
 
             last_local_states = local_states
             
-        torch.save(self.global_model, f"state_dicts/global_state_{run_id}_{sys.argv[1]}.pt")
+        torch.save(self.global_model.state_dict(), f"state_dicts/global_model_state_{run_id}_{sys.argv[1]}.pt")
+        torch.save(global_state, f"state_dicts/global_state_{run_id}_{sys.argv[1]}.pt")
         return last_local_states, self.global_model
