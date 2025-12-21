@@ -32,6 +32,65 @@ def fedavg(states, C, client_datasets):
     return avg_state
 
 
+def fedavg_gradients(gradients_list, sample_weights=None):
+    """
+    Apply FedAvg aggregation to a list of gradients.
+    
+    Args:
+        gradients_list: List of gradient lists (each inner list contains gradients for all parameters)
+        sample_weights: Optional list of weights for each gradient set (default: equal weights)
+    
+    Returns:
+        Aggregated gradients as a list
+    """
+    if len(gradients_list) == 0:
+        raise ValueError("gradients_list cannot be empty")
+    
+    if sample_weights is None:
+        # Equal weights
+        sample_weights = [1.0 / len(gradients_list)] * len(gradients_list)
+    else:
+        # Normalize weights
+        total_weight = sum(sample_weights)
+        sample_weights = [w / total_weight for w in sample_weights]
+    
+    # Aggregate gradients
+    num_params = len(gradients_list[0])
+    aggregated_grads = []
+    
+    for param_idx in range(num_params):
+        weighted_sum = None
+        for grad_set_idx, grads in enumerate(gradients_list):
+            if weighted_sum is None:
+                weighted_sum = grads[param_idx] * sample_weights[grad_set_idx]
+            else:
+                weighted_sum += grads[param_idx] * sample_weights[grad_set_idx]
+        aggregated_grads.append(weighted_sum)
+    
+    return aggregated_grads
+
+
+def apply_gradients_to_model(model, gradients, learning_rate=1.0):
+    """
+    Update model parameters using gradients (gradient descent step).
+    
+    Args:
+        model: PyTorch model to update
+        gradients: List of gradient tensors (one per parameter)
+        learning_rate: Learning rate for the update
+    
+    Returns:
+        Updated model (same object, modified in-place)
+    """
+    param_idx = 0
+    for param in model.parameters():
+        if param_idx < len(gradients):
+            with torch.no_grad():
+                param.data -= learning_rate * gradients[param_idx]
+            param_idx += 1
+    return model
+
+
 def grad_state_dict(model):
     """
     Return a dict with the same keys as model.state_dict() but values 
@@ -142,13 +201,23 @@ class Client:
                 loss.backward()
 
                 # capture gradients/state from last batch
-                captured_grads = grad_state_dict(local_model)
+                captured_grads_dict = grad_state_dict(local_model)
                 captured_labels = labels.detach().cpu().clone()
                 state_for_attack = copy.deepcopy(local_model.state_dict())
 
                 # apply defense on grads if given (your Clipping/SGP/PLGP can go here)
                 if defense is not None:
-                    captured_grads = defense.apply(captured_grads)
+                    # Convert dict to list for defense application
+                    captured_grads_list = [v for v in captured_grads_dict.values() if isinstance(v, torch.Tensor)]
+                    defended_grads_list = defense.apply(captured_grads_list)
+                    # Convert back to dict (assuming order is preserved)
+                    defended_grads_dict = {}
+                    for i, (key, _) in enumerate(captured_grads_dict.items()):
+                        if i < len(defended_grads_list):
+                            defended_grads_dict[key] = defended_grads_list[i]
+                    captured_grads = defended_grads_dict
+                else:
+                    captured_grads = captured_grads_dict
 
                 optimizer.step()
                 running_loss += loss.item()
