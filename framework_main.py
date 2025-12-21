@@ -111,6 +111,10 @@ def main():
     print(f"Model: {config.training.model_name}")
     print(f"Dataset: {config.training.dataset}")
     print(f"Device: {config.training.device}")
+    if config.training.pretrained_path:
+        print(f"Pretrained Model: {config.training.pretrained_path}")
+    if config.training.skip_training:
+        print("Training: SKIPPED (loading pretrained model)")
     print("=" * 60)
     
     # Initialize trainer
@@ -123,57 +127,71 @@ def main():
         pretrained_path=config.training.pretrained_path
     )
     
-    # Create defense if enabled
-    # Note: Defense threshold will be computed during training/attack if percentile is provided
-    defense = None
-    defense_config = None
-    if config.defense.enabled:
-        print(f"\nSetting up defense: {config.defense.defense_type}")
-        # If threshold is directly provided, create defense now
-        # Otherwise, store config to create defense during training/attack when gradients are available
-        if config.defense.threshold is not None:
-            defense = create_defense(
-                config.defense.defense_type,
-                threshold=config.defense.threshold,
-                percentile=None
-            )
-        else:
-            # Store config for dynamic creation
-            defense_config = config.defense
+    # Get initial model (either pretrained or untrained)
+    model = trainer.get_model()
+    grads_dict = None
     
-    # Training phase
-    if config.training.mode == "normal":
+    # Training phase (skip if --skip-training is set and pretrained_path is provided)
+    if config.training.skip_training:
+        if config.training.pretrained_path is None:
+            raise ValueError("--skip-training requires --pretrained-path to be set")
         print("\n" + "=" * 60)
-        print("Starting Normal Training")
+        print("Skipping Training - Loading Pretrained Model")
         print("=" * 60)
-        # For normal training, defense is applied during gradient capture
-        # If defense_config is set, we'll need to create it dynamically
-        model, grads_dict = trainer.train_normal(
-            epochs=config.training.epochs,
-            learning_rate=config.training.learning_rate,
-            defense=defense,
-            save_grads=config.training.save_grads,
-            run_id=config.training.run_id
-        )
-    elif config.training.mode == "federated":
-        print("\n" + "=" * 60)
-        print("Starting Federated Learning")
-        print("=" * 60)
-        # For federated training, defense is applied in Client.train_local
-        # The Client class will handle dynamic defense creation if needed
-        model, _ = trainer.train_federated(
-            num_rounds=config.training.num_rounds,
-            local_epochs=config.training.local_epochs,
-            learning_rate=config.training.learning_rate,
-            num_clients=config.training.num_clients,
-            client_fraction=config.training.client_fraction,
-            defense=defense,
-            save_grads=config.training.save_grads,
-            run_id=config.training.run_id
-        )
-        grads_dict = None  # Gradients saved internally if requested
+        print(f"Loaded model from: {config.training.pretrained_path}")
+        # Model is already loaded in UnifiedTrainer.__init__
     else:
-        raise ValueError(f"Unknown training mode: {config.training.mode}")
+        # Create defense if enabled
+        # Note: Defense threshold will be computed during training/attack if percentile is provided
+        defense = None
+        defense_config = None
+        if config.defense.enabled:
+            print(f"\nSetting up defense: {config.defense.defense_type}")
+            # If threshold is directly provided, create defense now
+            # Otherwise, store config to create defense during training/attack when gradients are available
+            if config.defense.threshold is not None:
+                defense = create_defense(
+                    config.defense.defense_type,
+                    threshold=config.defense.threshold,
+                    percentile=None
+                )
+            else:
+                # Store config for dynamic creation
+                defense_config = config.defense
+        
+        # Training phase
+        if config.training.mode == "normal":
+            print("\n" + "=" * 60)
+            print("Starting Normal Training")
+            print("=" * 60)
+            # For normal training, defense is applied during gradient capture
+            # If defense_config is set, we'll need to create it dynamically
+            model, grads_dict = trainer.train_normal(
+                epochs=config.training.epochs,
+                learning_rate=config.training.learning_rate,
+                defense=defense,
+                save_grads=config.training.save_grads,
+                run_id=config.training.run_id
+            )
+        elif config.training.mode == "federated":
+            print("\n" + "=" * 60)
+            print("Starting Federated Learning")
+            print("=" * 60)
+            # For federated training, defense is applied in Client.train_local
+            # The Client class will handle dynamic defense creation if needed
+            model, _ = trainer.train_federated(
+                num_rounds=config.training.num_rounds,
+                local_epochs=config.training.local_epochs,
+                learning_rate=config.training.learning_rate,
+                num_clients=config.training.num_clients,
+                client_fraction=config.training.client_fraction,
+                defense=defense,
+                save_grads=config.training.save_grads,
+                run_id=config.training.run_id
+            )
+            grads_dict = None  # Gradients saved internally if requested
+        else:
+            raise ValueError(f"Unknown training mode: {config.training.mode}")
     
     # Attack phase
     if config.attack.enabled:

@@ -44,6 +44,9 @@ class TrainingConfig:
     save_grads: bool = False
     output_dir: str = "./state_dicts"
     run_id: Optional[str] = None
+    
+    # Model loading
+    skip_training: bool = False  # If True and pretrained_path is set, skip training and load model
 
 
 @dataclass
@@ -259,6 +262,7 @@ def parse_args() -> FrameworkConfig:
     config.training.save_grads = args.save_grads
     config.training.run_id = args.run_id
     config.training.pretrained_path = args.pretrained_path
+    config.training.skip_training = args.skip_training
     
     # Defense config
     if args.defense:

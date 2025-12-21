@@ -50,12 +50,13 @@ if __name__ == "__main__":
          "--run-id", "exp1"]
     )
     
-    # Example 4: Attack with original gradients
+    # Example 4: Load pretrained model and skip training
     run_example(
-        "Attack using Original Gradients",
+        "Load Pretrained Model (Skip Training)",
         ["python", "framework_main.py",
          "--mode", "normal",
          "--pretrained-path", "state_dicts/global_model_state_exp1.pt",
+         "--skip-training",
          "--attack",
          "--attack-type", "iDLG",
          "--image-index", "0",
@@ -64,12 +65,27 @@ if __name__ == "__main__":
          "--save-visualization", "attack_original.png"]
     )
     
-    # Example 5: Attack with leaked gradients
+    # Example 4b: Attack with original gradients (without skip-training, will train first)
     run_example(
-        "Attack using Leaked Gradients",
+        "Train Model Then Attack",
+        ["python", "framework_main.py",
+         "--mode", "normal",
+         "--epochs", "10",
+         "--attack",
+         "--attack-type", "iDLG",
+         "--image-index", "0",
+         "--gradient-source", "original",
+         "--metrics", "psnr", "ssim",
+         "--save-visualization", "attack_after_training.png"]
+    )
+    
+    # Example 5: Attack with leaked gradients (using pretrained model, skip training)
+    run_example(
+        "Attack using Leaked Gradients (Pretrained Model)",
         ["python", "framework_main.py",
          "--mode", "normal",
          "--pretrained-path", "state_dicts/global_model_state_exp1.pt",
+         "--skip-training",
          "--attack",
          "--attack-type", "iDLG",
          "--image-index", "0",
@@ -86,6 +102,7 @@ if __name__ == "__main__":
         ["python", "framework_main.py",
          "--mode", "normal",
          "--pretrained-path", "state_dicts/global_model_state_exp1.pt",
+         "--skip-training",
          "--attack",
          "--attack-type", "iDLG",
          "--image-index", "0",
@@ -102,6 +119,7 @@ if __name__ == "__main__":
         ["python", "framework_main.py",
          "--mode", "normal",
          "--pretrained-path", "state_dicts/global_model_state_exp1.pt",
+         "--skip-training",
          "--attack",
          "--attack-type", "iDLG",
          "--image-index", "0",
@@ -119,6 +137,7 @@ if __name__ == "__main__":
         ["python", "framework_main.py",
          "--mode", "normal",
          "--pretrained-path", "state_dicts/global_model_state_exp1.pt",
+         "--skip-training",
          "--attack",
          "--attack-type", "iDLG",
          "--image-index", "0",
@@ -136,6 +155,7 @@ if __name__ == "__main__":
         ["python", "framework_main.py",
          "--mode", "normal",
          "--pretrained-path", "state_dicts/global_model_state_exp1.pt",
+         "--skip-training",
          "--attack",
          "--attack-type", "iDLG",
          "--image-index", "0",
@@ -194,6 +214,7 @@ if __name__ == "__main__":
         ["python", "framework_main.py",
          "--mode", "normal",
          "--pretrained-path", "state_dicts/global_model_state_exp1.pt",
+         "--skip-training",
          "--attack",
          "--attack-type", "iDLG",
          "--image-index", "0",
