@@ -1,3 +1,35 @@
+Predicted label: tensor([6])
+Final loss: 0.000056
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+Predicted label: tensor([6])
+Final loss: 0.000537
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+Predicted label: tensor([6])
+Final loss: 0.000904
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+Predicted label: tensor([6])
+Final loss: 0.002282
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+Predicted label: tensor([6])
+Final loss: 0.004362
+Random dummy: True, dummy variance: 0.0, grads_mode: none
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27461075: <iDLG_def> in cluster <dcc> Exited
+
+Job <iDLG_def> was submitted from host <n-62-30-6> by user <s224227> in cluster <dcc> at Sat Dec 20 12:48:37 2025
+Job was executed on host(s) <n-62-31-23>, in queue <hpc>, as user <s224227> in cluster <dcc> at Sat Dec 20 12:48:37 2025
+</zhome/d1/b/187261> was used as the home directory.
+</zhome/d1/b/187261/Desktop/Bachelor/Bachelor> was used as the working directory.
+Started at Sat Dec 20 12:48:37 2025
+Terminated at Sat Dec 20 12:54:26 2025
+Results reported at Sat Dec 20 12:54:26 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
 #!/bin/bash
 
 #BSUB -J iDLG_def
@@ -48,3 +80,30 @@ python main_Tommy.py None True 0.0 0 SGP 0.75 b64_e150_img0_SGP_75_2
 # python main_Tommy.py None True 0.0 0 N 0.35 c6_b64_e10_img0_SGP
 # python main_Tommy.py None True 0.0 0 N 0.3 c6_b64_e10_img0_SGP
 # python main_Tommy.py None True 0.0 0 N 0.25 c6_b64_e10_img0_SGP
+
+(... more ...)
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   318.08 sec.
+    Max Memory :                                 688 MB
+    Average Memory :                             613.20 MB
+    Total Requested Memory :                     10240.00 MB
+    Delta Memory :                               9552.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                6
+    Run time :                                   380 sec.
+    Turnaround time :                            349 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <iDLG_def_27461075.err> for stderr output of this job.
+

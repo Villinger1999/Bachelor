@@ -5,6 +5,7 @@ from torchvision import transforms
 from torch.optim.lbfgs import LBFGS
 from classes.defenses import *
 from classes.noise import *
+import sys
 
 class iDLG:
     def __init__(
@@ -77,8 +78,17 @@ class iDLG:
         
         # print("0.00000005: ", below_e8, "0.0000005: ", below_e7, "0.000005: ", below_e6, "0.000005: ", below_e5)
         
+        percentile = float(sys.argv[6])
+        
+        if self.defense == "SGP":
+            defense = SGP(threshold = pruning_threshold(orig_grads, percentile))
+        elif self.defense == "Clipping":
+            defense = Clipping(threshold = clipping_threshold(orig_grads, percentile))
+        else:
+            defense = None
+            
         if self.defense != None:
-            orig_grads = self.defense.apply(orig_grads)
+            orig_grads = defense.apply(orig_grads)
         
         if self.random_dummy == True:
             dummy_data = (torch.randn(self.orig_img.size(), dtype=self.param_dtype, device=self.device).requires_grad_(True))

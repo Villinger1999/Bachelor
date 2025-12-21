@@ -49,27 +49,13 @@ class SGP(Defense):
             mask = grad.abs() <= self.threshold
             pruned.append(torch.where(mask, torch.zeros_like(grad), grad))
         return pruned
+    
+def clipping_threshold(grads, percentile: float = 0.1):
+    abs_vals = torch.cat([g.detach().abs().reshape(-1) for g in grads if g is not None])
+    return float(torch.quantile(abs_vals, percentile))
 
-class PLGP(Defense):
-    """Proportional Large Gradient Pruning."""
 
-    def __init__(self, threshold: float, alpha: float):
-        self.threshold = threshold
-        self.alpha = alpha
-
-    def apply(self, grads):
-        """
-        Proportional Large Gradient Pruning (PLGP):
-        Scales down gradients with magnitude > threshold by factor alpha.
-
-        Args:
-            model (nn.Module): model with gradients
-            threshold (float): threshold for cutoff
-            alpha (float): scaling factor for large gradients (0 < alpha < 1)
-        """
-        out = []
-        for grad in grads:
-            mask = grad.abs() > self.threshold
-            out.append(torch.where(mask, self.alpha * grad, grad))
-        return out
-
+def pruning_threshold(grads, keep_ratio: float = 0.9):
+    assert 0.0 < keep_ratio <= 1.0
+    abs_vals = torch.cat([g.detach().abs().reshape(-1) for g in grads if g is not None])
+    return float(torch.quantile(abs_vals, 1.0 - keep_ratio))
