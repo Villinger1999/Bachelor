@@ -87,12 +87,13 @@ class iDLG:
         else:
             defense = None
             
-        if self.defense != None:
+        if defense is not None:
             orig_grads = defense.apply(orig_grads)
+            def_save = orig_grads
         
         if self.random_dummy == True:
             dummy_data = (torch.randn(self.orig_img.size(), dtype=self.param_dtype, device=self.device).requires_grad_(True))
-        elif self.random_dummy == False and self.orig_img is None:
+        elif self.random_dummy == False and self.orig_img is not None:
             dummy_data = (torch.randn(self.orig_img.size(), dtype=self.param_dtype, device=self.device).requires_grad_(True))
         else:
             dummy_data = NoiseGenerator.apply_torch_noise(var=self.var, orig_img=self.orig_img.to(self.device, dtype=self.param_dtype))
@@ -143,4 +144,10 @@ class iDLG:
                 losses.append(current_loss.item())
                 history.append(self.tt(dummy_data[0].detach().cpu()))
                 
-        return dummy_save.detach().cpu(), dummy_data.detach().numpy().squeeze(), label_pred, history, losses 
+        if self.clamp is not None:
+            with torch.no_grad():
+                dummy_data.clamp_(self.clamp[0], self.clamp[1])
+
+        recon = dummy_data.detach().cpu().numpy().squeeze()
+                
+        return def_save, dummy_save, recon, label_pred, history, losses 

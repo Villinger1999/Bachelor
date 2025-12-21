@@ -16,11 +16,16 @@ module load python/3.12.11
 # Activate your virtual environment
 source ~/bachelor-env/bin/activate
 
-python main_Tommy.py None True 0.0 0 SGP 0.95 b64_e150_img0_SGP_0.95_2
-python main_Tommy.py None True 0.0 0 SGP 0.9 b64_e150_img0_SGP_9_2
-python main_Tommy.py None True 0.0 0 SGP 0.85 b64_e150_img0_SGP_85_2
-python main_Tommy.py None True 0.0 0 SGP 0.8 b64_e150_img0_SGP_8_2
-python main_Tommy.py None True 0.0 0 SGP 0.75 b64_e150_img0_SGP_75_2
+python main_Tommy.py None True 0.0 0 Clipping 0.03 b64_e150_img0_Clip_03_1
+python main_Tommy.py None True 0.0 0 Cliiping 0.03 b64_e150_img0_Clip_03_2
+python main_Tommy.py None True 0.0 0 Clipping 0.03 b64_e150_img0_Clip_03_3
+python main_Tommy.py None True 0.0 0 Clipping 0.03 b64_e150_img0_Clip_03_4
+python main_Tommy.py None True 0.0 0 Clipping 0.03 b64_e150_img0_Clip_03_5
+python main_Tommy.py None True 0.0 0 Clipping 0.04 b64_e150_img0_Clip_04_1
+python main_Tommy.py None True 0.0 0 Clipping 0.04 b64_e150_img0_Clip_04_2
+python main_Tommy.py None True 0.0 0 Clipping 0.04 b64_e150_img0_Clip_04_3
+python main_Tommy.py None True 0.0 0 Clipping 0.04 b64_e150_img0_Clip_04_4
+python main_Tommy.py None True 0.0 0 Clipping 0.04 b64_e150_img0_Clip_04_5
 # python main_Tommy.py None True 0.0 0 SGP 0.7 b64_e150_img0_SGP_7
 # python main_Tommy.py None True 0.0 0 SGP 0.65 b64_e150_img0_SGP_65
 # python main_Tommy.py None True 0.0 0 SGP 0.6 b64_e150_img0_SGP_6
