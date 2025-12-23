@@ -35,41 +35,30 @@ if __name__ == "__main__":
  
     # Make path the folder path
     path = os.getcwd() + "/" # always points to the folder you are in
-    if sys.argv[1] == None:
-        image_paths = "/dtu/datasets1/imagenet_object_localization_patched2019/ILSVRC/test" #for DTU HPC data set
-    else: image_paths = sys.argv[1]
+    defaults = [
+        "/dtu/datasets1/imagenet_object_localization_patched2019/ILSVRC/Data/CLS-LOC/train/",  # image_paths
+        0.01,    # variance
+        32,      # res_lb
+        96,      # res_ub
+        4,       # res_step
+        100,     # image_count
+        "no_plot"  # plots_download
+    ]
 
-    # the variance of the noise, defualt: 0.01
-    if sys.argv[2] != None:
-        var_arr=[0.0,float(sys.argv[2])]
-    else: var_arr = [0.0,0.01]
-    
-    #resolution lower bound and upper bound, and the step size used from res_lb to res_ub, default: 32, 96, 4, meaning it rescales from 
-    if int(sys.argv[3]) != None:
-        res_lb = int(sys.argv[3])
-    else: res_lb = 32
-    
-    if int(sys.argv[4]) != None:
-        res_ub = int(sys.argv[4])
-    else: res_ub = 96
-    
-    if int(sys.argv[5]) != None:
-        int(sys.argv[5])
-    else: res_step = 4
+    # Fill in sys.argv with defaults if not enough arguments are provided
+    args = sys.argv[1:] + [None] * (7 - len(sys.argv[1:]))
+    args = [a if a not in [None, "None"] else d for a, d in zip(args, defaults)]
+
+    image_paths = args[0]
+    var_arr = [0.0, float(args[1])]
+    res_lb = int(args[2])
+    res_ub = int(args[3])
+    res_step = int(args[4])
+    image_count = int(args[5])
+    plots_download = args[6].lower() == "plot"
     
     # creates the list of resolutions that are to be compared
-    resolution_arr = list(range(res_lb, res_ub+1,res_step))
-    
-    # get how many images is to be used for the brisque score calculations
-    if int(sys.argv[6]) != None:
-        image_count = int(sys.argv[6])
-    else: image_count = 100
-    
-    # Check if 'plot' is passed as a command-line argument, default: False
-    if sys.argv[7].lower() == "plot":
-        plots_download = True
-    else: plots_download = False
-    
+    resolution_arr = list(range(res_lb, res_ub+1,res_step))    
     # getting the first "image_count" images from the folder containing the data data
     image_paths = get_consistent_images(image_paths, image_count)
     
@@ -101,9 +90,11 @@ if __name__ == "__main__":
                 
                 # Calculate BRISQUE score for each variance level
                 brisque_score = model(processed_image).item()
-                if brisque_score < 0 or brisque_score > 100:
-                    io.imsave(path + f'data/invalid_brisque/noisy{idx}_{variance}_{reso}x{reso}_brisque_{brisque_score:.2f}.jpg', save_array)
-                results.append({"resolution" : reso, "image_idx" : idx, "variance" : variance,"brisque_score" : brisque_score})
+                
+                ## ---- save outliers
+                # if brisque_score < 0 or brisque_score > 100:
+                #     io.imsave(path + f'data/invalid_brisque/noisy{idx}_{variance}_{reso}x{reso}_brisque_{brisque_score:.2f}.jpg', save_array)
+                # results.append({"resolution" : reso, "image_idx" : idx, "variance" : variance,"brisque_score" : brisque_score})
 
         df_results = pd.DataFrame(results)
 
@@ -126,6 +117,10 @@ if __name__ == "__main__":
             plt.title(f'BRISQUE Scores by Noise Variance (Var1 = {var_arr[0]}, Var2 = {var_arr[1]},{reso}x{reso})')
             plt.legend(bbox_to_anchor=(0.5, -0.1), loc='upper center', ncol=len(var_arr)*2)
             plt.grid(True, alpha=0.3)
+            # Ensure the results folder exists before saving
+            results_folder = os.path.join(path, 'results')
+            if not os.path.exists(results_folder):
+                os.makedirs(results_folder)
             plt.savefig(path + f'results/brisque_analysis_{reso}x{reso}.png', dpi=800, bbox_inches='tight')
             plt.close()
         
@@ -136,4 +131,4 @@ if __name__ == "__main__":
         ks_results.append({"resolution": reso, "ks_statistic": np.round(ks_test.statistic,2), "p_value": ks_test.pvalue, "statistic_location": np.round(ks_test.statistic_location,2)})
 
         df_ks = pd.DataFrame(ks_results)
-        df_ks.to_csv(path + f'results/ks_test_results_var{var_arr[0]}_{int(var_arr[1])}_res_{resolution_arr[0]}_{resolution_arr[-1]}.csv', index=False)
+        df_ks.to_csv(path + f'ks_test_results_var{var_arr[0]}_{int(var_arr[1])}_res_{resolution_arr[0]}_{resolution_arr[-1]}.csv', index=False)
