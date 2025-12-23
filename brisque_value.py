@@ -35,7 +35,9 @@ if __name__ == "__main__":
  
     # Make path the folder path
     path = os.getcwd() + "/" # always points to the folder you are in
-    relative_path = sys.argv[1]
+    if sys.argv[1] == None:
+        image_paths = "/dtu/datasets1/imagenet_object_localization_patched2019/ILSVRC/test" #for DTU HPC data set
+    else: image_paths = sys.argv[1]
 
     # the variance of the noise, defualt: 0.01
     if sys.argv[2] != None:
@@ -59,7 +61,6 @@ if __name__ == "__main__":
     resolution_arr = list(range(res_lb, res_ub+1,res_step))
     
     # get how many images is to be used for the brisque score calculations
-    
     if int(sys.argv[6]) != None:
         image_count = int(sys.argv[6])
     else: image_count = 100
@@ -69,12 +70,8 @@ if __name__ == "__main__":
         plots_download = True
     else: plots_download = False
     
-    if sys.argv[8] == None:
-        image_paths = "/dtu/datasets1/imagenet_object_localization_patched2019/ILSVRC/test" #for DTU HPC data set
-    else: image_paths = sys.argv[8]
     # getting the first "image_count" images from the folder containing the data data
     image_paths = get_consistent_images(image_paths, image_count)
-    
     
     for reso in resolution_arr:
         # Process images - back to your original simple approach
