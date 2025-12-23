@@ -15,7 +15,7 @@
 module load python3/3.12.11
 
 # Activate your virtual environment
-source ~/bachelor-env/bin/activate
-# source /zhome/8e/8/187047/Documents/Bachelor/bachelor-env/bin/activate
+# source ~/bachelor-env/Scripts/activate
+source /zhome/8e/8/187047/Documents/Bachelor/bachelor-env/bin/activate
 
 python brisque_value.py
