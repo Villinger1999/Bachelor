@@ -45,7 +45,6 @@ if __name__ == "__main__":
  
     # Make path the folder path
     path = os.getcwd() + "/" # always points to the folder you are in
-<<<<<<< HEAD
     
     parser = argparse.ArgumentParser(description="BRISQUE score analysis")
     parser.add_argument('--image_paths', type=str, default="/dtu/datasets1/imagenet_object_localization_patched2019/ILSVRC/Data/CLS-LOC/test/", help='Path to image directory')
@@ -69,32 +68,6 @@ if __name__ == "__main__":
     # creates the list of resolutions that are to be compared
     resolution_arr = list(range(res_lb, res_ub+1,res_step))    
     
-=======
-    defaults = [
-        "/dtu/datasets1/imagenet_object_localization_patched2019/ILSVRC/Data/CLS-LOC/train/",  # image_paths
-        0.01,    # variance
-        32,      # res_lb
-        96,      # res_ub
-        4,       # res_step
-        100,     # image_count
-        "no_plot"  # plots_download
-    ]
-
-    # Fill in sys.argv with defaults if not enough arguments are provided
-    args = sys.argv[1:] + [None] * (7 - len(sys.argv[1:]))
-    args = [a if a not in [None, "None"] else d for a, d in zip(args, defaults)]
-
-    image_paths = args[0]
-    var_arr = [0.0, float(args[1])]
-    res_lb = int(args[2])
-    res_ub = int(args[3])
-    res_step = int(args[4])
-    image_count = int(args[5])
-    plots_download = args[6].lower() == "plot"
-    
-    # creates the list of resolutions that are to be compared
-    resolution_arr = list(range(res_lb, res_ub+1,res_step))    
->>>>>>> 77bd612 (Refactor brisque_value.py and ks_test.sh for use on the hpc)
     # getting the first "image_count" images from the folder containing the data data
     image_paths = get_images(image_paths, image_count)
     
@@ -127,18 +100,11 @@ if __name__ == "__main__":
                 # Calculate BRISQUE score for each variance level
                 brisque_score = model(processed_image).item()
                 
-<<<<<<< HEAD
                 ##---- save outliers uncomment the line below to save all the images that has a value lower than 0 and higher than 100
                 # if brisque_score < 0 or brisque_score > 100:
                 #     io.imsave(path + f'data/invalid_brisque/noisy{idx}_{variance}_{reso}x{reso}_brisque_{brisque_score:.2f}.jpg', save_array)
                 
                 results.append({"resolution" : reso, "image_idx" : idx, "variance" : variance, "brisque_score" : brisque_score})
-=======
-                ## ---- save outliers
-                # if brisque_score < 0 or brisque_score > 100:
-                #     io.imsave(path + f'data/invalid_brisque/noisy{idx}_{variance}_{reso}x{reso}_brisque_{brisque_score:.2f}.jpg', save_array)
-                # results.append({"resolution" : reso, "image_idx" : idx, "variance" : variance,"brisque_score" : brisque_score})
->>>>>>> 77bd612 (Refactor brisque_value.py and ks_test.sh for use on the hpc)
 
         df_results = pd.DataFrame(results, columns=["resolution", "image_idx", "variance", "brisque_score"])
         
