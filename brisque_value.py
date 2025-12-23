@@ -94,13 +94,18 @@ if __name__ == "__main__":
                 ## ---- save outliers
                 # if brisque_score < 0 or brisque_score > 100:
                 #     io.imsave(path + f'data/invalid_brisque/noisy{idx}_{variance}_{reso}x{reso}_brisque_{brisque_score:.2f}.jpg', save_array)
-                # results.append({"resolution" : reso, "image_idx" : idx, "variance" : variance,"brisque_score" : brisque_score})
+                
+                results.append({"resolution" : reso, "image_idx" : idx, "variance" : variance,"brisque_score" : brisque_score})
 
         df_results = pd.DataFrame(results)
 
+        print("df_results columns:", df_results.columns)
+        print("df_results length:", len(df_results))
+        
         # Extract just the BRISQUE scores for the histogram
         brisque_scores = df_results['brisque_score'].tolist()
         # print(brisque_scores)
+
 
         ##------- Plots and save the histograms of the two distribution, at each resolution 
         if plots_download == True:
