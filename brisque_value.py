@@ -64,6 +64,7 @@ if __name__ == "__main__":
     plots_download = args.plot
     # creates the list of resolutions that are to be compared
     resolution_arr = list(range(res_lb, res_ub+1,res_step))    
+    
     # getting the first "image_count" images from the folder containing the data data
     image_paths = get_images(image_paths, image_count)
     for reso in resolution_arr:
