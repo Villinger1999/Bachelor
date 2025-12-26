@@ -92,9 +92,9 @@ if __name__ == "__main__":
                 # Calculate BRISQUE score for each variance level
                 brisque_score = model(processed_image).item()
                 
-                ## ---- save outliers
-                if brisque_score < 0 or brisque_score > 100:
-                    io.imsave(path + f'data/invalid_brisque/noisy{idx}_{variance}_{reso}x{reso}_brisque_{brisque_score:.2f}.jpg', save_array)
+## ---- save outliers uncomment the line below to save all the images that has a value lower than 0 and higher than 100
+                # if brisque_score < 0 or brisque_score > 100:
+                #     io.imsave(path + f'data/invalid_brisque/noisy{idx}_{variance}_{reso}x{reso}_brisque_{brisque_score:.2f}.jpg', save_array)
                 
                 results.append({"resolution" : reso, "image_idx" : idx, "variance" : variance, "brisque_score" : brisque_score})
 
