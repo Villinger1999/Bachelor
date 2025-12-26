@@ -23,8 +23,8 @@ results = []
 ks_results = []
 
 # function to get the paths to "image_count" images in a folder at "image_dir" 
-def get_consistent_images(image_dir, image_count):
-    all_files = [f for f in os.listdir(image_dir) if f.endswith('.JPEG') and f.startswith('ILSVRC2012_test_')]
+def get_images(image_dir, image_count):
+    all_files = [f for f in os.listdir(image_dir) if f.endswith('.JPEG')]
     all_files.sort()  # Ensures deterministic order
     selected_files = all_files[:image_count]
     return [os.path.join(image_dir, fname) for fname in selected_files]
@@ -36,7 +36,7 @@ if __name__ == "__main__":
     # Make path the folder path
     path = os.getcwd() + "/" # always points to the folder you are in
     defaults = [
-        "/dtu/datasets1/imagenet_object_localization_patched2019/ILSVRC/Data/CLS-LOC/train/",  # image_paths
+        "/dtu/datasets1/imagenet_object_localization_patched2019/ILSVRC/Data/CLS-LOC/test/",  # image_paths
         0.01,    # variance
         32,      # res_lb
         96,      # res_ub
@@ -47,7 +47,7 @@ if __name__ == "__main__":
 
     # Fill in sys.argv with defaults if not enough arguments are provided
     args = sys.argv[1:] + [None] * (7 - len(sys.argv[1:]))
-    args = [a if a not in [None, "None"] else d for a, d in zip(args, defaults)]
+    args = [a if a not in [None, "None", "def"] else d for a, d in zip(args, defaults)]
 
     image_paths = args[0]
     var_arr = [0.0, float(args[1])]
@@ -59,8 +59,9 @@ if __name__ == "__main__":
     
     # creates the list of resolutions that are to be compared
     resolution_arr = list(range(res_lb, res_ub+1,res_step))    
+    
     # getting the first "image_count" images from the folder containing the data data
-    image_paths = get_consistent_images(image_paths, image_count)
+    image_paths = get_images(image_paths, image_count)
     
     for reso in resolution_arr:
         # Process images - back to your original simple approach
@@ -92,15 +93,12 @@ if __name__ == "__main__":
                 brisque_score = model(processed_image).item()
                 
                 ## ---- save outliers
-                # if brisque_score < 0 or brisque_score > 100:
-                #     io.imsave(path + f'data/invalid_brisque/noisy{idx}_{variance}_{reso}x{reso}_brisque_{brisque_score:.2f}.jpg', save_array)
+                if brisque_score < 0 or brisque_score > 100:
+                    io.imsave(path + f'data/invalid_brisque/noisy{idx}_{variance}_{reso}x{reso}_brisque_{brisque_score:.2f}.jpg', save_array)
                 
-                results.append({"resolution" : reso, "image_idx" : idx, "variance" : variance,"brisque_score" : brisque_score})
+                results.append({"resolution" : reso, "image_idx" : idx, "variance" : variance, "brisque_score" : brisque_score})
 
-        df_results = pd.DataFrame(results)
-
-        print("df_results columns:", df_results.columns)
-        print("df_results length:", len(df_results))
+        df_results = pd.DataFrame(results, columns=["resolution", "image_idx", "variance", "brisque_score"])
         
         # Extract just the BRISQUE scores for the histogram
         brisque_scores = df_results['brisque_score'].tolist()
