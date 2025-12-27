@@ -18,6 +18,7 @@ import numpy as np
 import sys
 import scipy.stats as stats
 import random as random
+import argparse
 
 
 
@@ -44,27 +45,25 @@ if __name__ == "__main__":
  
     # Make path the folder path
     path = os.getcwd() + "/" # always points to the folder you are in
-    defaults = [
-        "/dtu/datasets1/imagenet_object_localization_patched2019/ILSVRC/Data/CLS-LOC/test/",  # image_paths
-        0.01,    # variance
-        32,      # res_lb
-        96,      # res_ub
-        4,       # res_step
-        100,     # image_count
-        "no_plot"  # plots_download
-    ]
+    
+    parser = argparse.ArgumentParser(description="BRISQUE score analysis")
+    parser.add_argument('--image_paths', type=str, default="/dtu/datasets1/imagenet_object_localization_patched2019/ILSVRC/Data/CLS-LOC/test/", help='Path to image directory')
+    parser.add_argument('--variance', type=float, default=0.01, help='Variance for noise')
+    parser.add_argument('--res_lb', type=int, default=32, help='Lower bound for resolution')
+    parser.add_argument('--res_ub', type=int, default=96, help='Upper bound for resolution')
+    parser.add_argument('--res_step', type=int, default=4, help='Step size for resolution')
+    parser.add_argument('--image_count', type=int, default=100, help='Number of images to use')
+    parser.add_argument('--plot', action='store_true', help='Enable plotting')
 
-    # Fill in sys.argv with defaults if not enough arguments are provided
-    args = sys.argv[1:] + [None] * (7 - len(sys.argv[1:]))
-    args = [a if a not in [None, "None", "def"] else d for a, d in zip(args, defaults)]
+    args = parser.parse_args()
 
-    image_paths = args[0]
-    var_arr = [0.0, float(args[1])]
-    res_lb = int(args[2])
-    res_ub = int(args[3])
-    res_step = int(args[4])
-    image_count = int(args[5])
-    plots_download = args[6].lower() == "plot"
+    image_paths = args.image_paths
+    var_arr = [0.0, args.variance]
+    res_lb = args.res_lb
+    res_ub = args.res_ub
+    res_step = args.res_step
+    image_count = args.image_count
+    plots_download = args.plot
     
     # creates the list of resolutions that are to be compared
     resolution_arr = list(range(res_lb, res_ub+1,res_step))    
