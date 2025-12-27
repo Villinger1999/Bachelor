@@ -40,13 +40,9 @@ def get_images(image_dir, image_count):
    
 
 if __name__ == "__main__":
-<<<<<<< HEAD:brisque/brisque_value.py
     
     ## setup of the variable needed to do test the brisque scores 
  
-=======
-    ##------ setup of the variable needed to do test the brisque scores 
->>>>>>> 117527b (Refactor image quality analysis scripts and add new SSIM evaluation):brisque_value.py
     # Make path the folder path
     path = os.getcwd() + "/" # always points to the folder you are in
     parser = argparse.ArgumentParser(description="BRISQUE score analysis")
@@ -95,30 +91,12 @@ if __name__ == "__main__":
                     io.imsave(path + f'data/imagenetSubNoise/noisy{idx}_{variance}_{reso}x{reso}.jpg', save_array)
                 # Calculate BRISQUE score for each variance level
                 brisque_score = model(processed_image).item()
-<<<<<<< HEAD:brisque/brisque_value.py
                 
                 # save outliers uncomment the line below to save all the images that has a value lower than 0 and higher than 100
                 # if brisque_score < 0 or brisque_score > 100:
                 # io.imsave(path + f'data/invalid_brisque/noisy{idx}_{variance}_{reso}x{reso}_brisque_{brisque_score:.2f}.jpg', save_array)
                 
                 results.append({"resolution" : reso, "image_idx" : idx, "variance" : variance, "brisque_score" : brisque_score})
-=======
-                if idx == 0:
-                    print(f"BRISQUE score of the first image with noise variance {variance} is {brisque_score}")
-                # Calculate SSIM and PSNR between original and noisy image (only if variance > 0, else set to nan or perfect)
-                if variance == 0:
-                    ssim_score = 1.0
-                    psnr_score = float('inf')
-                else:
-                    # Ensure both arrays are in the same shape and type
-                    try:
-                        ssim_score = skimage.metrics.structural_similarity(image_array, noisy_array, data_range=255, channel_axis=-1)
-                    except TypeError:
-                        # For older skimage
-                        ssim_score = skimage.metrics.structural_similarity(image_array, noisy_array, data_range=255, multichannel=True)
-                    psnr_score = skimage.metrics.peak_signal_noise_ratio(image_array, noisy_array, data_range=255)
-                results.append({"resolution" : reso, "image_idx" : idx, "variance" : variance, "brisque_score" : brisque_score, "ssim": ssim_score, "psnr": psnr_score})
->>>>>>> 117527b (Refactor image quality analysis scripts and add new SSIM evaluation):brisque_value.py
 
         df_results = pd.DataFrame(results, columns=["resolution", "image_idx", "variance", "brisque_score", "ssim", "psnr"])
         
@@ -238,11 +216,8 @@ if __name__ == "__main__":
             "psnr_var": psnr_var
         })
         
-<<<<<<< HEAD:brisque/brisque_value.py
         
 
         # saving the data frame as a csv file
-=======
->>>>>>> 117527b (Refactor image quality analysis scripts and add new SSIM evaluation):brisque_value.py
         df_ks = pd.DataFrame(ks_results)
         df_ks.to_csv(path + f'ks_test_results_{image_count}_{var_arr}_res_{resolution_arr[0]}_{resolution_arr[-1]}.csv', index=False)
