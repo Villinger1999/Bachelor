@@ -53,7 +53,7 @@ if __name__ == "__main__":
     parser.add_argument('--res_ub', type=int, default=96, help='Upper bound for resolution')
     parser.add_argument('--res_step', type=int, default=4, help='Step size for resolution')
     parser.add_argument('--image_count', type=int, default=100, help='Number of images to use')
-    parser.add_argument('--plot', action='store_true', help='Enable plotting')
+    parser.add_argument('--plot', action='store_true', default=False, help='Enable plotting (default: False)')
 
     args = parser.parse_args()
 
@@ -108,23 +108,35 @@ if __name__ == "__main__":
 
         df_results = pd.DataFrame(results, columns=["resolution", "image_idx", "variance", "brisque_score"])
         
-        # Extract just the BRISQUE scores for the histogram
-        brisque_scores = df_results['brisque_score'].tolist()
-        # print(brisque_scores)
+        
 
 
         ##------- Plots and save the histograms of the two distribution, at each resolution 
         if plots_download == True:
             fig, ax1 = plt.subplots(figsize=(8, 5))
             max_count = 0
+            # Gather all brisque scores for this resolution
+            all_brisque_scores = df_results[df_results['resolution'] == reso]['brisque_score']
+            if len(all_brisque_scores) > 0:
+                min_brisque = all_brisque_scores.min()
+                max_brisque = all_brisque_scores.max()
+                if min_brisque >= 0:
+                    x_min = 0
+                else:
+                    x_min = int(np.floor(min_brisque / 10.0)) * 10
+                x_max = int(np.ceil(max_brisque / 10.0)) * 10
+            else:
+                x_min = 0
+                x_max = 100
             for variance in var_arr:
                 var_scores = df_results[(df_results['resolution'] == reso) & (df_results['variance'] == variance)]['brisque_score']
                 # Plot histogram (frequency, not density)
-                counts, bins, patches = ax1.hist(var_scores, bins=20, alpha=0.6, label=f'var={variance}', density=False)
+                counts, bins, patches = ax1.hist(var_scores, bins=20, alpha=0.6, label=f'var={variance}', density=False, range=(x_min, x_max))
                 max_count = max(max_count, counts.max() if len(counts) > 0 else 0)
             ax1.set_xlabel('BRISQUE Score')
             ax1.set_ylabel('Frequency (Count)')
             ax1.set_ylim(0, image_count)
+            ax1.set_xlim(x_min, x_max)
             # Plot CDF on secondary y-axis
             ax2 = ax1.twinx()
             for variance in var_arr:
@@ -134,6 +146,7 @@ if __name__ == "__main__":
                 ax2.plot(sorted_scores, cdf, marker='.', linestyle='-', label=f'CDF var={variance}')
             ax2.set_ylabel('CDF')
             ax2.set_ylim(0, 1)
+            ax2.set_xlim(x_min, x_max)
             # Combine legends from both axes
             handles1, labels1 = ax1.get_legend_handles_labels()
             handles2, labels2 = ax2.get_legend_handles_labels()
@@ -151,7 +164,56 @@ if __name__ == "__main__":
         brisque_var_0 = df_results[(df_results["resolution"] == reso) & (df_results['variance'] == var_arr[0])]['brisque_score']
         brisque_var_i = df_results[(df_results["resolution"] == reso) & (df_results['variance'] == var_arr[1])]['brisque_score']
         ks_test = stats.ks_2samp(brisque_var_0, brisque_var_i, alternative='two-sided', mode='asymp')
-        ks_results.append({"resolution": reso, "ks_statistic": np.round(ks_test.statistic,2), "p_value": ks_test.pvalue, "statistic_location": np.round(ks_test.statistic_location,2)})
 
+        #------ FPR and FNR calculation
+        # Use the KS statistic location as threshold
+        threshold = ks_test.statistic_location
+        fpr = np.sum(brisque_var_0 > threshold) / len(brisque_var_0) if len(brisque_var_0) > 0 else np.nan
+        fnr = np.sum(brisque_var_i < threshold) / len(brisque_var_i) if len(brisque_var_i) > 0 else np.nan
+
+        # Mean and variance for each distribution
+        mean_0 = np.round(np.mean(brisque_var_0),2) if len(brisque_var_0) > 0 else np.nan
+        var_0 = np.round(np.var(brisque_var_0),2) if len(brisque_var_0) > 0 else np.nan
+        mean_i = np.round(np.mean(brisque_var_i),2) if len(brisque_var_i) > 0 else np.nan
+        var_i = np.round(np.var(brisque_var_i),2) if len(brisque_var_i) > 0 else np.nan
+
+        # KS test against normal distribution with same mean/var
+        if len(brisque_var_0) > 1:
+            normal_0 = np.random.normal(mean_0, np.sqrt(var_0), size=len(brisque_var_0))
+            ks_norm_0 = stats.ks_2samp(brisque_var_0, normal_0, alternative='two-sided', mode='asymp')
+            ks_norm_0_stat = ks_norm_0.statistic
+            ks_norm_0_p = ks_norm_0.pvalue
+        else:
+            ks_norm_0_stat = np.nan
+            ks_norm_0_p = np.nan
+        if len(brisque_var_i) > 1:
+            normal_i = np.random.normal(mean_i, np.sqrt(var_i), size=len(brisque_var_i))
+            ks_norm_i = stats.ks_2samp(brisque_var_i, normal_i, alternative='two-sided', mode='asymp')
+            ks_norm_i_stat = ks_norm_i.statistic
+            ks_norm_i_p = ks_norm_i.pvalue
+        else:
+            ks_norm_i_stat = np.nan
+            ks_norm_i_p = np.nan
+
+        ks_results.append({
+            "resolution": reso,
+            "ks_statistic": np.round(ks_test.statistic,2),
+            "p_value": ks_test.pvalue,
+            "statistic_location": np.round(threshold,2),
+            "FPR": fpr,
+            "FNR": fnr,
+            "mean_0": mean_0,
+            "var_0": var_0,
+            "mean_i": mean_i,
+            "var_i": var_i,
+            "ks_norm_0_stat": ks_norm_0_stat,
+            "ks_norm_0_p": ks_norm_0_p,
+            "ks_norm_i_stat": ks_norm_i_stat,
+            "ks_norm_i_p": ks_norm_i_p
+        })
+        
+        
+
+        #------ saving the data frame as a csv file
         df_ks = pd.DataFrame(ks_results)
-        df_ks.to_csv(path + f'ks_test_results_{var_arr}_res_{resolution_arr[0]}_{resolution_arr[-1]}.csv', index=False)
+        df_ks.to_csv(path + f'ks_test_results_{image_count}_{var_arr}_res_{resolution_arr[0]}_{resolution_arr[-1]}.csv', index=False)
