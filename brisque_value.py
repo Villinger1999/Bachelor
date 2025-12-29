@@ -157,7 +157,7 @@ if __name__ == "__main__":
             results_folder = os.path.join(path, 'results')
             if not os.path.exists(results_folder):
                 os.makedirs(results_folder)
-            plt.savefig(path + f'results/brisque_analysis_{var_arr}_{reso}x{reso}.png', dpi=800, bbox_inches='tight')
+            plt.savefig(path + f'results/brisque_analysis_{image_count}_{var_arr}_{reso}x{reso}.png', dpi=800, bbox_inches='tight')
             plt.close()
         
         #------- make the ks_test on the two variances chosen
