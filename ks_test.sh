@@ -18,7 +18,7 @@ module load python3/3.12.11
 # source ~/bachelor-env/Scripts/activate
 source /zhome/8e/8/187047/Documents/Bachelor/bachelor-env/bin/activate
 
-# variance 0.0 and 0.01, reslution inverval [32,96], every forth number in the interval, using 100 images, not saving the plots locally
+# variance 0.0 and 0.0001, reslutions used every forth number in the interval [32,120], using 1000 images, saving the plots locally
 python brisque_value.py --plot --image_count 1000 --res_ub 120 --variance 0.0001
 
 python brisque_value.py --plot --image_count 1000 --res_ub 120 --variance 0.0004
