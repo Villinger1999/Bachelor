@@ -18,5 +18,6 @@ reconstructions/
 *.jpeg
 
 *.err
+*.out
 
 *.pt

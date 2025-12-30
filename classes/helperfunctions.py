@@ -98,3 +98,24 @@ def visualize(orig_img, dummy, recon, pred_label, label, losses, random_dummy, d
     plt.tight_layout()
     plt.savefig(save_name, dpi=100)
     plt.show()
+    
+def apply_defended_grads(model, defended_grads, lr=0.01, momentum=0.9):
+    """
+    Apply a single SGD update using a list of defended gradients aligned with model.parameters().
+    """
+    if defended_grads is None:
+        return  # nothing to apply
+
+    # Create an optimizer (or pass one in if you want to reuse it)
+    optimizer = torch.optim.SGD(model.parameters(), lr=lr, momentum=momentum)
+
+    optimizer.zero_grad(set_to_none=True)
+
+    # Write gradients into .grad
+    for p, g in zip(model.parameters(), defended_grads):
+        if g is None:
+            p.grad = None
+        else:
+            p.grad = g.detach().to(device=p.device, dtype=p.dtype)
+
+    optimizer.step()

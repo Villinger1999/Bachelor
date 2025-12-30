@@ -68,7 +68,7 @@ def evaluate_global(model, dataloader, device):
             correct += (predicted == labels).sum().item()
     return correct / total if total > 0 else 0.0
 
-def train(model, trainloader, testloader, epochs=100, lr=0.1, device="cpu", defense = 0):
+def train(model, trainloader, testloader, epochs=100, lr=0.01, device="cpu", defense = None):
     local_model = copy.deepcopy(model).to(device)
     local_model.train()
 
@@ -94,8 +94,7 @@ def train(model, trainloader, testloader, epochs=100, lr=0.1, device="cpu", defe
         avg_loss = running_loss / max(1, num_steps)
         acc = evaluate_global(local_model, testloader, device)
         print(f"Epoch {epoch+1}/{epochs} - Loss: {avg_loss:.4f} - Acc: {acc:.4f}")
-    state = model.state_dict()
-    return state
+    return local_model.state_dict()
 
 
 class Client:

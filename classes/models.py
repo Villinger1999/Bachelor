@@ -1,10 +1,17 @@
 import torch.nn as nn
 from torchvision import models
+import sys
 
 def get_model(num_classes=10):
     model = models.resnet18(weights=None)
     model.fc = nn.Linear(model.fc.in_features, num_classes)
     return model
+
+# activation = sys.argv[2]
+# if activation == "relu":
+#     activation = nn.ReLU
+# else:
+#     activation = nn.Sigmoid
 
 class LeNet(nn.Module):
     def __init__(self, channel: int = 3, hidden: int = 768, num_classes: int = 10):
