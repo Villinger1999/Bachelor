@@ -19,22 +19,28 @@ module load python3/3.12.11
 source /zhome/8e/8/187047/Documents/Bachelor/bachelor-env/bin/activate
 
 # variance 0.0 and 0.0001, reslutions used every forth number in the interval [32,120], using 1000 images, saving the plots locally
-python brisque_value.py --plot --image_count 1000 --res_ub 120 --variance 0.0001
+python brisque_value.py --plot --image_count 1000 --res_lb 120 --res_lb 180 --variance 0.0001
 
-python brisque_value.py --plot --image_count 1000 --res_ub 120 --variance 0.0004
+python brisque_value.py --plot --image_count 1000 --res_lb 120 --res_lb 180 --variance 0.0004
 
-python brisque_value.py --plot --image_count 1000 --res_ub 120 --variance 0.0009
+python brisque_value.py --plot --image_count 1000 --res_lb 120 --res_lb 180 --variance 0.0009
 
-python brisque_value.py --plot --image_count 1000 --res_ub 120 --variance 0.0016
+python brisque_value.py --plot --image_count 1000 --res_lb 120 --res_lb 180 --variance 0.0016
 
-python brisque_value.py --plot --image_count 1000 --res_ub 120 --variance 0.0025
+python brisque_value.py --plot --image_count 1000 --res_lb 120 --res_lb 180 --variance 0.0025
 
-python brisque_value.py --plot --image_count 1000 --res_ub 120 --variance 0.0036
+python brisque_value.py --plot --image_count 1000 --res_lb 120 --res_lb 180 --variance 0.0036
 
-python brisque_value.py --plot --image_count 1000 --res_ub 120 --variance 0.0049
+python brisque_value.py --plot --image_count 1000 --res_lb 120 --res_lb 180 --variance 0.0049
 
-python brisque_value.py --plot --image_count 1000 --res_ub 120 --variance 0.0064
+python brisque_value.py --plot --image_count 1000 --res_lb 120 --res_lb 180 --variance 0.0064
 
-python brisque_value.py --plot --image_count 1000 --res_ub 120 --variance 0.0081
+python brisque_value.py --plot --image_count 1000 --res_lb 120 --res_lb 180 --variance 0.0081
 
-python brisque_value.py --plot --image_count 1000 --res_ub 120 --variance 0.01
+python brisque_value.py --plot --image_count 1000 --res_lb 120 --res_lb 180 --variance 0.01
+
+python brisque_value.py --plot --image_count 1000 --res_lb 120 --res_lb 180 --variance 0.02
+
+python brisque_value.py --plot --image_count 1000 --res_lb 120 --res_lb 180 --variance 0.03
+
+python brisque_value.py --plot --image_count 1000 --res_lb 120 --res_lb 180 --variance 0.04
