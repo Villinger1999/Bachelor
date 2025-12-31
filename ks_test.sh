@@ -44,3 +44,5 @@ python brisque_value.py --plot --image_count 1000 --res_lb 120 --res_lb 180 --va
 python brisque_value.py --plot --image_count 1000 --res_lb 120 --res_lb 180 --variance 0.03
 
 python brisque_value.py --plot --image_count 1000 --res_lb 120 --res_lb 180 --variance 0.04
+
+python brisque_value.py --plot --image_count 1000 --res_lb 120 --res_lb 180 --variance 0.05
