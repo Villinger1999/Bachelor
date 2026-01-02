@@ -1,7 +1,7 @@
 import torch
 import numpy as np
 import matplotlib.pyplot as plt 
-import sys 
+from skimage.metrics import structural_similarity, peak_signal_noise_ratio
 
 def fix_dimension(img):
     """
@@ -119,3 +119,17 @@ def apply_defended_grads(model, defended_grads, lr=0.01, momentum=0.9):
             p.grad = g.detach().to(device=p.device, dtype=p.dtype)
 
     optimizer.step()
+
+def tensor_to_hwc01(x: torch.Tensor) -> np.ndarray:
+    if x.dim() == 4:
+        x = x[0]
+    x = x.detach().cpu()
+    x = x.permute(1, 2, 0)  # (H,W,C)
+    return x.numpy()
+
+def compute_ssim_psnr(true_img: torch.Tensor, recon_img: torch.Tensor):
+    a = tensor_to_hwc01(true_img)
+    b = tensor_to_hwc01(recon_img)
+    ssim = structural_similarity(a, b, channel_axis=-1, data_range=1.0)
+    psnr = peak_signal_noise_ratio(a, b, data_range=1.0)
+    return float(ssim), float(psnr)

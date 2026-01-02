@@ -54,9 +54,9 @@ class iDLG:
             torch.manual_seed(seed)
             torch.cuda.manual_seed_all(seed)
             
-    def apply(self, orig_grads: list[torch.Tensor]):
+    def apply_defense(self, orig_grads: list[torch.Tensor]):
         if self.defense in ("none"):
-            return orig_grads, None
+            return orig_grads
 
         if self.percentile is None:
             raise ValueError("percentile must be provided when using SGP or Clipping defense")
@@ -87,7 +87,7 @@ class iDLG:
         else:
             raise ValueError("orig_img and grads cannot both be None")
         
-        orig_grads = self.apply(orig_grads)
+        orig_grads = self.apply_defense(orig_grads)
             
         if self.random_dummy == True:
             dummy_data = (torch.rand(self.orig_img.size(), dtype=self.param_dtype, device=self.device).requires_grad_(True))
@@ -122,14 +122,14 @@ class iDLG:
                 for gx, gy in zip(dummy_dy_dx, orig_grads):
                     grad_diff += ((gx - gy) ** 2).sum()
                     
-                # tv_weight = 1e-5
-                # tv = (dummy_data[:, :, :, :-1] - dummy_data[:, :, :, 1:]).abs().sum() + \
-                #     (dummy_data[:, :, :-1, :] - dummy_data[:, :, 1:, :]).abs().sum()
+                tv_weight = 1e-5
+                tv = (dummy_data[:, :, :, :-1] - dummy_data[:, :, :, 1:]).abs().sum() + \
+                    (dummy_data[:, :, :-1, :] - dummy_data[:, :, 1:, :]).abs().sum()
 
-                # loss = grad_diff + tv_weight * tv
-                # loss.backward()
-                grad_diff.backward()
-                return grad_diff
+                loss = grad_diff + tv_weight * tv
+                loss.backward()
+                # grad_diff.backward()
+                return loss
 
             optimizer.step(closure)
 
@@ -143,4 +143,4 @@ class iDLG:
                 losses.append(current_loss.item())
                 history.append(self.tt(dummy_data[0].detach().cpu()))
                 
-        return orig_grads, dummy_save.detach().cpu(), dummy_data.detach().numpy().squeeze(), label_pred, history, losses 
+        return orig_grads, dummy_save.detach().cpu(), dummy_data.detach().cpu(), label_pred, history, losses 
