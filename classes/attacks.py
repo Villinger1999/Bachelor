@@ -39,7 +39,7 @@ class iDLG:
         self.tt = transforms.ToPILImage()
         self.clamp = clamp
         self.defense = defense
-        self.percentile = percentile
+        self.percentile = float(percentile) if percentile is not None else None
         self.grads = grads
         self.var=dummy_var
         self.random_dummy = random_dummy

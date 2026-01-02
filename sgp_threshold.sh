@@ -1,12 +1,12 @@
 #!/bin/bash
-#BSUB -J clip
+#BSUB -J sgp
 #BSUB -q hpc
 #BSUB -W 300
 #BSUB -R "rusage[mem=16G]"
 #BSUB -R "span[hosts=1]"
 #BSUB -n 1
-#BSUB -o clip_%J.out
-#BSUB -e clip_%J.err
+#BSUB -o sgp_%J.out
+#BSUB -e sgp_%J.err
 
 module load python/3.12.11
 source ~/bachelor-env/bin/activate
@@ -18,6 +18,6 @@ python run_idlg_ex.py \
   --images 0 \
   --repeats 100 \
   --iterations 100 \
-  --defense clipping \
-  --def_params 0.99998,0.99997,0.99996,0.99995,0.99994 \
-  --out_csv results_normal_orig_clip.csv
+  --defense sgp \
+  --def_params 0.94,0.93,0.92,0.91,0.9,0.89,88,0.87 \
+  --out_csv results_normal_orig_sgp.csv

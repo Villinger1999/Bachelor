@@ -50,7 +50,7 @@ def run_repeats(img_idx: int, base_seed: int, run_once_fn, repeats: int = 100):
     """
     runs = []
     for b in range(repeats):
-        seed = base_seed + 100000 * img_idx + b
+        seed = base_seed + 1000 * img_idx + b
         runs.append(run_once_fn(b, seed))
     return runs
 
@@ -124,11 +124,9 @@ def run_scenario(
 
                 def run_once(rep_id: int, seed: int):
                     set_all_seeds(seed)
-                    
-                    model_run = copy.deepcopy(model).to(device)
 
                     attacker = iDLG(
-                        model=model_run,
+                        model=model,
                         label=label,
                         clamp=(0.0, 1.0),
                         device=device,
@@ -146,8 +144,9 @@ def run_scenario(
                     if defense == "none":
                         model_acc_after = model_acc
                     else: 
-                        apply_defended_grads(model, def_save)
-                        model_acc_after = evaluate_global(model, testloader, device)
+                        model_copy = copy.deepcopy(model)
+                        apply_defended_grads(model_copy, def_save)
+                        model_acc_after = evaluate_global(model_copy, testloader, device)
 
                     ssim, psnr = compute_ssim_psnr(orig_img, recon)
                     label_correct = int(label_pred == label_true)
@@ -162,7 +161,7 @@ def run_scenario(
                         "psnr": float(psnr),
                         "final_loss": float(final_loss),
                         "model_acc_after": float(model_acc_after),
-                        "threshold": float(dp)
+                        "threshold": float(dp) if dp is not None else None
                     }
 
                 runs = run_repeats(img_idx, base_seed, run_once_fn=run_once, repeats=repeats)
