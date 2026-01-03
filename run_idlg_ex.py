@@ -144,7 +144,7 @@ def run_scenario(
                     if defense == "none":
                         model_acc_after = model_acc
                     else: 
-                        model_copy = copy.deepcopy(model)
+                        model_copy = copy.deepcopy(model).to(device)
                         apply_defended_grads(model_copy, def_save)
                         model_acc_after = evaluate_global(model_copy, testloader, device)
 
@@ -223,7 +223,7 @@ if __name__ == "__main__":
                              "normal_model_leaked_grads",
                              "fl_model_leaked_grads"])
     ap.add_argument("--normal_model", required=True)
-    ap.add_argument("--fl_model", required=True)
+    ap.add_argument("--fl_model", default=None)
     ap.add_argument("--leaked_grads", default=None)
 
     ap.add_argument("--images", default="0-9", help="e.g. '0-9' or '0,5,10,25'")

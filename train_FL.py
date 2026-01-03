@@ -20,7 +20,7 @@ testset = TensorDataset(x_test_torch, y_test_torch)
 
 model = LeNet()
 
-num_clients = 6
+num_clients = 10
 batch_size = 64
 
 testloader = DataLoader(testset, batch_size=batch_size, shuffle=False)
@@ -58,9 +58,9 @@ trainer = FederatedTrainer(
 )
 
 last_states, trained_global_model = trainer.train(
-    num_rounds=8,
-    local_epochs=10,
+    num_rounds=10,
+    local_epochs=15,
     defense=None,          
     save_grads=True,       
-    run_id="exp1"
+    run_id="exp2"
 )
