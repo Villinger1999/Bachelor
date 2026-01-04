@@ -67,7 +67,6 @@ trainloader = DataLoader(trainset, batch_size=64, shuffle=False)
 
 model = LeNet5()
 
-client = Client(client_id=0, dataset=trainset, batch_size=64, device="cpu")
-state_dict, _ = client.train_local(global_model=model, testloader=testloader, epochs=100, lr=0.01)
+state_dict, _ = Client.train_local(model, trainloader, testloader, epochs=100, device="cpu", lr=0.01, defense_function=None)
 
-torch.save(state_dict, f"state_dict_{model._get_name()}_{str(sys.argv[1])}.pt")
+torch.save(state_dict, f"state_dict_{model._get_name}_{str(sys.argv[1])}.pt")
