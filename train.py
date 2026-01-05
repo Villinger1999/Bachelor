@@ -1,4 +1,4 @@
-from classes.federated_learning import Client
+from classes.federated_learning import train
 from classes.models import LeNet
 from torch.utils.data import DataLoader, TensorDataset
 import torch
@@ -18,12 +18,21 @@ y_test_torch  = torch.tensor(y_test.squeeze(), dtype=torch.long)
 trainset = TensorDataset(x_train_torch, y_train_torch)
 testset = TensorDataset(x_test_torch, y_test_torch)
 
+batch_size = int(sys.argv[2])
+epoch = int(sys.argv[3])
+lr = float(sys.argv[4])
+shuf_in = sys.argv[5]
+if shuf_in == "false":
+    shuf = False
+else:
+    shuf = True
+
 # Create DataLoader for the smaller test subset
-testloader = DataLoader(testset, batch_size=64, shuffle=False)
-trainloader = DataLoader(trainset, batch_size=64, shuffle=False)
+testloader = DataLoader(testset, batch_size=batch_size, shuffle=shuf)
+trainloader = DataLoader(trainset, batch_size=batch_size, shuffle=shuf)
 
 model = LeNet()
 
-state_dict, _ = Client.local_train(model, trainloader, testloader, epochs=100, device="cpu", lr=0.01, defense_function=None)
+state_dict = train(model, trainloader, testloader, epochs=epoch, lr=lr)
 
 torch.save(state_dict, f"state_dict_{str(sys.argv[1])}.pt")

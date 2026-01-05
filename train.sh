@@ -2,7 +2,7 @@
 
 #BSUB -J train
 #BSUB -q hpc
-#BSUB -W 120
+#BSUB -W 300
 #BSUB -R "rusage[mem=10G]"
 #BSUB -R "select[model == XeonGold6126]"
 #BSUB -R "span[hosts=1]"
@@ -17,4 +17,5 @@ module load python/3.10.21
 # Activate your virtual environment
 source ~/bachelor-env/bin/activate
 
-python train.py 2_b64_e2
+# python train_FL.py b1_e1_c1_FL
+python train_FL.py b64_e15_c10_2

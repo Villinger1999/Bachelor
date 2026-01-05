@@ -1,6 +1,7 @@
 import torch
 import numpy as np
 import matplotlib.pyplot as plt 
+from skimage.metrics import structural_similarity, peak_signal_noise_ratio
 
 def fix_dimension(img):
     """
@@ -97,3 +98,38 @@ def visualize(orig_img, dummy, recon, pred_label, label, losses, random_dummy, d
     plt.tight_layout()
     plt.savefig(save_name, dpi=100)
     plt.show()
+    
+def apply_defended_grads(model, defended_grads, lr=0.01, momentum=0.9):
+    """
+    Apply a single SGD update using a list of defended gradients aligned with model.parameters().
+    """
+    if defended_grads is None:
+        return  # nothing to apply
+
+    # Create an optimizer (or pass one in if you want to reuse it)
+    optimizer = torch.optim.SGD(model.parameters(), lr=lr, momentum=momentum)
+
+    optimizer.zero_grad(set_to_none=True)
+
+    # Write gradients into .grad
+    for p, g in zip(model.parameters(), defended_grads):
+        if g is None:
+            p.grad = None
+        else:
+            p.grad = g.detach().to(device=p.device, dtype=p.dtype)
+
+    optimizer.step()
+
+def tensor_to_hwc01(x: torch.Tensor) -> np.ndarray:
+    if x.dim() == 4:
+        x = x[0]
+    x = x.detach().cpu()
+    x = x.permute(1, 2, 0)  # (H,W,C)
+    return x.numpy()
+
+def compute_ssim_psnr(true_img: torch.Tensor, recon_img: torch.Tensor):
+    a = tensor_to_hwc01(true_img)
+    b = tensor_to_hwc01(recon_img)
+    ssim = structural_similarity(a, b, channel_axis=-1, data_range=1.0)
+    psnr = peak_signal_noise_ratio(a, b, data_range=1.0)
+    return float(ssim), float(psnr)

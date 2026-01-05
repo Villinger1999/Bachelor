@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+import torch
 
 class Defense(ABC):
     """Base class all defenses must inherit from."""
@@ -26,15 +27,7 @@ class Clipping(Defense):
             model (nn.Module): model with gradients
             threshold (float): threshold for cutoff
         """
-        clipped_grads = []
-        for grad in grads:      
-            if grad.abs() >= self.threshold:
-                clipped = grad.clamp(min=-self.threshold, max=self.threshold)
-                clipped_grads.append(clipped)  # scale down large grads
-            else:
-                clipped_grads.append(grad)
-        return clipped_grads
-
+        return [grad.clamp(-self.threshold, self.threshold) for grad in grads]
 
 class SGP(Defense):
     """Small Gradient Pruning: zero out small gradients."""
@@ -51,36 +44,18 @@ class SGP(Defense):
             model (nn.Module): model with gradients
             threshold (float): threshold for cutoff
         """   
-        pruned_grads = []
-        for grad in grads:      
-            if grad.abs() <= self.threshold:
-                pruned_grads.append(0.0)  # scale down large grads
-            else:
-                pruned_grads.append(grad)
-        return pruned_grads
+        pruned = []
+        for grad in grads:
+            mask = grad.abs() <= self.threshold
+            pruned.append(torch.where(mask, torch.zeros_like(grad), grad))
+        return pruned
+    
+def clipping_threshold(grads, percentile: float = 0.1):
+    abs_vals = torch.cat([g.detach().abs().reshape(-1) for g in grads if g is not None])
+    return float(torch.quantile(abs_vals, percentile))
 
 
-class PLGP(Defense):
-    """Proportional Large Gradient Pruning."""
-
-    def __init__(self, threshold: float, alpha: float):
-        self.threshold = threshold
-        self.alpha = alpha
-
-    def apply(self, grads):
-        """
-        Proportional Large Gradient Pruning (PLGP):
-        Scales down gradients with magnitude > threshold by factor alpha.
-
-        Args:
-            model (nn.Module): model with gradients
-            threshold (float): threshold for cutoff
-            alpha (float): scaling factor for large gradients (0 < alpha < 1)
-        """
-        pruned_grads = []
-        for grad in grads:      
-            if grad.abs() > self.threshold:
-                pruned_grads.append(self.alpha * grad)  # scale down large grads
-            else:
-                pruned_grads.append(grad)
-        return pruned_grads
+def pruning_threshold(grads, keep_ratio: float = 0.9):
+    assert 0.0 < keep_ratio <= 1.0
+    abs_vals = torch.cat([g.detach().abs().reshape(-1) for g in grads if g is not None])
+    return float(torch.quantile(abs_vals, 1.0 - keep_ratio))
