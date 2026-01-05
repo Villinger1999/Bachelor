@@ -4,6 +4,9 @@ from torch.utils.data import DataLoader, TensorDataset, random_split
 import torch
 import tensorflow as tf
 import sys
+import matplotlib.pyplot as plt
+import numpy as np
+
 
 (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
 
@@ -18,7 +21,27 @@ y_test_torch  = torch.tensor(y_test.squeeze(), dtype=torch.long)
 trainset = TensorDataset(x_train_torch, y_train_torch)
 testset = TensorDataset(x_test_torch, y_test_torch)
 
-model = LeNet()
+# img0, label0 = trainset[0]
+
+# single_trainset = TensorDataset(img0.unsqueeze(0), label0.unsqueeze(0))
+
+# # move to CPU just in case
+# img = img0.detach().cpu()
+
+# # convert from (C,H,W) → (H,W,C)
+# img_np = img.permute(1, 2, 0).numpy()
+
+# # plot
+# plt.figure(figsize=(4,4))
+# plt.imshow(img_np)
+# plt.title(f"CIFAR-10 image, label={label0.item()}")
+# plt.axis("off")
+
+# # save
+# plt.savefig("train_image_0.png", dpi=150, bbox_inches="tight")
+# plt.show()
+
+# # model = LeNet()
 
 num_clients = 10
 batch_size = 64
@@ -47,6 +70,9 @@ for i, ds in enumerate(client_datasets):
 
 
 global_model = LeNet().to(device)
+# sd = torch.load("state_dict_b64_e150_sig2.pt", map_location=device, weights_only=True)
+# sd = torch.load("global_model_state_exp2_b64_e15_c10.pt", map_location=device, weights_only=True)
+# global_model.load_state_dict(sd)
 
 trainer = FederatedTrainer(
     global_model=global_model,
@@ -62,5 +88,5 @@ last_states, trained_global_model = trainer.train(
     local_epochs=15,
     defense=None,          
     save_grads=True,       
-    run_id="exp2"
+    run_id="exp5"
 )

@@ -28,8 +28,8 @@ def load_cifar10():
     return x_train, y_train, x_test, y_test
 
 
-def load_model(state_dict_path: str, device: str):
-    model = LeNet()
+def load_model(state_dict_path: str, device: str, activation: str):
+    model = LeNet(activation)
     sd = torch.load(state_dict_path, map_location=device, weights_only=True)
     model.load_state_dict(sd)
     model.to(device).eval()
@@ -81,6 +81,7 @@ def run_scenario(
     leaked_grads_path: Optional[str],
     image_indices: list[int],
     defense: str,
+    activation: str,
     def_params: Optional[list[float]],
     iterations: int,
     base_seed: int,
@@ -93,7 +94,7 @@ def run_scenario(
     # IMPORTANT: evaluation loader should NOT shuffle
     testloader = DataLoader(TensorDataset(x_test, y_test), batch_size=64, shuffle=False)
 
-    model = load_model(model_path, device)
+    model = load_model(model_path, device, activation)
     model_acc = evaluate_global(model, testloader, device)
 
     leaked_grads = None
@@ -231,7 +232,7 @@ if __name__ == "__main__":
     ap.add_argument("--normal_model", required=True)
     ap.add_argument("--fl_model", default=None)
     ap.add_argument("--leaked_grads", default=None)
-
+    ap.add_argument("--")
     ap.add_argument("--images", default="0-9", help="e.g. '0-9' or '0,5,10,25'")
     ap.add_argument("--iterations", type=int, default=100)
     ap.add_argument("--repeats", type=int, default=100)

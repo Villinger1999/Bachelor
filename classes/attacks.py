@@ -111,6 +111,8 @@ class iDLG:
 
         history = []
         losses = []
+        
+        # print("iDLG: self.grads is None?", self.grads is None)
 
         for iters in tqdm(range(iterations)):
             def closure():

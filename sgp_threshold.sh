@@ -15,9 +15,9 @@ python run_idlg_ex.py \
   --scenario normal_model_orig_grads \
   --normal_model state_dict_b64_e150_sig2.pt \
   --fl_model state_dict_b64_e150_sig2.pt \
-  --images 0 \
-  --repeats 100 \
+  --images 1-9 \
+  --repeats 10 \
   --iterations 100 \
   --defense sgp \
-  --def_params 0.85,82,0.80,0.75 \
-  --out_csv results_normal_orig_sgp.csv
+  --def_params 0.2,0.1 \
+  --out_csv results_normal_orig_sgp_multi.csv

@@ -16,8 +16,9 @@ python run_idlg_ex.py \
   --normal_model state_dict_b64_e150_sig2.pt \
   --fl_model state_dict_b64_e150_sig2.pt \
   --images 0 \
-  --repeats 100 \
+  --repeats 300 \
+  --seed 323 \
   --iterations 100 \
   --defense clipping \
-  --def_params 0.99995,0.99994,0.9999 \
+  --def_params 0.7 \
   --out_csv results_normal_orig_clip.csv

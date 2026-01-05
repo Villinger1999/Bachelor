@@ -14,10 +14,10 @@ source ~/bachelor-env/bin/activate
 python run_idlg_ex.py \
   --scenario fl_model_leaked_grads \
   --normal_model state_dict_b64_e150_sig2.pt \
-  --fl_model global_model_state_exp1_c6_b64_e10_FL.pt \
-  --leaked_grads local_grads_client0_exp1.pt\
-  --images 0 \
-  --repeats 5 \
+  --fl_model global_model_state_exp2_b64_e15_c10.pt \
+  --leaked_grads local_grads_client0_exp3.pt\
+  --images 1-9 \
+  --repeats 10 \
   --iterations 100 \
   --defense none \
-  --out_csv results_FL_leaked.csv
+  --out_csv results_FL_leaked_multi.csv
