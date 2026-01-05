@@ -2,16 +2,29 @@ import sys
 import torch
 from classes.attacks import iDLG
 from classes.models import LeNet
+from classes.federated_learning import evaluate_global
+from torch.utils.data import DataLoader, TensorDataset
 import tensorflow as tf
 from skimage.metrics import structural_similarity, peak_signal_noise_ratio
 from classes.helperfunctions import *
 
-(x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
-
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
+(x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
+# Convert x_train/x_test to float tensors and normalize to [0, 1]
+x_test_torch  = torch.tensor(x_test.transpose((0, 3, 1, 2)), dtype=torch.float32) / 255.0
+
+# Convert labels to long tensors and flatten
+y_test_torch  = torch.tensor(y_test.squeeze(), dtype=torch.long)
+
+testset = TensorDataset(x_test_torch, y_test_torch)
+
+# Create DataLoader for the smaller test subset
+testloader = DataLoader(testset, batch_size=64, shuffle=False)
+
 model = LeNet()
-model.load_state_dict(torch.load("state_dicts/state_dict_2_b64_e2.pt", map_location=device, weights_only=True))
+model.load_state_dict(torch.load("state_dict_b64_e150_sig2.pt", map_location=device, weights_only=True))
+# model.load_state_dict(torch.load("state_dict_model_b64_e150.pt", map_location=device, weights_only=True))
 model = model.to(device)
 
 leaked_grads = torch.load(
@@ -46,6 +59,8 @@ else:
 # String → float for variance
 dummy_var = float(var_str)
 idx = int(img_idx)
+def_in = sys.argv[6]
+p = float(sys.argv[7])
 
 # use true label from CIFAR-10
 label_value = int(y_train[idx][0])
@@ -62,17 +77,18 @@ orig_img = orig_tensor.unsqueeze(0).to(device=device, dtype=torch.float32)
 attacker = iDLG(
     model=model,
     label=label,
-    seed=1,
+    seed=None,
     clamp=(0.0, 1.0),
     device=device,
     orig_img=orig_img,
-    grads=grads,
-    defense=None,
+    grads=None,
+    defense=def_in,
+    percentile=p,
     random_dummy=random_dummy,
     dummy_var=dummy_var,
 )
 
-dummy, recon, pred_label, history, losses = attacker.attack(iterations=100)
+def_save, dummy, recon, pred_label, history, losses = attacker.attack(iterations=100)
 
 print(f"Predicted label: {pred_label}")
 print(f"Final loss: {losses[-1]:.6f}")
@@ -101,3 +117,8 @@ psnr_val = peak_signal_noise_ratio(imTrue, imRecon, data_range=1.0)
 
 print("SSIM:", ssim_val)
 print("PSNR:", psnr_val)
+
+print("Acc before defense: ", evaluate_global(model, testloader, device))
+
+apply_defended_grads(model, def_save)
+print("Acc after defense: ", evaluate_global(model, testloader, device))

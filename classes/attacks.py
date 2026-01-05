@@ -3,6 +3,16 @@ import torch
 import torch.nn as nn
 from torchvision import transforms
 from torch.optim.lbfgs import LBFGS
+
+from classes.defenses import SGP, Clipping, pruning_threshold, clipping_threshold
+from classes.noise import NoiseGenerator
+
+
+from tqdm import tqdm
+import torch
+import torch.nn as nn
+from torchvision import transforms
+from torch.optim.lbfgs import LBFGS
 from classes.defenses import *
 from classes.noise import *
 
@@ -17,6 +27,7 @@ class iDLG:
         orig_img=None,
         grads=None,
         defense=None,
+        percentile=None,
         random_dummy=True,
         dummy_var=0.0,
     ) -> None:
@@ -28,6 +39,7 @@ class iDLG:
         self.tt = transforms.ToPILImage()
         self.clamp = clamp
         self.defense = defense
+        self.percentile = float(percentile) if percentile is not None else None
         self.grads = grads
         self.var=dummy_var
         self.random_dummy = random_dummy
@@ -41,6 +53,25 @@ class iDLG:
         if seed is not None:
             torch.manual_seed(seed)
             torch.cuda.manual_seed_all(seed)
+            
+    def apply_defense(self, orig_grads: list[torch.Tensor]):
+        if self.defense in ("none"):
+            return orig_grads
+
+        if self.percentile is None:
+            raise ValueError("percentile must be provided when using SGP or Clipping defense")
+
+        if self.defense == "sgp":
+            thr = pruning_threshold(orig_grads, self.percentile)
+            defense_obj = SGP(threshold=thr)
+        elif self.defense == "clipping":
+            thr = clipping_threshold(orig_grads, self.percentile)
+            defense_obj = Clipping(threshold=thr)
+        else:
+            raise ValueError(f"Unknown defense='{self.defense}'. Use none|sgp|clipping")
+
+        defended = defense_obj.apply(orig_grads)
+        return defended
 
     def attack(self, iterations=200):
         # iDLG training image reconstruction:
@@ -56,16 +87,16 @@ class iDLG:
         else:
             raise ValueError("orig_img and grads cannot both be None")
         
-        if self.defense != None:
-            orig_grads = self.defense.apply(orig_grads)
+        orig_grads = self.apply_defense(orig_grads)
             
-        
         if self.random_dummy == True:
-            dummy_data = (torch.randn(self.orig_img.size(), dtype=self.param_dtype, device=self.device).requires_grad_(True))
-        elif self.random_dummy == False and self.orig_img is None:
-            dummy_data = (torch.randn(self.orig_img.size(), dtype=self.param_dtype, device=self.device).requires_grad_(True))
+            dummy_data = (torch.rand(self.orig_img.size(), dtype=self.param_dtype, device=self.device).requires_grad_(True))
         else:
             dummy_data = NoiseGenerator.apply_torch_noise(var=self.var, orig_img=self.orig_img.to(self.device, dtype=self.param_dtype))
+            
+        if self.clamp is not None:
+            with torch.no_grad():
+                dummy_data.clamp_(self.clamp[0], self.clamp[1])
         
         dummy_save = dummy_data.detach().cpu().clone()
 
@@ -73,13 +104,15 @@ class iDLG:
         label_pred = torch.argmin(torch.sum(orig_grads[-2], dim=-1), dim=-1).detach().reshape((1,)).requires_grad_(False)
         
         optimizer = LBFGS(
-            [dummy_data], lr=.15, max_iter=50,
+            [dummy_data], lr=1, max_iter=50,
             tolerance_grad=1e-09, tolerance_change=1e-11,
             history_size=100, line_search_fn='strong_wolfe'
         ) 
 
         history = []
         losses = []
+        
+        # print("iDLG: self.grads is None?", self.grads is None)
 
         for iters in tqdm(range(iterations)):
             def closure():
@@ -112,4 +145,4 @@ class iDLG:
                 losses.append(current_loss.item())
                 history.append(self.tt(dummy_data[0].detach().cpu()))
                 
-        return dummy_save.detach().cpu(), dummy_data.detach().numpy().squeeze(), label_pred, history, losses 
+        return orig_grads, dummy_save.detach().cpu(), dummy_data.detach().cpu(), label_pred, history, losses 

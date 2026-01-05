@@ -1,0 +1,615 @@
+
+=== Round 1/8 ===
+Client 0 training...
+[Client 0] Epoch 1/10 - Loss: 2.3311 - Acc: 0.1000
+[Client 0] Epoch 2/10 - Loss: 2.3084 - Acc: 0.1000
+[Client 0] Epoch 3/10 - Loss: 2.3054 - Acc: 0.1000
+[Client 0] Epoch 4/10 - Loss: 2.3046 - Acc: 0.1000
+[Client 0] Epoch 5/10 - Loss: 2.3043 - Acc: 0.1000
+[Client 0] Epoch 6/10 - Loss: 2.3038 - Acc: 0.1000
+[Client 0] Epoch 7/10 - Loss: 2.3038 - Acc: 0.1000
+[Client 0] Epoch 8/10 - Loss: 2.3036 - Acc: 0.1000
+[Client 0] Epoch 9/10 - Loss: 2.3033 - Acc: 0.1000
+[Client 0] Epoch 10/10 - Loss: 2.3035 - Acc: 0.1000
+Client 1 training...
+[Client 1] Epoch 1/10 - Loss: 2.3266 - Acc: 0.1000
+[Client 1] Epoch 2/10 - Loss: 2.3092 - Acc: 0.1000
+[Client 1] Epoch 3/10 - Loss: 2.3059 - Acc: 0.1000
+[Client 1] Epoch 4/10 - Loss: 2.3047 - Acc: 0.1000
+[Client 1] Epoch 5/10 - Loss: 2.3035 - Acc: 0.1000
+[Client 1] Epoch 6/10 - Loss: 2.3047 - Acc: 0.1000
+[Client 1] Epoch 7/10 - Loss: 2.3034 - Acc: 0.1000
+[Client 1] Epoch 8/10 - Loss: 2.3036 - Acc: 0.1000
+[Client 1] Epoch 9/10 - Loss: 2.3030 - Acc: 0.1000
+[Client 1] Epoch 10/10 - Loss: 2.3032 - Acc: 0.1000
+Client 2 training...
+[Client 2] Epoch 1/10 - Loss: 2.3305 - Acc: 0.1000
+[Client 2] Epoch 2/10 - Loss: 2.3075 - Acc: 0.1000
+[Client 2] Epoch 3/10 - Loss: 2.3045 - Acc: 0.1021
+[Client 2] Epoch 4/10 - Loss: 2.3037 - Acc: 0.1000
+[Client 2] Epoch 5/10 - Loss: 2.3044 - Acc: 0.1000
+[Client 2] Epoch 6/10 - Loss: 2.3041 - Acc: 0.1000
+[Client 2] Epoch 7/10 - Loss: 2.3041 - Acc: 0.1000
+[Client 2] Epoch 8/10 - Loss: 2.3035 - Acc: 0.1000
+[Client 2] Epoch 9/10 - Loss: 2.3035 - Acc: 0.1000
+[Client 2] Epoch 10/10 - Loss: 2.3034 - Acc: 0.1000
+Client 3 training...
+[Client 3] Epoch 1/10 - Loss: 2.3300 - Acc: 0.1000
+[Client 3] Epoch 2/10 - Loss: 2.3083 - Acc: 0.1000
+[Client 3] Epoch 3/10 - Loss: 2.3058 - Acc: 0.1000
+[Client 3] Epoch 4/10 - Loss: 2.3046 - Acc: 0.1000
+[Client 3] Epoch 5/10 - Loss: 2.3044 - Acc: 0.1000
+[Client 3] Epoch 6/10 - Loss: 2.3041 - Acc: 0.1000
+[Client 3] Epoch 7/10 - Loss: 2.3037 - Acc: 0.1000
+[Client 3] Epoch 8/10 - Loss: 2.3035 - Acc: 0.1000
+[Client 3] Epoch 9/10 - Loss: 2.3036 - Acc: 0.1000
+[Client 3] Epoch 10/10 - Loss: 2.3036 - Acc: 0.1000
+Client 4 training...
+[Client 4] Epoch 1/10 - Loss: 2.3282 - Acc: 0.1000
+[Client 4] Epoch 2/10 - Loss: 2.3089 - Acc: 0.1000
+[Client 4] Epoch 3/10 - Loss: 2.3054 - Acc: 0.1000
+[Client 4] Epoch 4/10 - Loss: 2.3051 - Acc: 0.1000
+[Client 4] Epoch 5/10 - Loss: 2.3041 - Acc: 0.1000
+[Client 4] Epoch 6/10 - Loss: 2.3044 - Acc: 0.1000
+[Client 4] Epoch 7/10 - Loss: 2.3046 - Acc: 0.1000
+[Client 4] Epoch 8/10 - Loss: 2.3039 - Acc: 0.1000
+[Client 4] Epoch 9/10 - Loss: 2.3040 - Acc: 0.1000
+[Client 4] Epoch 10/10 - Loss: 2.3035 - Acc: 0.1000
+Client 5 training...
+[Client 5] Epoch 1/10 - Loss: 2.3339 - Acc: 0.1000
+[Client 5] Epoch 2/10 - Loss: 2.3079 - Acc: 0.1000
+[Client 5] Epoch 3/10 - Loss: 2.3053 - Acc: 0.1000
+[Client 5] Epoch 4/10 - Loss: 2.3052 - Acc: 0.1000
+[Client 5] Epoch 5/10 - Loss: 2.3042 - Acc: 0.1000
+[Client 5] Epoch 6/10 - Loss: 2.3046 - Acc: 0.1000
+[Client 5] Epoch 7/10 - Loss: 2.3044 - Acc: 0.1000
+[Client 5] Epoch 8/10 - Loss: 2.3035 - Acc: 0.1000
+[Client 5] Epoch 9/10 - Loss: 2.3036 - Acc: 0.1000
+[Client 5] Epoch 10/10 - Loss: 2.3034 - Acc: 0.1000
+Global eval after round 1: 0.1027
+
+=== Round 2/8 ===
+Client 0 training...
+[Client 0] Epoch 1/10 - Loss: 2.3034 - Acc: 0.1000
+[Client 0] Epoch 2/10 - Loss: 2.3029 - Acc: 0.1000
+[Client 0] Epoch 3/10 - Loss: 2.3033 - Acc: 0.1000
+[Client 0] Epoch 4/10 - Loss: 2.3030 - Acc: 0.1000
+[Client 0] Epoch 5/10 - Loss: 2.3028 - Acc: 0.1000
+[Client 0] Epoch 6/10 - Loss: 2.3030 - Acc: 0.1000
+[Client 0] Epoch 7/10 - Loss: 2.3028 - Acc: 0.1000
+[Client 0] Epoch 8/10 - Loss: 2.3026 - Acc: 0.1230
+[Client 0] Epoch 9/10 - Loss: 2.3025 - Acc: 0.1217
+[Client 0] Epoch 10/10 - Loss: 2.3023 - Acc: 0.1000
+Client 1 training...
+[Client 1] Epoch 1/10 - Loss: 2.3035 - Acc: 0.1000
+[Client 1] Epoch 2/10 - Loss: 2.3034 - Acc: 0.1000
+[Client 1] Epoch 3/10 - Loss: 2.3031 - Acc: 0.1000
+[Client 1] Epoch 4/10 - Loss: 2.3026 - Acc: 0.1000
+[Client 1] Epoch 5/10 - Loss: 2.3028 - Acc: 0.1000
+[Client 1] Epoch 6/10 - Loss: 2.3029 - Acc: 0.1000
+[Client 1] Epoch 7/10 - Loss: 2.3025 - Acc: 0.1000
+[Client 1] Epoch 8/10 - Loss: 2.3026 - Acc: 0.1000
+[Client 1] Epoch 9/10 - Loss: 2.3024 - Acc: 0.1000
+[Client 1] Epoch 10/10 - Loss: 2.3020 - Acc: 0.1000
+Client 2 training...
+[Client 2] Epoch 1/10 - Loss: 2.3036 - Acc: 0.1000
+[Client 2] Epoch 2/10 - Loss: 2.3030 - Acc: 0.1000
+[Client 2] Epoch 3/10 - Loss: 2.3030 - Acc: 0.1280
+[Client 2] Epoch 4/10 - Loss: 2.3030 - Acc: 0.1000
+[Client 2] Epoch 5/10 - Loss: 2.3029 - Acc: 0.1000
+[Client 2] Epoch 6/10 - Loss: 2.3030 - Acc: 0.1000
+[Client 2] Epoch 7/10 - Loss: 2.3027 - Acc: 0.1000
+[Client 2] Epoch 8/10 - Loss: 2.3026 - Acc: 0.1007
+[Client 2] Epoch 9/10 - Loss: 2.3026 - Acc: 0.1000
+[Client 2] Epoch 10/10 - Loss: 2.3026 - Acc: 0.1000
+Client 3 training...
+[Client 3] Epoch 1/10 - Loss: 2.3034 - Acc: 0.1000
+[Client 3] Epoch 2/10 - Loss: 2.3037 - Acc: 0.1000
+[Client 3] Epoch 3/10 - Loss: 2.3034 - Acc: 0.1000
+[Client 3] Epoch 4/10 - Loss: 2.3031 - Acc: 0.1000
+[Client 3] Epoch 5/10 - Loss: 2.3028 - Acc: 0.1000
+[Client 3] Epoch 6/10 - Loss: 2.3032 - Acc: 0.1052
+[Client 3] Epoch 7/10 - Loss: 2.3028 - Acc: 0.1000
+[Client 3] Epoch 8/10 - Loss: 2.3028 - Acc: 0.1000
+[Client 3] Epoch 9/10 - Loss: 2.3025 - Acc: 0.1001
+[Client 3] Epoch 10/10 - Loss: 2.3026 - Acc: 0.1000
+Client 4 training...
+[Client 4] Epoch 1/10 - Loss: 2.3034 - Acc: 0.1000
+[Client 4] Epoch 2/10 - Loss: 2.3036 - Acc: 0.1000
+[Client 4] Epoch 3/10 - Loss: 2.3034 - Acc: 0.1000
+[Client 4] Epoch 4/10 - Loss: 2.3033 - Acc: 0.1189
+[Client 4] Epoch 5/10 - Loss: 2.3029 - Acc: 0.1000
+[Client 4] Epoch 6/10 - Loss: 2.3028 - Acc: 0.1000
+[Client 4] Epoch 7/10 - Loss: 2.3030 - Acc: 0.1000
+[Client 4] Epoch 8/10 - Loss: 2.3027 - Acc: 0.1000
+[Client 4] Epoch 9/10 - Loss: 2.3025 - Acc: 0.1000
+[Client 4] Epoch 10/10 - Loss: 2.3024 - Acc: 0.1000
+Client 5 training...
+[Client 5] Epoch 1/10 - Loss: 2.3036 - Acc: 0.1000
+[Client 5] Epoch 2/10 - Loss: 2.3036 - Acc: 0.1000
+[Client 5] Epoch 3/10 - Loss: 2.3034 - Acc: 0.1000
+[Client 5] Epoch 4/10 - Loss: 2.3035 - Acc: 0.1000
+[Client 5] Epoch 5/10 - Loss: 2.3032 - Acc: 0.1000
+[Client 5] Epoch 6/10 - Loss: 2.3032 - Acc: 0.1000
+[Client 5] Epoch 7/10 - Loss: 2.3032 - Acc: 0.1000
+[Client 5] Epoch 8/10 - Loss: 2.3030 - Acc: 0.1000
+[Client 5] Epoch 9/10 - Loss: 2.3028 - Acc: 0.1293
+[Client 5] Epoch 10/10 - Loss: 2.3028 - Acc: 0.1342
+Global eval after round 2: 0.1038
+
+=== Round 3/8 ===
+Client 0 training...
+[Client 0] Epoch 1/10 - Loss: 2.3022 - Acc: 0.1000
+[Client 0] Epoch 2/10 - Loss: 2.3020 - Acc: 0.1227
+[Client 0] Epoch 3/10 - Loss: 2.3017 - Acc: 0.1000
+[Client 0] Epoch 4/10 - Loss: 2.3013 - Acc: 0.1000
+[Client 0] Epoch 5/10 - Loss: 2.3011 - Acc: 0.1000
+[Client 0] Epoch 6/10 - Loss: 2.3008 - Acc: 0.1000
+[Client 0] Epoch 7/10 - Loss: 2.3001 - Acc: 0.1000
+[Client 0] Epoch 8/10 - Loss: 2.2994 - Acc: 0.1258
+[Client 0] Epoch 9/10 - Loss: 2.2981 - Acc: 0.1000
+[Client 0] Epoch 10/10 - Loss: 2.2963 - Acc: 0.1479
+Client 1 training...
+[Client 1] Epoch 1/10 - Loss: 2.3021 - Acc: 0.1000
+[Client 1] Epoch 2/10 - Loss: 2.3020 - Acc: 0.1005
+[Client 1] Epoch 3/10 - Loss: 2.3018 - Acc: 0.1000
+[Client 1] Epoch 4/10 - Loss: 2.3010 - Acc: 0.1000
+[Client 1] Epoch 5/10 - Loss: 2.3006 - Acc: 0.1137
+[Client 1] Epoch 6/10 - Loss: 2.3003 - Acc: 0.1009
+[Client 1] Epoch 7/10 - Loss: 2.2992 - Acc: 0.1000
+[Client 1] Epoch 8/10 - Loss: 2.2980 - Acc: 0.1000
+[Client 1] Epoch 9/10 - Loss: 2.2960 - Acc: 0.1000
+[Client 1] Epoch 10/10 - Loss: 2.2915 - Acc: 0.1013
+Client 2 training...
+[Client 2] Epoch 1/10 - Loss: 2.3022 - Acc: 0.1000
+[Client 2] Epoch 2/10 - Loss: 2.3018 - Acc: 0.1000
+[Client 2] Epoch 3/10 - Loss: 2.3019 - Acc: 0.1293
+[Client 2] Epoch 4/10 - Loss: 2.3016 - Acc: 0.1003
+[Client 2] Epoch 5/10 - Loss: 2.3013 - Acc: 0.1000
+[Client 2] Epoch 6/10 - Loss: 2.3008 - Acc: 0.1244
+[Client 2] Epoch 7/10 - Loss: 2.3002 - Acc: 0.1000
+[Client 2] Epoch 8/10 - Loss: 2.2998 - Acc: 0.1155
+[Client 2] Epoch 9/10 - Loss: 2.2984 - Acc: 0.1501
+[Client 2] Epoch 10/10 - Loss: 2.2968 - Acc: 0.1254
+Client 3 training...
+[Client 3] Epoch 1/10 - Loss: 2.3022 - Acc: 0.1254
+[Client 3] Epoch 2/10 - Loss: 2.3022 - Acc: 0.1000
+[Client 3] Epoch 3/10 - Loss: 2.3019 - Acc: 0.1000
+[Client 3] Epoch 4/10 - Loss: 2.3018 - Acc: 0.1000
+[Client 3] Epoch 5/10 - Loss: 2.3014 - Acc: 0.1000
+[Client 3] Epoch 6/10 - Loss: 2.3009 - Acc: 0.1121
+[Client 3] Epoch 7/10 - Loss: 2.3000 - Acc: 0.1020
+[Client 3] Epoch 8/10 - Loss: 2.2997 - Acc: 0.1384
+[Client 3] Epoch 9/10 - Loss: 2.2984 - Acc: 0.1000
+[Client 3] Epoch 10/10 - Loss: 2.2960 - Acc: 0.1563
+Client 4 training...
+[Client 4] Epoch 1/10 - Loss: 2.3025 - Acc: 0.1000
+[Client 4] Epoch 2/10 - Loss: 2.3020 - Acc: 0.1000
+[Client 4] Epoch 3/10 - Loss: 2.3017 - Acc: 0.1000
+[Client 4] Epoch 4/10 - Loss: 2.3015 - Acc: 0.1000
+[Client 4] Epoch 5/10 - Loss: 2.3010 - Acc: 0.1000
+[Client 4] Epoch 6/10 - Loss: 2.3006 - Acc: 0.1000
+[Client 4] Epoch 7/10 - Loss: 2.2995 - Acc: 0.1000
+[Client 4] Epoch 8/10 - Loss: 2.2989 - Acc: 0.1291
+[Client 4] Epoch 9/10 - Loss: 2.2964 - Acc: 0.1517
+[Client 4] Epoch 10/10 - Loss: 2.2935 - Acc: 0.1191
+Client 5 training...
+[Client 5] Epoch 1/10 - Loss: 2.3027 - Acc: 0.1000
+[Client 5] Epoch 2/10 - Loss: 2.3025 - Acc: 0.1393
+[Client 5] Epoch 3/10 - Loss: 2.3019 - Acc: 0.1000
+[Client 5] Epoch 4/10 - Loss: 2.3018 - Acc: 0.1163
+[Client 5] Epoch 5/10 - Loss: 2.3018 - Acc: 0.1000
+[Client 5] Epoch 6/10 - Loss: 2.3009 - Acc: 0.1488
+[Client 5] Epoch 7/10 - Loss: 2.3005 - Acc: 0.1106
+[Client 5] Epoch 8/10 - Loss: 2.2998 - Acc: 0.1146
+[Client 5] Epoch 9/10 - Loss: 2.2988 - Acc: 0.1005
+[Client 5] Epoch 10/10 - Loss: 2.2965 - Acc: 0.1417
+Global eval after round 3: 0.1680
+
+=== Round 4/8 ===
+Client 0 training...
+[Client 0] Epoch 1/10 - Loss: 2.2911 - Acc: 0.1357
+[Client 0] Epoch 2/10 - Loss: 2.2773 - Acc: 0.1600
+[Client 0] Epoch 3/10 - Loss: 2.2299 - Acc: 0.2161
+[Client 0] Epoch 4/10 - Loss: 2.1419 - Acc: 0.2408
+[Client 0] Epoch 5/10 - Loss: 2.0845 - Acc: 0.2450
+[Client 0] Epoch 6/10 - Loss: 2.0597 - Acc: 0.2320
+[Client 0] Epoch 7/10 - Loss: 2.0387 - Acc: 0.2613
+[Client 0] Epoch 8/10 - Loss: 2.0317 - Acc: 0.2687
+[Client 0] Epoch 9/10 - Loss: 2.0192 - Acc: 0.2605
+[Client 0] Epoch 10/10 - Loss: 1.9989 - Acc: 0.2870
+Client 1 training...
+[Client 1] Epoch 1/10 - Loss: 2.2896 - Acc: 0.1408
+[Client 1] Epoch 2/10 - Loss: 2.2708 - Acc: 0.1609
+[Client 1] Epoch 3/10 - Loss: 2.2073 - Acc: 0.2077
+[Client 1] Epoch 4/10 - Loss: 2.1213 - Acc: 0.2524
+[Client 1] Epoch 5/10 - Loss: 2.0748 - Acc: 0.2659
+[Client 1] Epoch 6/10 - Loss: 2.0551 - Acc: 0.2673
+[Client 1] Epoch 7/10 - Loss: 2.0439 - Acc: 0.2589
+[Client 1] Epoch 8/10 - Loss: 2.0281 - Acc: 0.2623
+[Client 1] Epoch 9/10 - Loss: 2.0238 - Acc: 0.2676
+[Client 1] Epoch 10/10 - Loss: 2.0077 - Acc: 0.2638
+Client 2 training...
+[Client 2] Epoch 1/10 - Loss: 2.2911 - Acc: 0.1381
+[Client 2] Epoch 2/10 - Loss: 2.2784 - Acc: 0.1838
+[Client 2] Epoch 3/10 - Loss: 2.2324 - Acc: 0.2057
+[Client 2] Epoch 4/10 - Loss: 2.1455 - Acc: 0.2458
+[Client 2] Epoch 5/10 - Loss: 2.0833 - Acc: 0.2478
+[Client 2] Epoch 6/10 - Loss: 2.0654 - Acc: 0.2579
+[Client 2] Epoch 7/10 - Loss: 2.0591 - Acc: 0.2675
+[Client 2] Epoch 8/10 - Loss: 2.0393 - Acc: 0.2759
+[Client 2] Epoch 9/10 - Loss: 2.0208 - Acc: 0.2676
+[Client 2] Epoch 10/10 - Loss: 2.0206 - Acc: 0.2729
+Client 3 training...
+[Client 3] Epoch 1/10 - Loss: 2.2907 - Acc: 0.1466
+[Client 3] Epoch 2/10 - Loss: 2.2750 - Acc: 0.1567
+[Client 3] Epoch 3/10 - Loss: 2.2231 - Acc: 0.2358
+[Client 3] Epoch 4/10 - Loss: 2.1360 - Acc: 0.2398
+[Client 3] Epoch 5/10 - Loss: 2.0777 - Acc: 0.2585
+[Client 3] Epoch 6/10 - Loss: 2.0563 - Acc: 0.2720
+[Client 3] Epoch 7/10 - Loss: 2.0428 - Acc: 0.2552
+[Client 3] Epoch 8/10 - Loss: 2.0408 - Acc: 0.2508
+[Client 3] Epoch 9/10 - Loss: 2.0118 - Acc: 0.2756
+[Client 3] Epoch 10/10 - Loss: 2.0001 - Acc: 0.2641
+Client 4 training...
+[Client 4] Epoch 1/10 - Loss: 2.2898 - Acc: 0.1039
+[Client 4] Epoch 2/10 - Loss: 2.2728 - Acc: 0.1499
+[Client 4] Epoch 3/10 - Loss: 2.2117 - Acc: 0.2114
+[Client 4] Epoch 4/10 - Loss: 2.1150 - Acc: 0.2502
+[Client 4] Epoch 5/10 - Loss: 2.0679 - Acc: 0.2491
+[Client 4] Epoch 6/10 - Loss: 2.0416 - Acc: 0.2353
+[Client 4] Epoch 7/10 - Loss: 2.0328 - Acc: 0.2652
+[Client 4] Epoch 8/10 - Loss: 2.0161 - Acc: 0.2779
+[Client 4] Epoch 9/10 - Loss: 2.0163 - Acc: 0.2634
+[Client 4] Epoch 10/10 - Loss: 1.9991 - Acc: 0.2698
+Client 5 training...
+[Client 5] Epoch 1/10 - Loss: 2.2908 - Acc: 0.1242
+[Client 5] Epoch 2/10 - Loss: 2.2761 - Acc: 0.1467
+[Client 5] Epoch 3/10 - Loss: 2.2258 - Acc: 0.2109
+[Client 5] Epoch 4/10 - Loss: 2.1356 - Acc: 0.2133
+[Client 5] Epoch 5/10 - Loss: 2.0787 - Acc: 0.2413
+[Client 5] Epoch 6/10 - Loss: 2.0630 - Acc: 0.2570
+[Client 5] Epoch 7/10 - Loss: 2.0470 - Acc: 0.2546
+[Client 5] Epoch 8/10 - Loss: 2.0314 - Acc: 0.2482
+[Client 5] Epoch 9/10 - Loss: 2.0238 - Acc: 0.2518
+[Client 5] Epoch 10/10 - Loss: 2.0023 - Acc: 0.2677
+Global eval after round 4: 0.2943
+
+=== Round 5/8 ===
+Client 0 training...
+[Client 0] Epoch 1/10 - Loss: 1.9953 - Acc: 0.2793
+[Client 0] Epoch 2/10 - Loss: 1.9797 - Acc: 0.2824
+[Client 0] Epoch 3/10 - Loss: 1.9769 - Acc: 0.2856
+[Client 0] Epoch 4/10 - Loss: 1.9491 - Acc: 0.2818
+[Client 0] Epoch 5/10 - Loss: 1.9346 - Acc: 0.2930
+[Client 0] Epoch 6/10 - Loss: 1.9226 - Acc: 0.3063
+[Client 0] Epoch 7/10 - Loss: 1.9086 - Acc: 0.3073
+[Client 0] Epoch 8/10 - Loss: 1.8992 - Acc: 0.2768
+[Client 0] Epoch 9/10 - Loss: 1.8918 - Acc: 0.3155
+[Client 0] Epoch 10/10 - Loss: 1.8785 - Acc: 0.3062
+Client 1 training...
+[Client 1] Epoch 1/10 - Loss: 1.9888 - Acc: 0.2808
+[Client 1] Epoch 2/10 - Loss: 1.9813 - Acc: 0.2867
+[Client 1] Epoch 3/10 - Loss: 1.9612 - Acc: 0.3064
+[Client 1] Epoch 4/10 - Loss: 1.9467 - Acc: 0.2750
+[Client 1] Epoch 5/10 - Loss: 1.9397 - Acc: 0.2963
+[Client 1] Epoch 6/10 - Loss: 1.9163 - Acc: 0.3052
+[Client 1] Epoch 7/10 - Loss: 1.9130 - Acc: 0.3109
+[Client 1] Epoch 8/10 - Loss: 1.8947 - Acc: 0.3070
+[Client 1] Epoch 9/10 - Loss: 1.8858 - Acc: 0.3257
+[Client 1] Epoch 10/10 - Loss: 1.8696 - Acc: 0.3256
+Client 2 training...
+[Client 2] Epoch 1/10 - Loss: 2.0050 - Acc: 0.2933
+[Client 2] Epoch 2/10 - Loss: 1.9900 - Acc: 0.2783
+[Client 2] Epoch 3/10 - Loss: 1.9820 - Acc: 0.2800
+[Client 2] Epoch 4/10 - Loss: 1.9619 - Acc: 0.2919
+[Client 2] Epoch 5/10 - Loss: 1.9438 - Acc: 0.2980
+[Client 2] Epoch 6/10 - Loss: 1.9408 - Acc: 0.2884
+[Client 2] Epoch 7/10 - Loss: 1.9382 - Acc: 0.3116
+[Client 2] Epoch 8/10 - Loss: 1.9196 - Acc: 0.2781
+[Client 2] Epoch 9/10 - Loss: 1.9135 - Acc: 0.3066
+[Client 2] Epoch 10/10 - Loss: 1.9072 - Acc: 0.3154
+Client 3 training...
+[Client 3] Epoch 1/10 - Loss: 1.9894 - Acc: 0.2761
+[Client 3] Epoch 2/10 - Loss: 1.9738 - Acc: 0.2380
+[Client 3] Epoch 3/10 - Loss: 1.9637 - Acc: 0.2769
+[Client 3] Epoch 4/10 - Loss: 1.9414 - Acc: 0.2944
+[Client 3] Epoch 5/10 - Loss: 1.9358 - Acc: 0.2942
+[Client 3] Epoch 6/10 - Loss: 1.9146 - Acc: 0.2784
+[Client 3] Epoch 7/10 - Loss: 1.9113 - Acc: 0.3092
+[Client 3] Epoch 8/10 - Loss: 1.8863 - Acc: 0.3136
+[Client 3] Epoch 9/10 - Loss: 1.8754 - Acc: 0.3088
+[Client 3] Epoch 10/10 - Loss: 1.8645 - Acc: 0.3102
+Client 4 training...
+[Client 4] Epoch 1/10 - Loss: 1.9860 - Acc: 0.2871
+[Client 4] Epoch 2/10 - Loss: 1.9774 - Acc: 0.2857
+[Client 4] Epoch 3/10 - Loss: 1.9587 - Acc: 0.2974
+[Client 4] Epoch 4/10 - Loss: 1.9447 - Acc: 0.2846
+[Client 4] Epoch 5/10 - Loss: 1.9348 - Acc: 0.2899
+[Client 4] Epoch 6/10 - Loss: 1.9208 - Acc: 0.3137
+[Client 4] Epoch 7/10 - Loss: 1.9078 - Acc: 0.3014
+[Client 4] Epoch 8/10 - Loss: 1.8979 - Acc: 0.3174
+[Client 4] Epoch 9/10 - Loss: 1.8849 - Acc: 0.3059
+[Client 4] Epoch 10/10 - Loss: 1.8746 - Acc: 0.3256
+Client 5 training...
+[Client 5] Epoch 1/10 - Loss: 1.9970 - Acc: 0.2821
+[Client 5] Epoch 2/10 - Loss: 1.9805 - Acc: 0.2775
+[Client 5] Epoch 3/10 - Loss: 1.9647 - Acc: 0.2792
+[Client 5] Epoch 4/10 - Loss: 1.9429 - Acc: 0.2907
+[Client 5] Epoch 5/10 - Loss: 1.9357 - Acc: 0.2787
+[Client 5] Epoch 6/10 - Loss: 1.9376 - Acc: 0.2988
+[Client 5] Epoch 7/10 - Loss: 1.9210 - Acc: 0.3148
+[Client 5] Epoch 8/10 - Loss: 1.9005 - Acc: 0.2804
+[Client 5] Epoch 9/10 - Loss: 1.8949 - Acc: 0.2956
+[Client 5] Epoch 10/10 - Loss: 1.8829 - Acc: 0.3179
+Global eval after round 5: 0.3299
+
+=== Round 6/8 ===
+Client 0 training...
+[Client 0] Epoch 1/10 - Loss: 1.8819 - Acc: 0.3292
+[Client 0] Epoch 2/10 - Loss: 1.8665 - Acc: 0.3202
+[Client 0] Epoch 3/10 - Loss: 1.8480 - Acc: 0.3412
+[Client 0] Epoch 4/10 - Loss: 1.8333 - Acc: 0.3431
+[Client 0] Epoch 5/10 - Loss: 1.8194 - Acc: 0.3526
+[Client 0] Epoch 6/10 - Loss: 1.8011 - Acc: 0.3499
+[Client 0] Epoch 7/10 - Loss: 1.7844 - Acc: 0.3458
+[Client 0] Epoch 8/10 - Loss: 1.7765 - Acc: 0.3470
+[Client 0] Epoch 9/10 - Loss: 1.7552 - Acc: 0.3637
+[Client 0] Epoch 10/10 - Loss: 1.7489 - Acc: 0.3622
+Client 1 training...
+[Client 1] Epoch 1/10 - Loss: 1.8688 - Acc: 0.3316
+[Client 1] Epoch 2/10 - Loss: 1.8487 - Acc: 0.3376
+[Client 1] Epoch 3/10 - Loss: 1.8395 - Acc: 0.3349
+[Client 1] Epoch 4/10 - Loss: 1.8270 - Acc: 0.3342
+[Client 1] Epoch 5/10 - Loss: 1.8140 - Acc: 0.3490
+[Client 1] Epoch 6/10 - Loss: 1.7978 - Acc: 0.3530
+[Client 1] Epoch 7/10 - Loss: 1.7800 - Acc: 0.3607
+[Client 1] Epoch 8/10 - Loss: 1.7625 - Acc: 0.3691
+[Client 1] Epoch 9/10 - Loss: 1.7557 - Acc: 0.3691
+[Client 1] Epoch 10/10 - Loss: 1.7268 - Acc: 0.3637
+Client 2 training...
+[Client 2] Epoch 1/10 - Loss: 1.8872 - Acc: 0.3166
+[Client 2] Epoch 2/10 - Loss: 1.8783 - Acc: 0.3250
+[Client 2] Epoch 3/10 - Loss: 1.8671 - Acc: 0.3362
+[Client 2] Epoch 4/10 - Loss: 1.8461 - Acc: 0.3394
+[Client 2] Epoch 5/10 - Loss: 1.8353 - Acc: 0.3443
+[Client 2] Epoch 6/10 - Loss: 1.8191 - Acc: 0.3256
+[Client 2] Epoch 7/10 - Loss: 1.8109 - Acc: 0.3444
+[Client 2] Epoch 8/10 - Loss: 1.7932 - Acc: 0.3640
+[Client 2] Epoch 9/10 - Loss: 1.7816 - Acc: 0.3525
+[Client 2] Epoch 10/10 - Loss: 1.7625 - Acc: 0.3473
+Client 3 training...
+[Client 3] Epoch 1/10 - Loss: 1.8646 - Acc: 0.3348
+[Client 3] Epoch 2/10 - Loss: 1.8506 - Acc: 0.3196
+[Client 3] Epoch 3/10 - Loss: 1.8331 - Acc: 0.3315
+[Client 3] Epoch 4/10 - Loss: 1.8267 - Acc: 0.3301
+[Client 3] Epoch 5/10 - Loss: 1.8041 - Acc: 0.3425
+[Client 3] Epoch 6/10 - Loss: 1.8037 - Acc: 0.3393
+[Client 3] Epoch 7/10 - Loss: 1.7814 - Acc: 0.3554
+[Client 3] Epoch 8/10 - Loss: 1.7611 - Acc: 0.3639
+[Client 3] Epoch 9/10 - Loss: 1.7567 - Acc: 0.3687
+[Client 3] Epoch 10/10 - Loss: 1.7376 - Acc: 0.3569
+Client 4 training...
+[Client 4] Epoch 1/10 - Loss: 1.8738 - Acc: 0.3148
+[Client 4] Epoch 2/10 - Loss: 1.8621 - Acc: 0.3286
+[Client 4] Epoch 3/10 - Loss: 1.8463 - Acc: 0.3402
+[Client 4] Epoch 4/10 - Loss: 1.8346 - Acc: 0.3306
+[Client 4] Epoch 5/10 - Loss: 1.8244 - Acc: 0.3447
+[Client 4] Epoch 6/10 - Loss: 1.8011 - Acc: 0.3510
+[Client 4] Epoch 7/10 - Loss: 1.7904 - Acc: 0.3519
+[Client 4] Epoch 8/10 - Loss: 1.7735 - Acc: 0.3498
+[Client 4] Epoch 9/10 - Loss: 1.7597 - Acc: 0.3661
+[Client 4] Epoch 10/10 - Loss: 1.7452 - Acc: 0.3474
+Client 5 training...
+[Client 5] Epoch 1/10 - Loss: 1.8836 - Acc: 0.3159
+[Client 5] Epoch 2/10 - Loss: 1.8643 - Acc: 0.3214
+[Client 5] Epoch 3/10 - Loss: 1.8581 - Acc: 0.3229
+[Client 5] Epoch 4/10 - Loss: 1.8388 - Acc: 0.3487
+[Client 5] Epoch 5/10 - Loss: 1.8242 - Acc: 0.3427
+[Client 5] Epoch 6/10 - Loss: 1.8134 - Acc: 0.3526
+[Client 5] Epoch 7/10 - Loss: 1.7998 - Acc: 0.3590
+[Client 5] Epoch 8/10 - Loss: 1.7771 - Acc: 0.3569
+[Client 5] Epoch 9/10 - Loss: 1.7671 - Acc: 0.3673
+[Client 5] Epoch 10/10 - Loss: 1.7513 - Acc: 0.3654
+Global eval after round 6: 0.3723
+
+=== Round 7/8 ===
+Client 0 training...
+[Client 0] Epoch 1/10 - Loss: 1.7476 - Acc: 0.3620
+[Client 0] Epoch 2/10 - Loss: 1.7382 - Acc: 0.3783
+[Client 0] Epoch 3/10 - Loss: 1.7177 - Acc: 0.3748
+[Client 0] Epoch 4/10 - Loss: 1.7126 - Acc: 0.3696
+[Client 0] Epoch 5/10 - Loss: 1.7074 - Acc: 0.3787
+[Client 0] Epoch 6/10 - Loss: 1.6835 - Acc: 0.3899
+[Client 0] Epoch 7/10 - Loss: 1.6727 - Acc: 0.3901
+[Client 0] Epoch 8/10 - Loss: 1.6633 - Acc: 0.3887
+[Client 0] Epoch 9/10 - Loss: 1.6470 - Acc: 0.4035
+[Client 0] Epoch 10/10 - Loss: 1.6349 - Acc: 0.3966
+Client 1 training...
+[Client 1] Epoch 1/10 - Loss: 1.7382 - Acc: 0.3710
+[Client 1] Epoch 2/10 - Loss: 1.7229 - Acc: 0.3830
+[Client 1] Epoch 3/10 - Loss: 1.7038 - Acc: 0.3796
+[Client 1] Epoch 4/10 - Loss: 1.6965 - Acc: 0.3743
+[Client 1] Epoch 5/10 - Loss: 1.6915 - Acc: 0.3783
+[Client 1] Epoch 6/10 - Loss: 1.6741 - Acc: 0.3931
+[Client 1] Epoch 7/10 - Loss: 1.6497 - Acc: 0.4006
+[Client 1] Epoch 8/10 - Loss: 1.6376 - Acc: 0.4018
+[Client 1] Epoch 9/10 - Loss: 1.6281 - Acc: 0.4014
+[Client 1] Epoch 10/10 - Loss: 1.6201 - Acc: 0.4008
+Client 2 training...
+[Client 2] Epoch 1/10 - Loss: 1.7667 - Acc: 0.3660
+[Client 2] Epoch 2/10 - Loss: 1.7585 - Acc: 0.3812
+[Client 2] Epoch 3/10 - Loss: 1.7297 - Acc: 0.3706
+[Client 2] Epoch 4/10 - Loss: 1.7236 - Acc: 0.3753
+[Client 2] Epoch 5/10 - Loss: 1.7134 - Acc: 0.3817
+[Client 2] Epoch 6/10 - Loss: 1.7105 - Acc: 0.3809
+[Client 2] Epoch 7/10 - Loss: 1.6914 - Acc: 0.3930
+[Client 2] Epoch 8/10 - Loss: 1.6748 - Acc: 0.3917
+[Client 2] Epoch 9/10 - Loss: 1.6609 - Acc: 0.3978
+[Client 2] Epoch 10/10 - Loss: 1.6595 - Acc: 0.4083
+Client 3 training...
+[Client 3] Epoch 1/10 - Loss: 1.7368 - Acc: 0.3780
+[Client 3] Epoch 2/10 - Loss: 1.7240 - Acc: 0.3711
+[Client 3] Epoch 3/10 - Loss: 1.7117 - Acc: 0.3740
+[Client 3] Epoch 4/10 - Loss: 1.6982 - Acc: 0.3744
+[Client 3] Epoch 5/10 - Loss: 1.6882 - Acc: 0.3888
+[Client 3] Epoch 6/10 - Loss: 1.6765 - Acc: 0.3896
+[Client 3] Epoch 7/10 - Loss: 1.6639 - Acc: 0.3939
+[Client 3] Epoch 8/10 - Loss: 1.6534 - Acc: 0.3964
+[Client 3] Epoch 9/10 - Loss: 1.6527 - Acc: 0.4065
+[Client 3] Epoch 10/10 - Loss: 1.6310 - Acc: 0.3957
+Client 4 training...
+[Client 4] Epoch 1/10 - Loss: 1.7424 - Acc: 0.3436
+[Client 4] Epoch 2/10 - Loss: 1.7369 - Acc: 0.3595
+[Client 4] Epoch 3/10 - Loss: 1.7274 - Acc: 0.3852
+[Client 4] Epoch 4/10 - Loss: 1.7097 - Acc: 0.3867
+[Client 4] Epoch 5/10 - Loss: 1.6928 - Acc: 0.3883
+[Client 4] Epoch 6/10 - Loss: 1.6861 - Acc: 0.3870
+[Client 4] Epoch 7/10 - Loss: 1.6724 - Acc: 0.3937
+[Client 4] Epoch 8/10 - Loss: 1.6540 - Acc: 0.3969
+[Client 4] Epoch 9/10 - Loss: 1.6451 - Acc: 0.4013
+[Client 4] Epoch 10/10 - Loss: 1.6328 - Acc: 0.4145
+Client 5 training...
+[Client 5] Epoch 1/10 - Loss: 1.7504 - Acc: 0.3796
+[Client 5] Epoch 2/10 - Loss: 1.7341 - Acc: 0.3616
+[Client 5] Epoch 3/10 - Loss: 1.7262 - Acc: 0.3735
+[Client 5] Epoch 4/10 - Loss: 1.7148 - Acc: 0.3846
+[Client 5] Epoch 5/10 - Loss: 1.6999 - Acc: 0.3830
+[Client 5] Epoch 6/10 - Loss: 1.6832 - Acc: 0.3898
+[Client 5] Epoch 7/10 - Loss: 1.6688 - Acc: 0.3937
+[Client 5] Epoch 8/10 - Loss: 1.6691 - Acc: 0.3997
+[Client 5] Epoch 9/10 - Loss: 1.6488 - Acc: 0.3922
+[Client 5] Epoch 10/10 - Loss: 1.6384 - Acc: 0.4046
+Global eval after round 7: 0.4167
+
+=== Round 8/8 ===
+Client 0 training...
+[Client 0] Epoch 1/10 - Loss: 1.6464 - Acc: 0.4089
+[Client 0] Epoch 2/10 - Loss: 1.6312 - Acc: 0.4134
+[Client 0] Epoch 3/10 - Loss: 1.6163 - Acc: 0.4134
+[Client 0] Epoch 4/10 - Loss: 1.6110 - Acc: 0.4156
+[Client 0] Epoch 5/10 - Loss: 1.5961 - Acc: 0.4164
+[Client 0] Epoch 6/10 - Loss: 1.5734 - Acc: 0.4199
+[Client 0] Epoch 7/10 - Loss: 1.5714 - Acc: 0.4222
+[Client 0] Epoch 8/10 - Loss: 1.5597 - Acc: 0.4165
+[Client 0] Epoch 9/10 - Loss: 1.5557 - Acc: 0.4258
+[Client 0] Epoch 10/10 - Loss: 1.5413 - Acc: 0.4342
+Client 1 training...
+[Client 1] Epoch 1/10 - Loss: 1.6298 - Acc: 0.4093
+[Client 1] Epoch 2/10 - Loss: 1.6119 - Acc: 0.4136
+[Client 1] Epoch 3/10 - Loss: 1.6001 - Acc: 0.4211
+[Client 1] Epoch 4/10 - Loss: 1.5861 - Acc: 0.4166
+[Client 1] Epoch 5/10 - Loss: 1.5759 - Acc: 0.4212
+[Client 1] Epoch 6/10 - Loss: 1.5594 - Acc: 0.4192
+[Client 1] Epoch 7/10 - Loss: 1.5559 - Acc: 0.4276
+[Client 1] Epoch 8/10 - Loss: 1.5433 - Acc: 0.4193
+[Client 1] Epoch 9/10 - Loss: 1.5322 - Acc: 0.4236
+[Client 1] Epoch 10/10 - Loss: 1.5262 - Acc: 0.4317
+Client 2 training...
+[Client 2] Epoch 1/10 - Loss: 1.6662 - Acc: 0.4034
+[Client 2] Epoch 2/10 - Loss: 1.6447 - Acc: 0.4038
+[Client 2] Epoch 3/10 - Loss: 1.6382 - Acc: 0.4186
+[Client 2] Epoch 4/10 - Loss: 1.6185 - Acc: 0.4169
+[Client 2] Epoch 5/10 - Loss: 1.6033 - Acc: 0.4295
+[Client 2] Epoch 6/10 - Loss: 1.5959 - Acc: 0.4194
+[Client 2] Epoch 7/10 - Loss: 1.5873 - Acc: 0.4192
+[Client 2] Epoch 8/10 - Loss: 1.5823 - Acc: 0.4352
+[Client 2] Epoch 9/10 - Loss: 1.5776 - Acc: 0.4377
+[Client 2] Epoch 10/10 - Loss: 1.5532 - Acc: 0.4300
+Client 3 training...
+[Client 3] Epoch 1/10 - Loss: 1.6372 - Acc: 0.4154
+[Client 3] Epoch 2/10 - Loss: 1.6233 - Acc: 0.4123
+[Client 3] Epoch 3/10 - Loss: 1.6065 - Acc: 0.4108
+[Client 3] Epoch 4/10 - Loss: 1.6068 - Acc: 0.4104
+[Client 3] Epoch 5/10 - Loss: 1.5883 - Acc: 0.4183
+[Client 3] Epoch 6/10 - Loss: 1.5696 - Acc: 0.4228
+[Client 3] Epoch 7/10 - Loss: 1.5600 - Acc: 0.4241
+[Client 3] Epoch 8/10 - Loss: 1.5580 - Acc: 0.4182
+[Client 3] Epoch 9/10 - Loss: 1.5498 - Acc: 0.4317
+[Client 3] Epoch 10/10 - Loss: 1.5350 - Acc: 0.4226
+Client 4 training...
+[Client 4] Epoch 1/10 - Loss: 1.6481 - Acc: 0.4073
+[Client 4] Epoch 2/10 - Loss: 1.6333 - Acc: 0.4070
+[Client 4] Epoch 3/10 - Loss: 1.6236 - Acc: 0.4195
+[Client 4] Epoch 4/10 - Loss: 1.6114 - Acc: 0.4082
+[Client 4] Epoch 5/10 - Loss: 1.5959 - Acc: 0.4223
+[Client 4] Epoch 6/10 - Loss: 1.5808 - Acc: 0.4210
+[Client 4] Epoch 7/10 - Loss: 1.5789 - Acc: 0.4274
+[Client 4] Epoch 8/10 - Loss: 1.5685 - Acc: 0.4280
+[Client 4] Epoch 9/10 - Loss: 1.5561 - Acc: 0.4170
+[Client 4] Epoch 10/10 - Loss: 1.5428 - Acc: 0.4223
+Client 5 training...
+[Client 5] Epoch 1/10 - Loss: 1.6509 - Acc: 0.4178
+[Client 5] Epoch 2/10 - Loss: 1.6384 - Acc: 0.4124
+[Client 5] Epoch 3/10 - Loss: 1.6241 - Acc: 0.4083
+[Client 5] Epoch 4/10 - Loss: 1.6088 - Acc: 0.4141
+[Client 5] Epoch 5/10 - Loss: 1.5950 - Acc: 0.4039
+[Client 5] Epoch 6/10 - Loss: 1.5881 - Acc: 0.4122
+[Client 5] Epoch 7/10 - Loss: 1.5765 - Acc: 0.4252
+[Client 5] Epoch 8/10 - Loss: 1.5611 - Acc: 0.4350
+[Client 5] Epoch 9/10 - Loss: 1.5573 - Acc: 0.4313
+[Client 5] Epoch 10/10 - Loss: 1.5505 - Acc: 0.4147
+Global eval after round 8: 0.4422
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27442837: <train> in cluster <dcc> Done
+
+Job <train> was submitted from host <n-62-30-7> by user <s224227> in cluster <dcc> at Wed Dec 17 13:02:44 2025
+Job was executed on host(s) <n-62-31-11>, in queue <hpc>, as user <s224227> in cluster <dcc> at Wed Dec 17 13:02:44 2025
+</zhome/d1/b/187261> was used as the home directory.
+</zhome/d1/b/187261/Desktop/Bachelor/Bachelor> was used as the working directory.
+Started at Wed Dec 17 13:02:44 2025
+Terminated at Wed Dec 17 13:17:07 2025
+Results reported at Wed Dec 17 13:17:07 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+
+#BSUB -J train
+#BSUB -q hpc
+#BSUB -W 120
+#BSUB -R "rusage[mem=10G]"
+#BSUB -R "select[model == XeonGold6126]"
+#BSUB -R "span[hosts=1]"
+#BSUB -n 1
+#BSUB -o train_%J.out
+#BSUB -e train_%J.err
+
+# # Load Python if needed (depends on DTU module system)
+
+module load python/3.10.21 
+
+# Activate your virtual environment
+source ~/bachelor-env/bin/activate
+
+# python train.py model_b64_e100
+python train_FL.py c6_b64_e10_FL
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   841.63 sec.
+    Max Memory :                                 1393 MB
+    Average Memory :                             1255.12 MB
+    Total Requested Memory :                     10240.00 MB
+    Delta Memory :                               8847.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                5
+    Run time :                                   902 sec.
+    Turnaround time :                            863 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <train_27442837.err> for stderr output of this job.
+
