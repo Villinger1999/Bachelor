@@ -6,7 +6,7 @@ from torch.utils.data import DataLoader, TensorDataset
 from typing import Optional
 import copy
 
-from classes.models import LeNet
+from classes.model_change import LeNet
 from classes.federated_learning import evaluate_global
 from classes.attacks import iDLG
 from classes.helperfunctions import compute_ssim_psnr
@@ -29,7 +29,7 @@ def load_cifar10():
 
 
 def load_model(state_dict_path: str, device: str, activation: str):
-    model = LeNet(activation)
+    model = LeNet(activation=activation)
     sd = torch.load(state_dict_path, map_location=device, weights_only=True)
     model.load_state_dict(sd)
     model.to(device).eval()
@@ -232,7 +232,7 @@ if __name__ == "__main__":
     ap.add_argument("--normal_model", required=True)
     ap.add_argument("--fl_model", default=None)
     ap.add_argument("--leaked_grads", default=None)
-    ap.add_argument("--")
+    ap.add_argument("--activation", default="sigmoid")
     ap.add_argument("--images", default="0-9", help="e.g. '0-9' or '0,5,10,25'")
     ap.add_argument("--iterations", type=int, default=100)
     ap.add_argument("--repeats", type=int, default=100)
@@ -268,6 +268,7 @@ if __name__ == "__main__":
             scenario_name=name,
             model_path=model_path,
             leaked_grads_path=leak_path,
+            activation=args.activation,
             image_indices=images,
             defense=args.defense,
             def_params=def_params,

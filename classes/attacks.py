@@ -130,8 +130,9 @@ class iDLG:
 
                 loss = grad_diff + tv_weight * tv
                 loss.backward()
-                # grad_diff.backward()
                 return loss
+                # grad_diff.backward()
+                # return grad_diff
 
             optimizer.step(closure)
 

@@ -15,8 +15,9 @@ python run_idlg_ex.py \
   --scenario normal_model_orig_grads \
   --normal_model state_dict_b64_e150_sig2.pt \
   --fl_model state_dict_model_empty.pt \
-  --images 1-9 \
-  --repeats 10 \
+  --images 0 \
+  --seed 124 \
+  --repeats 100 \
   --iterations 100 \
   --defense none \
-  --out_csv results_normal_orig.csv
+  --out_csv results_normal_orig_124.csv

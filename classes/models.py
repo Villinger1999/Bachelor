@@ -7,6 +7,19 @@ def get_model(num_classes=10):
     model.fc = nn.Linear(model.fc.in_features, num_classes)
     return model
 
+def shallow_resnet(num_classes=10):
+    model = models.resnet18(weights=None)
+    model.conv1 = nn.Conv2d(3, 64, kernel_size=3, stride=1, padding=1, bias=False)
+    model.maxpool = nn.Identity()
+
+    model.layer3 = nn.Identity()
+    model.layer4 = nn.Identity()
+
+    # after layer2, channels = 128
+    model.fc = nn.Linear(128, num_classes)
+    return model
+
+
 # activation = sys.argv[2]
 # if activation == "relu":
 #     activation = nn.ReLU

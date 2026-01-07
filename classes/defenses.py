@@ -50,7 +50,7 @@ class SGP(Defense):
             pruned.append(torch.where(mask, torch.zeros_like(grad), grad))
         return pruned
     
-def clipping_threshold(grads, percentile: float = 0.1):
+def clipping_threshold(grads, percentile: float = 0.9):
     abs_vals = torch.cat([g.detach().abs().reshape(-1) for g in grads if g is not None])
     return float(torch.quantile(abs_vals, percentile))
 

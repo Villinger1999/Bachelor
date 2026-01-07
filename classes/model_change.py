@@ -1,11 +1,4 @@
 import torch.nn as nn
-from torchvision import models
-import sys
-
-def get_model(num_classes=10):
-    model = models.resnet18(weights=None)
-    model.fc = nn.Linear(model.fc.in_features, num_classes)
-    return model
 
 class LeNet(nn.Module):
     def __init__(
@@ -18,7 +11,7 @@ class LeNet(nn.Module):
         super().__init__()
 
         self.act = self._get_activation(activation)
-
+        
         self.body = nn.Sequential(
             nn.Conv2d(channel, 12, kernel_size=5, padding=2, stride=2),
             self.act,
@@ -32,7 +25,6 @@ class LeNet(nn.Module):
 
     def _get_activation(self, name: str) -> nn.Module:
         name = name.lower()
-
         if name == "relu":
             return nn.ReLU(inplace=True)
         elif name == "leaky_relu":
@@ -43,9 +35,6 @@ class LeNet(nn.Module):
             return nn.Sigmoid()
         elif name == "tanh":
             return nn.Tanh()
-        elif name == "softmax":
-            # NOTE: usually applied only to output layer
-            return nn.Softmax(dim=1)
         elif name == "linear":
             return nn.Identity()
         else:

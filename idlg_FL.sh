@@ -14,9 +14,10 @@ source ~/bachelor-env/bin/activate
 python run_idlg_ex.py \
   --scenario fl_model_orig_grads \
   --normal_model state_dict_b64_e150_sig2.pt \
-  --fl_model global_model_state_exp6_b64_e15_c10_3.pt \
+  --fl_model global_model_state_exp2_b64_e15_c10.pt \
   --images 0 \
+    --seed 124 \
   --repeats 100 \
   --iterations 100 \
   --defense none \
-  --out_csv results_FL_orig_3.csv
+  --out_csv results_FL_orig_124.csv

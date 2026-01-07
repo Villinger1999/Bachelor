@@ -6,6 +6,8 @@ from torch.utils.data import DataLoader, TensorDataset
 from typing import Optional
 import copy
 
+import lpips  # <- NEW
+
 from classes.models import LeNet
 from classes.federated_learning import evaluate_global
 from classes.attacks import iDLG
@@ -53,6 +55,7 @@ def run_repeats(img_idx: int, base_seed: int, run_once_fn, repeats: int = 100):
         runs.append(run_once_fn(b, seed))
     return runs
 
+
 def apply_defended_grads(model, defended_grads, lr=0.01, momentum=0.9):
     """
     Apply a single SGD update using a list of defended gradients aligned with model.parameters().
@@ -60,12 +63,9 @@ def apply_defended_grads(model, defended_grads, lr=0.01, momentum=0.9):
     if defended_grads is None:
         return  # nothing to apply
 
-    # Create an optimizer (or pass one in if you want to reuse it)
     optimizer = torch.optim.SGD(model.parameters(), lr=lr, momentum=momentum)
-
     optimizer.zero_grad(set_to_none=True)
 
-    # Write gradients into .grad
     for p, g in zip(model.parameters(), defended_grads):
         if g is None:
             p.grad = None
@@ -73,6 +73,19 @@ def apply_defended_grads(model, defended_grads, lr=0.01, momentum=0.9):
             p.grad = g.detach().to(device=p.device, dtype=p.dtype)
 
     optimizer.step()
+
+
+@torch.no_grad()
+def compute_lpips(orig_img: torch.Tensor, recon_img: torch.Tensor, lpips_fn) -> float:
+    """
+    orig_img, recon_img: [1,3,H,W] in [0,1]
+    LPIPS expects [-1,1]
+    returns scalar float (lower is better)
+    """
+    x = orig_img * 2.0 - 1.0
+    y = recon_img * 2.0 - 1.0
+    val = lpips_fn(x, y)  # shape [1,1,1,1]
+    return float(val.item())
 
 
 def run_scenario(
@@ -90,11 +103,14 @@ def run_scenario(
 ):
     x_train, y_train, x_test, y_test = load_cifar10()
 
-    # IMPORTANT: evaluation loader should NOT shuffle
+    # valuation loader should NOT shuffle
     testloader = DataLoader(TensorDataset(x_test, y_test), batch_size=64, shuffle=False)
 
     model = load_model(model_path, device)
     model_acc = evaluate_global(model, testloader, device)
+
+    # LPIPS model created once per scenario
+    lpips_fn = lpips.LPIPS(net="vgg").to(device).eval()
 
     leaked_grads = None
     if "leaked_grads" in scenario_name:
@@ -107,11 +123,14 @@ def run_scenario(
         w = csv.writer(f)
         if not file_exists:
             w.writerow([
-                "label_pred","label_correct",
-                "ssim","psnr",
+                "label_pred", "label_correct",
+                "ssim", "psnr", "lpips",
                 "final_loss",
                 # summary columns (only filled on AVG row)
-                "avg_ssim","avg_psnr","std_ssim","std_psnr","label_acc","threshold","model_acc_before","model_acc_after"
+                "avg_ssim", "avg_psnr", "avg_lpips",
+                "std_ssim", "std_psnr", "std_lpips",
+                "label_acc", "threshold",
+                "model_acc_before", "model_acc_after"
             ])
 
         for img_idx in image_indices:
@@ -131,30 +150,25 @@ def run_scenario(
                         device=device,
                         orig_img=orig_img,
                         grads=None if "orig_grads" in scenario_name else leaked_grads,
-                        defense=defense,      # "none"|"clipping"|"sgp"
-                        percentile=dp,         # clipping quantile OR sgp keep_ratio OR None
+                        defense=defense,        # "none"|"clipping"|"sgp"
+                        percentile=dp,          # clipping quantile OR sgp keep_ratio OR None
                         random_dummy=True,
                         dummy_var=0.0,
                         seed=seed,
                     )
-                    
-                    def_save, dummy, recon, label_pred, history, losses = attacker.attack(iterations=iterations)
-                    
-                    # print("scenario:", scenario_name)
-                    # print("passing grads:", "None" if (None if "orig_grads" in scenario_name else leaked_grads) is None else "LEAKED")
 
-                    
-                    # if img_idx == 0 and dp == def_params[0]:
-                    #     print(def_save)
-                    
+                    def_save, dummy, recon, label_pred, history, losses = attacker.attack(iterations=iterations)
+
                     if defense == "none":
                         model_acc_after = model_acc
-                    else: 
+                    else:
                         model_copy = copy.deepcopy(model).to(device)
                         apply_defended_grads(model_copy, def_save)
                         model_acc_after = evaluate_global(model_copy, testloader, device)
 
                     ssim, psnr = compute_ssim_psnr(orig_img, recon)
+                    lp = compute_lpips(orig_img, recon, lpips_fn)  # NEW
+
                     label_correct = int(label_pred == label_true)
                     final_loss = losses[-1] if len(losses) else float("nan")
 
@@ -165,6 +179,7 @@ def run_scenario(
                         "label_correct": label_correct,
                         "ssim": float(ssim),
                         "psnr": float(psnr),
+                        "lpips": float(lp),
                         "final_loss": float(final_loss),
                         "model_acc_after": float(model_acc_after),
                         "threshold": float(dp) if dp is not None else None
@@ -174,41 +189,49 @@ def run_scenario(
 
                 psnrs = [r["psnr"] for r in runs]
                 ssims = [r["ssim"] for r in runs]
+                lpips_vals = [r["lpips"] for r in runs]
                 label_corrs = [r["label_correct"] for r in runs]
                 model_acc_after = [r["model_acc_after"] for r in runs]
                 threshold = [r["threshold"] for r in runs]
 
                 avg_psnr = float(np.mean(psnrs))
                 avg_ssim = float(np.mean(ssims))
+                avg_lpips = float(np.mean(lpips_vals))
+
                 std_psnr = float(np.std(psnrs))
                 std_ssim = float(np.std(ssims))
+                std_lpips = float(np.std(lpips_vals))
+
                 label_acc = float(np.mean(label_corrs))
                 avg_acc_after = float(np.mean(model_acc_after))
 
                 # write per-run rows
-                for r in runs:
-                    if r == 0:
-                        w.writerow([scenario_name, model_path, model_acc,
-                            defense, img_idx, label_true
-                        ])
+                for i, r in enumerate(runs):
+                    if i == 0:
+                        # keep your scenario header row behavior (optional)
+                        w.writerow([scenario_name, model_path, model_acc, defense, img_idx, label_true])
+
                     w.writerow([
                         r["label_pred"], r["label_correct"],
-                        r["ssim"], r["psnr"],
+                        r["ssim"], r["psnr"], r["lpips"],
                         r["final_loss"],
-                        "", "", "", "", ""
+                        "", "", "", "", "", "", "", "", "", ""
                     ])
 
                 # write one summary row (AVG)
                 w.writerow([
                     "AVG", "-",
+                    "-", "-", "-",
                     "-", "-",
-                    "-", "-",
-                    avg_ssim, avg_psnr, std_ssim, std_psnr, label_acc, threshold[0], model_acc, avg_acc_after
+                    avg_ssim, avg_psnr, avg_lpips,
+                    std_ssim, std_psnr, std_lpips,
+                    label_acc, threshold[0], model_acc, avg_acc_after
                 ])
 
                 f.flush()
 
     print(f"Finished {scenario_name} defense={defense} -> {out_csv}")
+
 
 def parse_list_of_ints(s: str) -> list[int]:
     # formats: "0,1,2" or "0-9"
@@ -239,7 +262,7 @@ if __name__ == "__main__":
     ap.add_argument("--out_csv", default="idlg_results.csv")
     ap.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
 
-    ap.add_argument("--defense", default="none", choices=["none","clipping","sgp"])
+    ap.add_argument("--defense", default="none", choices=["none", "clipping", "sgp"])
     ap.add_argument("--def_params", default="none",
                     help="For none: 'none'. For clipping: '0.99996,0.99995'. For sgp: '0.94,0.93' (keep_ratio).")
 
