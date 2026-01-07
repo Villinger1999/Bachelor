@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 import torch
+import numpy as np
 
 class Defense(ABC):
     """Base class all defenses must inherit from."""
@@ -52,7 +53,7 @@ class SGP(Defense):
     
 def clipping_threshold(grads, percentile: float = 0.9):
     abs_vals = torch.cat([g.detach().abs().reshape(-1) for g in grads if g is not None])
-    return float(torch.quantile(abs_vals, percentile))
+    return float(np.percentile(abs_vals, percentile))
 
 
 def pruning_threshold(grads, keep_ratio: float = 0.9):

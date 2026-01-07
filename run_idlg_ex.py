@@ -6,8 +6,6 @@ from torch.utils.data import DataLoader, TensorDataset
 from typing import Optional
 import copy
 
-import lpips  # <- NEW
-
 from classes.models import LeNet
 from classes.federated_learning import evaluate_global
 from classes.attacks import iDLG
@@ -51,7 +49,7 @@ def run_repeats(img_idx: int, base_seed: int, run_once_fn, repeats: int = 100):
     """
     runs = []
     for b in range(repeats):
-        seed = base_seed + 1000 * img_idx + b
+        seed = base_seed + b
         runs.append(run_once_fn(b, seed))
     return runs
 
@@ -75,19 +73,6 @@ def apply_defended_grads(model, defended_grads, lr=0.01, momentum=0.9):
     optimizer.step()
 
 
-@torch.no_grad()
-def compute_lpips(orig_img: torch.Tensor, recon_img: torch.Tensor, lpips_fn) -> float:
-    """
-    orig_img, recon_img: [1,3,H,W] in [0,1]
-    LPIPS expects [-1,1]
-    returns scalar float (lower is better)
-    """
-    x = orig_img * 2.0 - 1.0
-    y = recon_img * 2.0 - 1.0
-    val = lpips_fn(x, y)  # shape [1,1,1,1]
-    return float(val.item())
-
-
 def run_scenario(
     scenario_name: str,
     model_path: str,
@@ -107,10 +92,7 @@ def run_scenario(
     testloader = DataLoader(TensorDataset(x_test, y_test), batch_size=64, shuffle=False)
 
     model = load_model(model_path, device)
-    model_acc = evaluate_global(model, testloader, device)
-
-    # LPIPS model created once per scenario
-    lpips_fn = lpips.LPIPS(net="vgg").to(device).eval()
+    model_acc_before = evaluate_global(model, testloader, device)
 
     leaked_grads = None
     if "leaked_grads" in scenario_name:
@@ -123,12 +105,17 @@ def run_scenario(
         w = csv.writer(f)
         if not file_exists:
             w.writerow([
+                # identifiers
+                "scenario", "model_path", "defense", "img_idx", "label_true",
+                # per-run identifiers (NEW)
+                "repeat_id", "seed",
+                # per-run outputs
                 "label_pred", "label_correct",
-                "ssim", "psnr", "lpips",
+                "ssim", "psnr",
                 "final_loss",
                 # summary columns (only filled on AVG row)
-                "avg_ssim", "avg_psnr", "avg_lpips",
-                "std_ssim", "std_psnr", "std_lpips",
+                "avg_ssim", "avg_psnr",
+                "std_ssim", "std_psnr",
                 "label_acc", "threshold",
                 "model_acc_before", "model_acc_after"
             ])
@@ -160,14 +147,13 @@ def run_scenario(
                     def_save, dummy, recon, label_pred, history, losses = attacker.attack(iterations=iterations)
 
                     if defense == "none":
-                        model_acc_after = model_acc
+                        model_acc_after = model_acc_before
                     else:
                         model_copy = copy.deepcopy(model).to(device)
                         apply_defended_grads(model_copy, def_save)
                         model_acc_after = evaluate_global(model_copy, testloader, device)
 
                     ssim, psnr = compute_ssim_psnr(orig_img, recon)
-                    lp = compute_lpips(orig_img, recon, lpips_fn)  # NEW
 
                     label_correct = int(label_pred == label_true)
                     final_loss = losses[-1] if len(losses) else float("nan")
@@ -175,11 +161,10 @@ def run_scenario(
                     return {
                         "repeat_id": rep_id,
                         "seed": seed,
-                        "label_pred": label_pred,
-                        "label_correct": label_correct,
+                        "label_pred": int(label_pred),
+                        "label_correct": int(label_correct),
                         "ssim": float(ssim),
                         "psnr": float(psnr),
-                        "lpips": float(lp),
                         "final_loss": float(final_loss),
                         "model_acc_after": float(model_acc_after),
                         "threshold": float(dp) if dp is not None else None
@@ -189,43 +174,43 @@ def run_scenario(
 
                 psnrs = [r["psnr"] for r in runs]
                 ssims = [r["ssim"] for r in runs]
-                lpips_vals = [r["lpips"] for r in runs]
                 label_corrs = [r["label_correct"] for r in runs]
-                model_acc_after = [r["model_acc_after"] for r in runs]
-                threshold = [r["threshold"] for r in runs]
+                model_acc_after_runs = [r["model_acc_after"] for r in runs]
+                threshold_runs = [r["threshold"] for r in runs]
 
                 avg_psnr = float(np.mean(psnrs))
                 avg_ssim = float(np.mean(ssims))
-                avg_lpips = float(np.mean(lpips_vals))
 
                 std_psnr = float(np.std(psnrs))
                 std_ssim = float(np.std(ssims))
-                std_lpips = float(np.std(lpips_vals))
 
                 label_acc = float(np.mean(label_corrs))
-                avg_acc_after = float(np.mean(model_acc_after))
+                avg_acc_after = float(np.mean(model_acc_after_runs))
 
-                # write per-run rows
-                for i, r in enumerate(runs):
-                    if i == 0:
-                        # keep your scenario header row behavior (optional)
-                        w.writerow([scenario_name, model_path, model_acc, defense, img_idx, label_true])
-
+                # write per-run rows (now include scenario info + repeat_id + seed)
+                for r in runs:
                     w.writerow([
+                        scenario_name, model_path, defense, img_idx, label_true,
+                        r["repeat_id"], r["seed"],
                         r["label_pred"], r["label_correct"],
-                        r["ssim"], r["psnr"], r["lpips"],
+                        r["ssim"], r["psnr"],
                         r["final_loss"],
-                        "", "", "", "", "", "", "", "", "", ""
+                        "", "",
+                        "", "",
+                        "", "",
+                        "", ""
                     ])
 
                 # write one summary row (AVG)
                 w.writerow([
+                    scenario_name, model_path, defense, img_idx, label_true,
                     "AVG", "-",
-                    "-", "-", "-",
                     "-", "-",
-                    avg_ssim, avg_psnr, avg_lpips,
-                    std_ssim, std_psnr, std_lpips,
-                    label_acc, threshold[0], model_acc, avg_acc_after
+                    "-", "-",
+                    "-",
+                    avg_ssim, avg_psnr,
+                    std_ssim, std_psnr,
+                    label_acc, threshold_runs[0], model_acc_before, avg_acc_after
                 ])
 
                 f.flush()

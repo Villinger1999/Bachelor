@@ -8,7 +8,7 @@ class LeNet(nn.Module):
         num_classes: int = 10,
         activation: str = "relu",
     ):
-        super().__init__()
+        super(LeNet, self).__init__()
 
         self.act = self._get_activation(activation)
         
@@ -21,7 +21,7 @@ class LeNet(nn.Module):
             self.act,
         )
 
-        self.fc = nn.Linear(hidden, num_classes)
+        self.fc = nn.Sequential(nn.Linear(hidden, num_classes))
 
     def _get_activation(self, name: str) -> nn.Module:
         name = name.lower()
@@ -33,6 +33,8 @@ class LeNet(nn.Module):
             return nn.PReLU()
         elif name == "sigmoid":
             return nn.Sigmoid()
+        elif name == "softmax":
+            return nn.Softmax(dim=1)
         elif name == "tanh":
             return nn.Tanh()
         elif name == "linear":
