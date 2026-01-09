@@ -15,10 +15,10 @@ import zipfile
 from PIL import Image
 from skimage import util, io
 import numpy as np
-import sys
 import scipy.stats as stats
 import random as random
 import argparse
+import skimage.metrics
 
 
 
@@ -39,13 +39,11 @@ def get_images(image_dir, image_count):
     selected_files = all_files[:image_count]
     return [os.path.join(image_dir, fname) for fname in selected_files]
    
+
 if __name__ == "__main__":
-    
     ##------ setup of the variable needed to do test the brisque scores 
- 
     # Make path the folder path
     path = os.getcwd() + "/" # always points to the folder you are in
-    
     parser = argparse.ArgumentParser(description="BRISQUE score analysis")
     parser.add_argument('--image_paths', type=str, default="/dtu/datasets1/imagenet_object_localization_patched2019/ILSVRC/Data/CLS-LOC/test/", help='Path to image directory')
     parser.add_argument('--variance', type=float, default=0.01, help='Variance for noise')
@@ -54,9 +52,7 @@ if __name__ == "__main__":
     parser.add_argument('--res_step', type=int, default=4, help='Step size for resolution')
     parser.add_argument('--image_count', type=int, default=100, help='Number of images to use')
     parser.add_argument('--plot', action='store_true', default=False, help='Enable plotting (default: False)')
-
     args = parser.parse_args()
-
     image_paths = args.image_paths
     var_arr = [0.0, args.variance]
     res_lb = args.res_lb
@@ -64,20 +60,16 @@ if __name__ == "__main__":
     res_step = args.res_step
     image_count = args.image_count
     plots_download = args.plot
-    
     # creates the list of resolutions that are to be compared
     resolution_arr = list(range(res_lb, res_ub+1,res_step))    
-    
     # getting the first "image_count" images from the folder containing the data data
     image_paths = get_images(image_paths, image_count)
-    
     for reso in resolution_arr:
         # Process images - back to your original simple approach
         for idx, img_path in enumerate(image_paths):
             image = Image.open(img_path)
             image = image.resize((reso, reso))  # Resize to resolution x resolution
             image_array = np.array(image)
-            
             # Process each variance level of the image 
             for variance in var_arr:
                 # if variance of the noise is 0 keep the original image
@@ -85,6 +77,7 @@ if __name__ == "__main__":
                     processed_image = Image.fromarray(image_array)
                     # For saving: use original image array when variance is 0
                     save_array = image_array
+                    noisy_array = image_array  # For SSIM/PSNR reference
                 # else add random gaissian noice with the variance to the image 
                 else:
                     noisy_array = util.random_noise(image_array, mode='gaussian', var=variance)
@@ -92,21 +85,28 @@ if __name__ == "__main__":
                     processed_image = Image.fromarray(noisy_array)
                     # For saving: use noisy array when variance > 0
                     save_array = noisy_array
-                    
                 # Save images for the first image only (idx == 0)
-                if idx == 0:
+                if idx == 3:
                     io.imsave(path + f'data/imagenetSubNoise/noisy{idx}_{variance}_{reso}x{reso}.jpg', save_array)
-                
                 # Calculate BRISQUE score for each variance level
                 brisque_score = model(processed_image).item()
-                
-                ##---- save outliers uncomment the line below to save all the images that has a value lower than 0 and higher than 100
-                # if brisque_score < 0 or brisque_score > 100:
-                #     io.imsave(path + f'data/invalid_brisque/noisy{idx}_{variance}_{reso}x{reso}_brisque_{brisque_score:.2f}.jpg', save_array)
-                
-                results.append({"resolution" : reso, "image_idx" : idx, "variance" : variance, "brisque_score" : brisque_score})
+                if idx == 0:
+                    print(f"BRISQUE score of the first image with noise variance {variance} is {brisque_score}")
+                # Calculate SSIM and PSNR between original and noisy image (only if variance > 0, else set to nan or perfect)
+                if variance == 0:
+                    ssim_score = 1.0
+                    psnr_score = float('inf')
+                else:
+                    # Ensure both arrays are in the same shape and type
+                    try:
+                        ssim_score = skimage.metrics.structural_similarity(image_array, noisy_array, data_range=255, channel_axis=-1)
+                    except TypeError:
+                        # For older skimage
+                        ssim_score = skimage.metrics.structural_similarity(image_array, noisy_array, data_range=255, multichannel=True)
+                    psnr_score = skimage.metrics.peak_signal_noise_ratio(image_array, noisy_array, data_range=255)
+                results.append({"resolution" : reso, "image_idx" : idx, "variance" : variance, "brisque_score" : brisque_score, "ssim": ssim_score, "psnr": psnr_score})
 
-        df_results = pd.DataFrame(results, columns=["resolution", "image_idx", "variance", "brisque_score"])
+        df_results = pd.DataFrame(results, columns=["resolution", "image_idx", "variance", "brisque_score", "ssim", "psnr"])
         
         
 
@@ -195,25 +195,34 @@ if __name__ == "__main__":
             ks_norm_i_stat = np.nan
             ks_norm_i_p = np.nan
 
+        # Calculate SSIM and PSNR statistics for var_arr[1] (non-zero variance)
+        ssim_vals = df_results[(df_results['resolution'] == reso) & (df_results['variance'] == var_arr[1])]['brisque']
+        psnr_vals = df_results[(df_results['resolution'] == reso) & (df_results['variance'] == var_arr[1])]['psnr']
+        ssim_mean = np.round(np.mean(ssim_vals), 4) if len(ssim_vals) > 0 else np.nan
+        ssim_var = np.round(np.var(ssim_vals), 4) if len(ssim_vals) > 0 else np.nan
+        psnr_mean = np.round(np.mean(psnr_vals), 2) if len(psnr_vals) > 0 else np.nan
+        psnr_var = np.round(np.var(psnr_vals), 2) if len(psnr_vals) > 0 else np.nan
+
         ks_results.append({
             "resolution": reso,
             "ks_statistic": np.round(ks_test.statistic,2),
-            "p_value": ks_test.pvalue,
+            "p_value": np.round(ks_test.pvalue,4),
             "statistic_location": np.round(threshold,2),
-            "FPR": fpr,
-            "FNR": fnr,
-            "mean_0": mean_0,
-            "var_0": var_0,
-            "mean_i": mean_i,
-            "var_i": var_i,
-            "ks_norm_0_stat": ks_norm_0_stat,
-            "ks_norm_0_p": ks_norm_0_p,
-            "ks_norm_i_stat": ks_norm_i_stat,
-            "ks_norm_i_p": ks_norm_i_p
+            "FPR": np.round(fpr,3),
+            "FNR": np.round(fnr,3),
+            "mean_0": np.round(mean_0,2),
+            "var_0": np.round(var_0,2),
+            "ks_norm_0_stat": np.round(ks_norm_0_stat,3),
+            "ks_norm_0_p": np.round(ks_norm_0_p,4),
+            "mean_i": np.round(mean_i,2),
+            "var_i": np.round(var_i,2),
+            "ks_norm_i_stat": np.round(ks_norm_i_stat,3),
+            "ks_norm_i_p": np.round(ks_norm_i_p,4),
+            "ssim_mean": ssim_mean,
+            "ssim_var": ssim_var,
+            "psnr_mean": psnr_mean,
+            "psnr_var": psnr_var
         })
         
-        
-
-        #------ saving the data frame as a csv file
         df_ks = pd.DataFrame(ks_results)
         df_ks.to_csv(path + f'ks_test_results_{image_count}_{var_arr}_res_{resolution_arr[0]}_{resolution_arr[-1]}.csv', index=False)
