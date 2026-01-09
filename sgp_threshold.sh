@@ -1,7 +1,7 @@
 #!/bin/bash
 #BSUB -J sgp
 #BSUB -q hpc
-#BSUB -W 800
+#BSUB -W 900
 #BSUB -R "rusage[mem=16G]"
 #BSUB -R "span[hosts=1]"
 #BSUB -n 1
@@ -19,5 +19,5 @@ python run_idlg_ex.py \
   --repeats 25 \
   --iterations 100 \
   --defense sgp \
-  --def_params 0.7,0.6 \
-  --out_csv results_fl_orig_sgp_multi_2.csv
+  --def_params 0.1 \
+  --out_csv results_fl_orig_sgp_multi_1.csv

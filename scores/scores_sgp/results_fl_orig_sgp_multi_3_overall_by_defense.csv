@@ -1,0 +1,2 @@
+scenario,model_path,defense,overall_avg_ssim,overall_avg_psnr,overall_avg_loss,threshold,acc_before,acc_after,delta_acc_pp
+fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,sgp,0.151736,8.613474,26.103200554,0.3,0.4702,0.4502,-2.0

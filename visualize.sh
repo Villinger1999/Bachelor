@@ -12,7 +12,49 @@ module load python/3.12.11
 source ~/bachelor-env/bin/activate
 
 python visualize.py \
-  --csv  results_FL_orig.csv \
-  --model state_dict_b64_e150_sig2.pt \
+  --model global_model_state_exp2_b64_e15_c10.pt \
+  --img_idx 0 \
+  --seed 123 \
   --defense none \
-  --out_dir vis_FL_orig.csv
+  --percentile 0 \
+  --iterations 100
+
+  python visualize.py \
+  --model global_model_state_exp2_b64_e15_c10.pt \
+  --img_idx 1 \
+  --seed 123 \
+  --defense none \
+  --percentile 0 \
+  --iterations 100
+
+  python visualize.py \
+  --model global_model_state_exp2_b64_e15_c10.pt \
+  --img_idx 2 \
+  --seed 123 \
+  --defense none \
+  --percentile 0 \
+  --iterations 100
+
+  python visualize.py \
+  --model global_model_state_exp2_b64_e15_c10.pt \
+  --img_idx 3 \
+  --seed 123 \
+  --defense none \
+  --percentile 0 \
+  --iterations 100
+
+  python visualize.py \
+  --model global_model_state_exp2_b64_e15_c10.pt \
+  --img_idx 4 \
+  --seed 123 \
+  --defense none \
+  --percentile 0 \
+  --iterations 100
+
+  python visualize.py \
+  --model global_model_state_exp2_b64_e15_c10.pt \
+  --img_idx 5 \
+  --seed 123 \
+  --defense none \
+  --percentile 0 \
+  --iterations 100

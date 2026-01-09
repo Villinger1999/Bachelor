@@ -1,24 +1,40 @@
+#!/usr/bin/env python3
+"""
+Visualize a single deterministic rerun specified by --img_idx and --seed.
+
+Python<3.10 compatible typing (Optional[...]).
+No best/worst logic. CSV is optional and used only to print stored metrics for the same run.
+
+Usage:
+  python visualize.py --model global_model_state.pt --img_idx 123 --seed 42 --defense none --iterations 100
+
+  # With optional CSV comparison printout
+  python visualize.py --model global_model_state.pt --img_idx 123 --seed 42 --defense clipping --percentile 0.995 \
+    --iterations 100 --csv results.csv
+"""
+
+from __future__ import annotations
+
 import argparse
 import os
-import csv
+import random
+from typing import Dict, Optional
+
 import numpy as np
+import pandas as pd
 import torch
 import tensorflow as tf
-import random
 import matplotlib.pyplot as plt
 
 from classes.models import LeNet
 from classes.attacks import iDLG
-
-# If your compute_ssim_psnr expects tensors, use it.
-# Otherwise we compute here using skimage.
 from classes.helperfunctions import compute_ssim_psnr
 
 
 # ----------------------------
 # Reproducibility
 # ----------------------------
-def set_all_seeds(seed: int):
+def set_all_seeds(seed: int) -> None:
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
@@ -37,6 +53,7 @@ def load_cifar10_torch():
 
 def load_model(state_dict_path: str, device: str):
     model = LeNet()
+    # weights_only=True is available in newer torch; keep as in your original script.
     sd = torch.load(state_dict_path, map_location=device, weights_only=True)
     model.load_state_dict(sd)
     model.to(device).eval()
@@ -44,18 +61,9 @@ def load_model(state_dict_path: str, device: str):
 
 
 # ----------------------------
-# Visualization (dummy, recon, orig, loss)
+# Visualization
 # ----------------------------
-def visualize_run(orig_img, dummy, recon, label_pred, label_true, losses, title, save_path):
-    """
-    orig_img: (1,C,H,W) torch
-    dummy:    (1,C,H,W) torch
-    recon:    torch (1,C,H,W) or (C,H,W) or numpy
-    label_pred: torch scalar or int
-    label_true: int
-    losses: list[float]
-    """
-    # recon to tensor on cpu
+def visualize_run(orig_img, dummy, recon, label_pred, label_true, losses, title, save_path) -> None:
     if isinstance(recon, np.ndarray):
         recon_t = torch.from_numpy(recon)
     else:
@@ -73,26 +81,21 @@ def visualize_run(orig_img, dummy, recon, label_pred, label_true, losses, title,
     if orig_t.dim() == 3:
         orig_t = orig_t.unsqueeze(0)
 
-    # convert to HWC
     def to_hwc(x):
-        x = x[0]  # (C,H,W)
-        return x.permute(1, 2, 0).numpy()
-
-    dummy_hwc = to_hwc(dummy_t)
-    recon_hwc = to_hwc(recon_t)
-    orig_hwc  = to_hwc(orig_t)
+        x0 = x[0]
+        return x0.permute(1, 2, 0).numpy()
 
     fig, axes = plt.subplots(1, 4, figsize=(24, 5))
 
-    axes[0].imshow(dummy_hwc)
+    axes[0].imshow(to_hwc(dummy_t))
     axes[0].set_title("Dummy init")
     axes[0].axis("off")
 
-    axes[1].imshow(recon_hwc)
+    axes[1].imshow(to_hwc(recon_t))
     axes[1].set_title(f"Reconstruction\npred={int(label_pred)}")
     axes[1].axis("off")
 
-    axes[2].imshow(orig_hwc)
+    axes[2].imshow(to_hwc(orig_t))
     axes[2].set_title(f"Original\ntrue={label_true}")
     axes[2].axis("off")
 
@@ -104,85 +107,64 @@ def visualize_run(orig_img, dummy, recon, label_pred, label_true, losses, title,
 
     fig.suptitle(title, fontsize=16, fontweight="bold")
     plt.tight_layout()
-    os.makedirs(os.path.dirname(save_path), exist_ok=True)
+    out_dir = os.path.dirname(save_path)
+    if out_dir:
+        os.makedirs(out_dir, exist_ok=True)
     plt.savefig(save_path, dpi=150, bbox_inches="tight")
     plt.close(fig)
 
 
 # ----------------------------
-# CSV parsing
+# Optional CSV helpers (for comparison printout only)
 # ----------------------------
-def read_runs_from_csv(csv_path):
-    """
-    Your csv rows look like:
-    label_pred,label_correct,ssim,psnr,final_loss,...
-    We need repeat_id/seed to do it perfectly, but you said you can compute seed from repeat_id.
-    If your CSV does NOT store repeat_id, you must either:
-      - store it going forward, OR
-      - infer order: line index = repeat_id (works if strictly one row per repeat in order).
-    This function returns a list of dicts with repeat_id inferred from row order.
-    """
-    runs = []
-    with open(csv_path, "r", newline="") as f:
-        reader = csv.reader(f)
-        for row in reader:
-            if not row:
-                continue
-            # skip "AVG" summary rows or headers
-            if row[0] in ("label_pred", "AVG"):
-                continue
-
-            # row format example:
-            # tensor([6]),1,0.9936,36.66,0.00368,...
-            # label_pred may be "tensor([6])" -> parse int from it
-            label_pred_str = row[0]
-            try:
-                # extract digits inside tensor([x])
-                lp = int(label_pred_str.replace("tensor([", "").replace("])", "").strip())
-            except:
-                # fallback
-                try:
-                    lp = int(label_pred_str)
-                except:
-                    lp = -1
-
-            label_correct = int(float(row[1]))
-            ssim = float(row[2])
-            psnr = float(row[3])
-            final_loss = float(row[4])
-
-            runs.append({
-                "repeat_id": len(runs),  # infer by order
-                "label_pred": lp,
-                "label_correct": label_correct,
-                "ssim": ssim,
-                "psnr": psnr,
-                "final_loss": final_loss,
-            })
-    return runs
+REQUIRED_COLS = ["img_idx", "seed", "ssim", "psnr", "final_loss", "defense"]
 
 
-def pick_extremes(runs):
-    # best/worst psnr and ssim
-    best_psnr = max(runs, key=lambda r: r["psnr"])
-    worst_psnr = min(runs, key=lambda r: r["psnr"])
-    best_ssim = max(runs, key=lambda r: r["ssim"])
-    worst_ssim = min(runs, key=lambda r: r["ssim"])
-    return {
-        "best_psnr": best_psnr,
-        "worst_psnr": worst_psnr,
-        "best_ssim": best_ssim,
-        "worst_ssim": worst_ssim,
-    }
+def load_run_rows(csv_path: str) -> pd.DataFrame:
+    df = pd.read_csv(csv_path)
+
+    missing = [c for c in REQUIRED_COLS if c not in df.columns]
+    if missing:
+        raise ValueError(f"CSV missing required columns: {missing}")
+
+    # Drop AVG rows by coercing repeat_id to numeric (AVG -> NaN)
+    if "repeat_id" in df.columns:
+        df["repeat_id_num"] = pd.to_numeric(df["repeat_id"], errors="coerce")
+        df = df[df["repeat_id_num"].notna()].copy()
+
+    # Coerce numeric
+    for c in ["img_idx", "seed", "ssim", "psnr", "final_loss"]:
+        df[c] = pd.to_numeric(df[c], errors="coerce")
+    df = df.dropna(subset=["img_idx", "seed", "ssim", "psnr", "final_loss"]).copy()
+
+    df["img_idx"] = df["img_idx"].astype(int)
+    df["seed"] = df["seed"].astype(int)
+
+    return df
+
+
+def find_csv_row_for_run(df: pd.DataFrame, img_idx: int, seed: int, defense: str) -> Optional[pd.Series]:
+    sub = df[(df["img_idx"] == img_idx) & (df["seed"] == seed) & (df["defense"] == defense)]
+    if sub.empty:
+        return None
+    if len(sub) > 1:
+        print("Warning: multiple matching CSV rows found; using the first.")
+    return sub.iloc[0]
 
 
 # ----------------------------
-# Re-run a single repeat deterministically
+# Rerun deterministically
 # ----------------------------
-def rerun_one(model, orig_img, label_true, device, base_seed, img_idx, repeat_id,
-              defense, percentile, iterations):
-    # IMPORTANT: you used K=1000
-    seed = base_seed + 1000 * img_idx + repeat_id
+def rerun_one(
+    model,
+    orig_img,
+    label_true: int,
+    device: str,
+    defense: str,
+    percentile: Optional[float],
+    iterations: int,
+    seed: int,
+) -> Dict:
     set_all_seeds(seed)
 
     label = torch.tensor([label_true], dtype=torch.long, device=device)
@@ -194,7 +176,7 @@ def rerun_one(model, orig_img, label_true, device, base_seed, img_idx, repeat_id
         clamp=(0.0, 1.0),
         device=device,
         orig_img=orig_img,
-        grads=None,               # assuming orig_grads scenario
+        grads=None,
         defense=defense,
         percentile=percentile,
         random_dummy=True,
@@ -203,7 +185,6 @@ def rerun_one(model, orig_img, label_true, device, base_seed, img_idx, repeat_id
 
     def_save, dummy, recon, label_pred, history, losses = attacker.attack(iterations=iterations)
 
-    # ensure recon is tensor for compute_ssim_psnr
     if isinstance(recon, np.ndarray):
         recon_t = torch.from_numpy(recon).to(device=device, dtype=orig_img.dtype)
         if recon_t.dim() == 3:
@@ -215,7 +196,6 @@ def rerun_one(model, orig_img, label_true, device, base_seed, img_idx, repeat_id
 
     return {
         "seed": seed,
-        "repeat_id": repeat_id,
         "dummy": dummy,
         "recon": recon_t.detach().cpu(),
         "label_pred": int(label_pred.item()) if hasattr(label_pred, "item") else int(label_pred),
@@ -225,55 +205,85 @@ def rerun_one(model, orig_img, label_true, device, base_seed, img_idx, repeat_id
     }
 
 
-def main():
+def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--csv", required=True, help="CSV file containing per-run rows in order")
     ap.add_argument("--model", required=True, help="path to model .pt state_dict")
-    ap.add_argument("--img_idx", type=int, default=0)
-    ap.add_argument("--base_seed", type=int, default=123)
+    ap.add_argument("--img_idx", type=int, required=True, help="Image index to rerun")
+    ap.add_argument("--seed", type=int, required=True, help="Seed to rerun")
     ap.add_argument("--iterations", type=int, default=100)
 
-    ap.add_argument("--defense", default="none", choices=["none","clipping","sgp"])
+    ap.add_argument("--defense", default="none", choices=["none", "clipping", "sgp"], help="Defense to apply")
     ap.add_argument("--percentile", default=None, type=float, help="clipping quantile or sgp keep_ratio")
-    ap.add_argument("--out_dir", default="viz_extremes")
+    ap.add_argument("--out_dir", default="viz_one")
+
+    # Optional: only for printing stored CSV metrics for this same run
+    ap.add_argument("--csv", default=None, help="Optional CSV to print stored psnr/ssim for this img_idx+seed+defense")
 
     args = ap.parse_args()
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
-
-    x_train, y_train = load_cifar10_torch()
-    orig_img = x_train[args.img_idx].unsqueeze(0).to(device)
-    label_true = int(y_train[args.img_idx].item())
-
     model = load_model(args.model, device)
+    x_train, y_train = load_cifar10_torch()
 
-    runs = read_runs_from_csv(args.csv)
-    extremes = pick_extremes(runs)
+    img_idx = int(args.img_idx)
+    seed = int(args.seed)
+    defense = str(args.defense)
 
-    # Re-run only the 4 interesting repeats
-    for tag, r in extremes.items():
-        rep_id = r["repeat_id"]
-        out = rerun_one(
-            model=model,
-            orig_img=orig_img,
-            label_true=label_true,
-            device=device,
-            base_seed=args.base_seed,
-            img_idx=args.img_idx,
-            repeat_id=rep_id,
-            defense=args.defense,
-            percentile=args.percentile,
-            iterations=args.iterations,
+    # Bounds check for nicer errors
+    if img_idx < 0 or img_idx >= len(x_train):
+        raise ValueError(f"--img_idx out of range: {img_idx} (valid: 0..{len(x_train)-1})")
+
+    orig_img = x_train[img_idx].unsqueeze(0).to(device)
+    label_true = int(y_train[img_idx].item())
+
+    # Optional CSV lookup (comparison only)
+    csv_row = None
+    if args.csv is not None:
+        df = load_run_rows(args.csv)
+        csv_row = find_csv_row_for_run(df, img_idx=img_idx, seed=seed, defense=defense)
+
+    out = rerun_one(
+        model=model,
+        orig_img=orig_img,
+        label_true=label_true,
+        device=device,
+        defense=defense,
+        percentile=args.percentile,
+        iterations=args.iterations,
+        seed=seed,
+    )
+
+    pct_str = "None" if args.percentile is None else str(args.percentile)
+    title = (
+        f"img={img_idx} | seed={seed} | true={label_true} | "
+        f"def={defense}({pct_str}) | PSNR={out['psnr']:.3f} | SSIM={out['ssim']:.3f}"
+    )
+
+    os.makedirs(args.out_dir, exist_ok=True)
+    save_path = os.path.join(args.out_dir, f"img{img_idx}_seed{seed}.png")
+    visualize_run(
+        orig_img,
+        out["dummy"],
+        out["recon"],
+        out["label_pred"],
+        label_true,
+        out["losses"],
+        title,
+        save_path,
+    )
+
+    if csv_row is not None:
+        print(
+            "csv:  "
+            f"psnr={float(csv_row['psnr']):.6f}, "
+            f"ssim={float(csv_row['ssim']):.6f}, "
+            f"final_loss={float(csv_row['final_loss']):.6f}"
         )
+    elif args.csv is not None:
+        print("csv:  no matching row found for this img_idx+seed+defense")
 
-        title = (
-            f"{tag} | img={args.img_idx} | rep={rep_id} | seed={out['seed']} | "
-            f"def={args.defense}({args.percentile}) | PSNR={out['psnr']:.3f} | SSIM={out['ssim']:.3f}"
-        )
-        save_path = os.path.join(args.out_dir, f"{tag}_img{args.img_idx}_rep{rep_id}.png")
-        visualize_run(orig_img, out["dummy"], out["recon"], out["label_pred"], label_true, out["losses"], title, save_path)
-
-    print(f"Saved 4 plots to: {args.out_dir}")
+    print(f"rerun: psnr={out['psnr']:.6f}, ssim={out['ssim']:.6f}")
+    print(f"Saved plot to: {save_path}")
 
 
 if __name__ == "__main__":

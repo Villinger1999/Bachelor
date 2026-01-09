@@ -6,19 +6,20 @@ class LeNet(nn.Module):
         channel: int = 3,
         hidden: int = 768,
         num_classes: int = 10,
-        activation: str = "relu",
+        activation: str = "sigmoid",
     ):
         super(LeNet, self).__init__()
-
-        self.act = self._get_activation(activation)
-        
+    
+        def act():
+            return self._get_activation(activation)
+            
         self.body = nn.Sequential(
             nn.Conv2d(channel, 12, kernel_size=5, padding=2, stride=2),
-            self.act,
+            act(),
             nn.Conv2d(12, 12, kernel_size=5, padding=2, stride=2),
-            self.act,
+            act(),
             nn.Conv2d(12, 12, kernel_size=5, padding=2, stride=1),
-            self.act,
+            act(),
         )
 
         self.fc = nn.Sequential(nn.Linear(hidden, num_classes))
@@ -26,9 +27,9 @@ class LeNet(nn.Module):
     def _get_activation(self, name: str) -> nn.Module:
         name = name.lower()
         if name == "relu":
-            return nn.ReLU(inplace=True)
+            return nn.ReLU(inplace=False)
         elif name == "leaky_relu":
-            return nn.LeakyReLU(negative_slope=0.01, inplace=True)
+            return nn.LeakyReLU(negative_slope=0.01, inplace=False)
         elif name == "prelu":
             return nn.PReLU()
         elif name == "sigmoid":

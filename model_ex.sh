@@ -12,15 +12,26 @@ module load python/3.12.11
 source ~/bachelor-env/bin/activate
 
 python model_ex.py \
-  --scenario normal_model_orig_grads \
-  --normal_model state_dict_b64_e100_sig.pt \
-  --fl_model state_dict_b64_e100_relu.pt \
+  --scenario fl_model_orig_grads \
+  --normal_model global_model_state_exp7_b64_e10_c5_relu.pt \
+  --fl_model global_model_state_exp7_b64_e10_c5_relu.pt \
   --images 0 \
-  --activation sigmoid \
-  --repeats 50 \
+  --activation relu \
+  --repeats 10 \
   --iterations 100 \
   --defense none \
-  --out_csv results_relu.csv
+  --out_csv results_relu_FL.csv
+
+  python model_ex.py \
+  --scenario fl_model_orig_grads \
+  --normal_model global_model_state_exp7_b64_e10_c5_leaky.pt \
+  --fl_model global_model_state_exp7_b64_e10_c5_leaky.pt \
+  --images 0 \
+  --activation leaky_relu \
+  --repeats 10 \
+  --iterations 100 \
+  --defense none \
+  --out_csv results_leaky_FL.csv
 
 # python model_ex.py \
 #   --scenario normal_model_orig_grads \

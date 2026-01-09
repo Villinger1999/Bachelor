@@ -1,7 +1,7 @@
 #!/bin/bash
 #BSUB -J clip
 #BSUB -q hpc
-#BSUB -W 800
+#BSUB -W 900
 #BSUB -R "rusage[mem=16G]"
 #BSUB -R "span[hosts=1]"
 #BSUB -n 1
@@ -19,5 +19,5 @@ python run_idlg_ex.py \
   --repeats 25 \
   --iterations 100 \
   --defense clipping \
-  --def_params 0.3,0.2,0.1 \
-  --out_csv results_fl_orig_clip_multi_4.csv
+  --def_params 0.994 \
+  --out_csv results_fl_orig_clip_multi_994.csv

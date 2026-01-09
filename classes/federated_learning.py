@@ -5,12 +5,17 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 import sys
+from classes.defenses import *
 
+
+# ----------------------------
+# FedAvg (unchanged, weights)
+# ----------------------------
 def fedavg(states, C, client_datasets):
     """
-    states: a state dictionary of the local states from the trained models
+    states: list of state_dict from each client after local training
     C: fraction of clients to participate
-    client_dataset: a list of subsets with training data for each client
+    client_datasets: list of datasets/subsets (used for weighting)
     """
     clients = list(range(len(client_datasets)))
     m = max(int(C * len(client_datasets)), 1)
@@ -32,30 +37,78 @@ def fedavg(states, C, client_datasets):
     return avg_state
 
 
+# ----------------------------
+# Gradient helpers
+# ----------------------------
 def grad_state_dict(model):
     """
-    Return a dict with the same keys as model.state_dict() but values 
-    are the corresponding gradients (detached & cloned). If a parameter
-    has no grad, it is skipped.
+    Return a dict keyed by parameter name with gradient tensors.
+    Includes None if a parameter has no gradient.
     """
     grad_dict = {}
-    for name, param in model.named_parameters():
-        if param.grad is None:
-            continue
-        grad_dict[name] = param.grad.detach().clone()
+    for name, p in model.named_parameters():
+        grad_dict[name] = None if p.grad is None else p.grad.detach().clone()
     return grad_dict
 
 
-def evaluate_global(model, dataloader, device):
+@torch.no_grad()
+def load_grad_dict_into_model(model, grad_dict):
     """
-    Args:
-        model: the global model, that needs to be evaluated
-        dataloader: Dataloader with the testset and batchsize (i.e. testloader = DataLoader(testset, batch_size=64, shuffle=False))
-        device: Defaults to 'cpu' can also be GPU
+    Writes gradient tensors from grad_dict back into model parameters' .grad
+    so that optimizer.step() uses the defended gradients.
+    """
+    for name, p in model.named_parameters():
+        g = grad_dict.get(name, None)
+        if g is None:
+            continue
+        if p.grad is None:
+            # In most normal training flows, p.grad exists after backward.
+            # If it doesn't, skip (or set p.grad = g.clone()) depending on your preference.
+            continue
+        p.grad.copy_(g.to(device=p.grad.device, dtype=p.grad.dtype))
 
-    Returns:
-        The accuracy of the global model
+
+def apply_defense_to_grad_dict(grad_dict, defense=None, *, percentile=0.9, keep_ratio=0.9):
     """
+    Returns a NEW dict with defended grads (same keys).
+    Uses your Defense classes (Clipping/SGP) which operate on list[tensor].
+    Preserves None entries.
+    """
+    if defense is None:
+        return grad_dict
+
+    keys = list(grad_dict.keys())
+    grads = [grad_dict[k] for k in keys]
+
+    # indices of non-None grads
+    idx = [i for i, g in enumerate(grads) if g is not None]
+    if not idx:
+        return grad_dict
+
+    grads_nonnull = [grads[i] for i in idx]
+
+    if defense == "clipping":
+        thr = clipping_threshold(grads_nonnull, percentile=float(percentile))
+        defended_nonnull = Clipping(threshold=thr).apply(grads_nonnull)
+
+    elif defense == "sgp":
+        thr = pruning_threshold(grads_nonnull, keep_ratio=float(keep_ratio))
+        defended_nonnull = SGP(threshold=thr).apply(grads_nonnull)
+
+    else:
+        raise ValueError(f"Unknown defense: {defense}")
+
+    # rebuild full list with None preserved
+    grads_out = list(grads)
+    for j, i in enumerate(idx):
+        grads_out[i] = defended_nonnull[j]
+
+    return {k: grads_out[i] for i, k in enumerate(keys)}
+
+# ----------------------------
+# Evaluation
+# ----------------------------
+def evaluate_global(model, dataloader, device):
     model = model.to(device)
     model.eval()
     correct, total = 0, 0
@@ -68,61 +121,50 @@ def evaluate_global(model, dataloader, device):
             correct += (predicted == labels).sum().item()
     return correct / total if total > 0 else 0.0
 
-def train(model, trainloader, testloader, epochs=100, lr=0.01, device="cpu", defense = None):
-    local_model = copy.deepcopy(model).to(device)
-    local_model.train()
 
-    criterion = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(local_model.parameters(), lr=lr, momentum=0.9)
-
-    for epoch in range(epochs):
-        running_loss, num_steps = 0.0, 0
-
-        for images, labels in trainloader:
-            images = images.to(device)
-            labels = labels.to(device)
-
-            optimizer.zero_grad()
-            outputs = local_model(images)
-            loss = criterion(outputs, labels)
-            loss.backward()
-
-            optimizer.step()
-            running_loss += loss.item()
-            num_steps += 1
-
-        avg_loss = running_loss / max(1, num_steps)
-        acc = evaluate_global(local_model, testloader, device)
-        print(f"Epoch {epoch+1}/{epochs} - Loss: {avg_loss:.4f} - Acc: {acc:.4f}")
-    return local_model.state_dict()
-
-
+# ----------------------------
+# Client
+# ----------------------------
 class Client:
-    def __init__(self, client_id, dataset, batch_size, device="cpu"):
+    def __init__(
+        self,
+        client_id,
+        dataset,
+        batch_size,
+        device="cpu",
+        # Defaults for defenses; you can override per-call in train_local via args too.
+        defense=None,
+        percentile=0.9,
+        keep_ratio=0.9,
+    ):
         self.id = client_id
-        self.dataset = dataset                # used for weighting in FedAvg
+        self.dataset = dataset
         self.batch_size = batch_size
         self.device = device
 
-    def train_local(self, global_model, testloader, epochs=1, lr=0.01, defense=None):
-        """
-        Performs local training on a client using its local dataset
-        
-        Args:
-            
+        self.defense = defense
+        self.percentile = percentile
+        self.keep_ratio = keep_ratio
 
-        Returns:
-            state_dict: updated model weights after local training
-            grads_dict: dict containing a list of per-step gradients + labels
+    def train_local(self, global_model, testloader, epochs=1, lr=0.01, defense=None,
+                    percentile=None, keep_ratio=None):
         """
-        # copy global model
+        Local training (FedAvg style): returns updated local model weights.
+
+        Also returns grads_dict containing the *LAST BATCH* defended gradients (and labels)
+        for attack logging/saving purposes.
+        """
         local_model = copy.deepcopy(global_model).to(self.device)
         local_model.train()
 
         criterion = nn.CrossEntropyLoss()
         optimizer = optim.SGD(local_model.parameters(), lr=lr, momentum=0.9)
-
         trainloader = DataLoader(self.dataset, batch_size=self.batch_size, shuffle=True)
+
+        # Resolve defense settings: prefer call args, otherwise client defaults
+        use_defense = defense if defense is not None else self.defense
+        use_percentile = float(percentile) if percentile is not None else float(self.percentile)
+        use_keep_ratio = float(keep_ratio) if keep_ratio is not None else float(self.keep_ratio)
 
         captured_grads = None
         captured_labels = None
@@ -135,21 +177,32 @@ class Client:
                 images = images.to(self.device)
                 labels = labels.to(self.device)
 
-                optimizer.zero_grad()
+                optimizer.zero_grad(set_to_none=True)
                 outputs = local_model(images)
                 loss = criterion(outputs, labels)
                 loss.backward()
 
-                # capture gradients/state from last batch
-                captured_grads = grad_state_dict(local_model)
+                # Capture the gradients from this (last-seen) batch
+                raw_grads = grad_state_dict(local_model)
+
+                # Apply defense to gradients (THIS is now used by optimizer.step())
+                defended_grads = apply_defense_to_grad_dict(
+                    raw_grads,
+                    defense=use_defense,
+                    percentile=use_percentile,
+                    keep_ratio=use_keep_ratio,
+                )
+
+                # IMPORTANT: write defended grads back into param.grad
+                load_grad_dict_into_model(local_model, defended_grads)
+
+                # Save defended grads + labels + state for attack from last batch
+                captured_grads = defended_grads
                 captured_labels = labels.detach().cpu().clone()
                 state_for_attack = copy.deepcopy(local_model.state_dict())
 
-                # apply defense on grads if given (your Clipping/SGP/PLGP can go here)
-                if defense is not None:
-                    captured_grads = defense.apply(captured_grads)
-
                 optimizer.step()
+
                 running_loss += loss.item()
                 num_steps += 1
 
@@ -158,26 +211,25 @@ class Client:
             print(f"[Client {self.id}] Epoch {epoch+1}/{epochs} - Loss: {avg_loss:.4f} - Acc: {acc:.4f}")
 
         grads_dict = {
-            "grads_per_sample": captured_grads,
-            "labels_per_sample": captured_labels,
-            "model_state": state_for_attack,
+            "grads_per_sample": captured_grads,      # defended grads from last batch
+            "labels_per_sample": captured_labels,    # labels from last batch
+            "model_state": state_for_attack,         # state right before last optimizer.step()
+            "defense": use_defense,
+            "percentile": use_percentile,
+            "keep_ratio": use_keep_ratio,
         }
         return local_model.state_dict(), grads_dict
 
 
+# ----------------------------
+# Federated trainer (FedAvg)
+# ----------------------------
 class FederatedTrainer:
     """
-    Args:
-        global_model: 
-        clients: 
-        testloader:
-        C: fraction of clients to participate
-        device: defaults to cpu (because of iDLG)
-        aggregator: type of federated learning update, defaults to federated averaging 
-    
-    Returns:
-        The updated global model
+    Federated training with FedAvg weight aggregation.
+    Defense is applied on clients *before optimizer.step()* so it impacts training.
     """
+
     def __init__(self, global_model, clients, testloader, C,
                  device="cpu", aggregator=fedavg):
         self.global_model = global_model.to(device)
@@ -187,19 +239,8 @@ class FederatedTrainer:
         self.device = device
         self.aggregator = aggregator
 
-    def train(self, num_rounds, local_epochs, defense=None, save_grads=False, run_id=None):
-        """
-        Args:
-            num_rounds: number of training rounds
-            local_epochs: number of local epochs
-            defense: the defense function that should be used, defualt is None
-            save_grads: defaults to False, has to be True if the gradients should be saved
-            run_id:
-        
-        Returns: 
-            local_states:
-            global_model:
-        """
+    def train(self, num_rounds, local_epochs, defense=None, save_grads=False, run_id=None,
+              percentile=0.9, keep_ratio=0.9, lr=0.01):
         last_local_states = None
 
         for rnd in range(num_rounds):
@@ -208,16 +249,18 @@ class FederatedTrainer:
             local_states = []
             all_grads = []
 
-            # you could also subsample clients here based on C instead of in fedavg
             for client in self.clients:
                 print(f"Client {client.id} training...")
                 local_state, local_grads = client.train_local(
                     self.global_model,
                     self.testloader,
                     epochs=local_epochs,
-                    lr=0.01,
+                    lr=lr,
                     defense=defense,
+                    percentile=percentile,
+                    keep_ratio=keep_ratio,
                 )
+
                 local_states.append(local_state)
                 all_grads.append(local_grads)
 
@@ -227,7 +270,7 @@ class FederatedTrainer:
                     except Exception as e:
                         print("Error saving local_grads:", e)
 
-            # aggregation
+            # Aggregate weights (FedAvg)
             client_datasets = [c.dataset for c in self.clients]
             global_state = self.aggregator(local_states, self.C, client_datasets)
             self.global_model.load_state_dict(global_state)
@@ -236,6 +279,11 @@ class FederatedTrainer:
             print(f"Global eval after round {rnd+1}: {acc:.4f}")
 
             last_local_states = local_states
-            
-        torch.save(self.global_model.state_dict(), f"state_dicts/global_model_state_{run_id}_{sys.argv[1]}.pt")
+
+        # Save final global model
+        try:
+            torch.save(self.global_model.state_dict(), f"state_dicts/global_model_state_{run_id}_{sys.argv[1]}.pt")
+        except Exception as e:
+            print("Error saving global model:", e)
+
         return last_local_states, self.global_model

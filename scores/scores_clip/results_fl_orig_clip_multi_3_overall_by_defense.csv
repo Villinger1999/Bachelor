@@ -1,0 +1,2 @@
+scenario,model_path,defense,overall_avg_ssim,overall_avg_psnr,overall_avg_loss,threshold,acc_before,acc_after,delta_acc_pp
+fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,clipping,0.070164,8.573744,2.730286802,0.3,0.4702,0.47,-0.02

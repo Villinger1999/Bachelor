@@ -1,0 +1,11 @@
+scenario,model_path,defense,label_true,avg_ssim,avg_psnr,avg_loss,n_runs
+fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,clipping,0,0.3776531239350637,13.178323002982877,9.254991682370504,75
+fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,clipping,1,0.4507513656715552,14.275399834881155,3.26392010829101,150
+fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,clipping,2,0.1749049746564456,9.588203093251979,11.055236687319619,175
+fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,clipping,3,0.13586666709743433,8.8799207348702,9.851870115995407,200
+fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,clipping,4,0.19911853379011152,11.98684553780929,7.714690648317337,125
+fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,clipping,5,0.16886030226945872,8.779189449906635,17.914166345596314,50
+fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,clipping,6,0.29696465873718264,12.575640064612118,1.294585385620594,125
+fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,clipping,7,0.33215764248371127,11.982288838650819,4.02640305402875,125
+fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,clipping,8,0.20900682151317593,8.868868923492359,5.959064836502075,25
+fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,clipping,9,0.2324992137899001,9.910271246565735,8.762521962324778,150

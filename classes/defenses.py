@@ -44,7 +44,7 @@ class SGP(Defense):
         Args:
             model (nn.Module): model with gradients
             threshold (float): threshold for cutoff
-        """   
+        """    
         pruned = []
         for grad in grads:
             mask = grad.abs() <= self.threshold
@@ -53,7 +53,7 @@ class SGP(Defense):
     
 def clipping_threshold(grads, percentile: float = 0.9):
     abs_vals = torch.cat([g.detach().abs().reshape(-1) for g in grads if g is not None])
-    return float(np.percentile(abs_vals, percentile))
+    return float(torch.quantile(abs_vals, percentile))
 
 
 def pruning_threshold(grads, keep_ratio: float = 0.9):
