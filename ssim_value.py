@@ -5,7 +5,6 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 warnings.filterwarnings("ignore", category=UserWarning)
 warnings.filterwarnings("ignore", category=FutureWarning)
 
-
 import matplotlib.pyplot as plt
 import pandas as pd
 import matplotlib
@@ -15,12 +14,10 @@ import zipfile
 from PIL import Image
 from skimage import util, io
 import numpy as np
+import sys
 import scipy.stats as stats
 import random as random
 import argparse
-import skimage.metrics
-
-
 
 np.random.seed(42)  # Set a fixed seed for reproducibility
 random.seed(42)
@@ -41,10 +38,11 @@ def get_images(image_dir, image_count):
    
 
 if __name__ == "__main__":
+    import skimage.metrics
     ##------ setup of the variable needed to do test the brisque scores 
     # Make path the folder path
     path = os.getcwd() + "/" # always points to the folder you are in
-    parser = argparse.ArgumentParser(description="BRISQUE score analysis")
+    parser = argparse.ArgumentParser(description="SSIM score analysis")  # changed
     parser.add_argument('--image_paths', type=str, default="/dtu/datasets1/imagenet_object_localization_patched2019/ILSVRC/Data/CLS-LOC/test/", help='Path to image directory')
     parser.add_argument('--variance', type=float, default=0.01, help='Variance for noise')
     parser.add_argument('--res_lb', type=int, default=32, help='Lower bound for resolution')
@@ -90,8 +88,6 @@ if __name__ == "__main__":
                     io.imsave(path + f'data/imagenetSubNoise/noisy{idx}_{variance}_{reso}x{reso}.jpg', save_array)
                 # Calculate BRISQUE score for each variance level
                 brisque_score = model(processed_image).item()
-                if idx == 0:
-                    print(f"BRISQUE score of the first image with noise variance {variance} is {brisque_score}")
                 # Calculate SSIM and PSNR between original and noisy image (only if variance > 0, else set to nan or perfect)
                 if variance == 0:
                     ssim_score = 1.0
@@ -108,87 +104,84 @@ if __name__ == "__main__":
 
         df_results = pd.DataFrame(results, columns=["resolution", "image_idx", "variance", "brisque_score", "ssim", "psnr"])
         
-        
-
-
         ##------- Plots and save the histograms of the two distribution, at each resolution 
         if plots_download == True:
             fig, ax1 = plt.subplots(figsize=(8, 5))
             max_count = 0
-            # Gather all brisque scores for this resolution
-            all_brisque_scores = df_results[df_results['resolution'] == reso]['brisque_score']
-            if len(all_brisque_scores) > 0:
-                min_brisque = all_brisque_scores.min()
-                max_brisque = all_brisque_scores.max()
-                if min_brisque >= 0:
+            # Gather all SSIM scores for this resolution
+            all_ssim_scores = df_results[df_results['resolution'] == reso]['ssim']
+            if len(all_ssim_scores) > 0:
+                min_ssim = all_ssim_scores.min()
+                max_ssim = all_ssim_scores.max()
+                if min_ssim >= 0:
                     x_min = 0
                 else:
-                    x_min = int(np.floor(min_brisque / 10.0)) * 10
-                x_max = int(np.ceil(max_brisque / 10.0)) * 10
+                    x_min = int(np.floor(min_ssim / 10.0)) * 10
+                x_max = int(np.ceil(max_ssim / 10.0)) * 10
             else:
                 x_min = 0
-                x_max = 100
+                x_max = 1
             for variance in var_arr:
-                var_scores = df_results[(df_results['resolution'] == reso) & (df_results['variance'] == variance)]['brisque_score']
+                var_scores = df_results[(df_results['resolution'] == reso) & (df_results['variance'] == variance)]['ssim']
                 # Plot histogram (frequency, not density)
                 counts, bins, patches = ax1.hist(var_scores, bins=20, alpha=0.6, label=f'var={variance}', density=False, range=(x_min, x_max))
                 max_count = max(max_count, counts.max() if len(counts) > 0 else 0)
-            ax1.set_xlabel('BRISQUE Score')
+            ax1.set_xlabel('SSIM Score')
             ax1.set_ylabel('Frequency (Count)')
             ax1.set_ylim(0, image_count)
-            ax1.set_xlim(x_min, x_max)
+            ax1.set_xlim(0, 1)
             # Plot CDF on secondary y-axis
             ax2 = ax1.twinx()
             for variance in var_arr:
-                var_scores = df_results[(df_results['resolution'] == reso) & (df_results['variance'] == variance)]['brisque_score']
+                var_scores = df_results[(df_results['resolution'] == reso) & (df_results['variance'] == variance)]['ssim']
                 sorted_scores = np.sort(var_scores)
                 cdf = np.arange(1, len(sorted_scores)+1) / len(sorted_scores) if len(sorted_scores) > 0 else []
                 ax2.plot(sorted_scores, cdf, marker='.', linestyle='-', label=f'CDF var={variance}')
             ax2.set_ylabel('CDF')
             ax2.set_ylim(0, 1)
-            ax2.set_xlim(x_min, x_max)
+            ax2.set_xlim(0, 1)
             # Combine legends from both axes
             handles1, labels1 = ax1.get_legend_handles_labels()
             handles2, labels2 = ax2.get_legend_handles_labels()
             ax1.legend(handles1 + handles2, labels1 + labels2, bbox_to_anchor=(0.5, -0.1), loc='upper center', ncol=len(var_arr)*2)
-            plt.title(f'BRISQUE Scores by Noise Variance (Var1 = {var_arr[0]}, Var2 = {var_arr[1]},{reso}x{reso})')
+            plt.title(f'SSIM Scores by Noise Variance (Var1 = {var_arr[0]}, Var2 = {var_arr[1]},{reso}x{reso})')
             ax1.grid(True, alpha=0.3)
             # Ensure the results folder exists before saving
             results_folder = os.path.join(path, 'results')
             if not os.path.exists(results_folder):
                 os.makedirs(results_folder)
-            plt.savefig(path + f'results/brisque_analysis_{image_count}_{var_arr}_{reso}x{reso}.png', dpi=800, bbox_inches='tight')
+            plt.savefig(path + f'results/ssim_analysis_{image_count}_{var_arr}_{reso}x{reso}.png', dpi=800, bbox_inches='tight')
             plt.close()
         
-        #------- make the ks_test on the two variances chosen
-        brisque_var_0 = df_results[(df_results["resolution"] == reso) & (df_results['variance'] == var_arr[0])]['brisque_score']
-        brisque_var_i = df_results[(df_results["resolution"] == reso) & (df_results['variance'] == var_arr[1])]['brisque_score']
-        ks_test = stats.ks_2samp(brisque_var_0, brisque_var_i, alternative='two-sided', mode='asymp')
+        #------- make the ks_test on the two variances chosen (on SSIM)
+        ssim_var_0 = df_results[(df_results["resolution"] == reso) & (df_results['variance'] == var_arr[0])]['ssim']
+        ssim_var_i = df_results[(df_results["resolution"] == reso) & (df_results['variance'] == var_arr[1])]['ssim']
+        ks_test = stats.ks_2samp(ssim_var_0, ssim_var_i, alternative='two-sided', mode='asymp')
 
         #------ FPR and FNR calculation
         # Use the KS statistic location as threshold
         threshold = ks_test.statistic_location
-        fpr = np.sum(brisque_var_0 > threshold) / len(brisque_var_0) if len(brisque_var_0) > 0 else np.nan
-        fnr = np.sum(brisque_var_i < threshold) / len(brisque_var_i) if len(brisque_var_i) > 0 else np.nan
+        fpr = np.sum(ssim_var_0 < threshold) / len(ssim_var_0) if len(ssim_var_0) > 0 else np.nan
+        fnr = np.sum(ssim_var_i > threshold) / len(ssim_var_i) if len(ssim_var_i) > 0 else np.nan
 
         # Mean and variance for each distribution
-        mean_0 = np.round(np.mean(brisque_var_0),2) if len(brisque_var_0) > 0 else np.nan
-        var_0 = np.round(np.var(brisque_var_0),2) if len(brisque_var_0) > 0 else np.nan
-        mean_i = np.round(np.mean(brisque_var_i),2) if len(brisque_var_i) > 0 else np.nan
-        var_i = np.round(np.var(brisque_var_i),2) if len(brisque_var_i) > 0 else np.nan
+        mean_0 = np.round(np.mean(ssim_var_0),2) if len(ssim_var_0) > 0 else np.nan
+        var_0 = np.round(np.var(ssim_var_0),2) if len(ssim_var_0) > 0 else np.nan
+        mean_i = np.round(np.mean(ssim_var_i),2) if len(ssim_var_i) > 0 else np.nan
+        var_i = np.round(np.var(ssim_var_i),2) if len(ssim_var_i) > 0 else np.nan
 
         # KS test against normal distribution with same mean/var
-        if len(brisque_var_0) > 1:
-            normal_0 = np.random.normal(mean_0, np.sqrt(var_0), size=len(brisque_var_0))
-            ks_norm_0 = stats.ks_2samp(brisque_var_0, normal_0, alternative='two-sided', mode='asymp')
+        if len(ssim_var_0) > 1:
+            normal_0 = np.random.normal(mean_0, np.sqrt(var_0), size=len(ssim_var_0))
+            ks_norm_0 = stats.ks_2samp(ssim_var_0, normal_0, alternative='two-sided', mode='asymp')
             ks_norm_0_stat = ks_norm_0.statistic
             ks_norm_0_p = ks_norm_0.pvalue
         else:
             ks_norm_0_stat = np.nan
             ks_norm_0_p = np.nan
-        if len(brisque_var_i) > 1:
-            normal_i = np.random.normal(mean_i, np.sqrt(var_i), size=len(brisque_var_i))
-            ks_norm_i = stats.ks_2samp(brisque_var_i, normal_i, alternative='two-sided', mode='asymp')
+        if len(ssim_var_i) > 1:
+            normal_i = np.random.normal(mean_i, np.sqrt(var_i), size=len(ssim_var_i))
+            ks_norm_i = stats.ks_2samp(ssim_var_i, normal_i, alternative='two-sided', mode='asymp')
             ks_norm_i_stat = ks_norm_i.statistic
             ks_norm_i_p = ks_norm_i.pvalue
         else:
@@ -196,7 +189,7 @@ if __name__ == "__main__":
             ks_norm_i_p = np.nan
 
         # Calculate SSIM and PSNR statistics for var_arr[1] (non-zero variance)
-        ssim_vals = df_results[(df_results['resolution'] == reso) & (df_results['variance'] == var_arr[1])]['brisque']
+        ssim_vals = df_results[(df_results['resolution'] == reso) & (df_results['variance'] == var_arr[1])]['ssim']
         psnr_vals = df_results[(df_results['resolution'] == reso) & (df_results['variance'] == var_arr[1])]['psnr']
         ssim_mean = np.round(np.mean(ssim_vals), 4) if len(ssim_vals) > 0 else np.nan
         ssim_var = np.round(np.var(ssim_vals), 4) if len(ssim_vals) > 0 else np.nan
@@ -225,4 +218,4 @@ if __name__ == "__main__":
         })
         
         df_ks = pd.DataFrame(ks_results)
-        df_ks.to_csv(path + f'ks_test_results_{image_count}_{var_arr}_res_{resolution_arr[0]}_{resolution_arr[-1]}.csv', index=False)
+        df_ks.to_csv(path + f'ks_test_results_{image_count}_{var_arr}_res_{resolution_arr[0]}_{resolution_arr[-1]}_ssim.csv', index=False)

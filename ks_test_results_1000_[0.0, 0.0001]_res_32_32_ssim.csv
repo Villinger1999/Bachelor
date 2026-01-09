@@ -1,0 +1,2 @@
+resolution,ks_statistic,p_value,statistic_location,FPR,FNR  ,mean_0,var_0,ks_norm_0_stat,ks_norm_0_p,mean_i,var_i,ks_norm_i_stat,ks_norm_i_p,ssim_mean,ssim_var,psnr_mean,psnr_var
+32        ,1.0         ,0.0    ,1.0               ,0.0,0.0  ,1.0,0.0,0.0,1.0,0.99,0.0,0.698,0.0,0.9907,0.0001,39.87,0.07
