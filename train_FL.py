@@ -1,5 +1,5 @@
 from classes.federated_learning import Client, FederatedTrainer, fedavg
-from classes.model_change import LeNet
+from Bachelor.future_works.model_change import LeNet
 from torch.utils.data import DataLoader, TensorDataset, random_split
 import torch
 import tensorflow as tf
@@ -21,28 +21,6 @@ y_test_torch  = torch.tensor(y_test.squeeze(), dtype=torch.long)
 
 trainset = TensorDataset(x_train_torch, y_train_torch)
 testset = TensorDataset(x_test_torch, y_test_torch)
-
-# img0, label0 = trainset[0]
-
-# single_trainset = TensorDataset(img0.unsqueeze(0), label0.unsqueeze(0))
-
-# # move to CPU just in case
-# img = img0.detach().cpu()
-
-# # convert from (C,H,W) → (H,W,C)
-# img_np = img.permute(1, 2, 0).numpy()
-
-# # plot
-# plt.figure(figsize=(4,4))
-# plt.imshow(img_np)
-# plt.title(f"CIFAR-10 image, label={label0.item()}")
-# plt.axis("off")
-
-# # save
-# plt.savefig("train_image_0.png", dpi=150, bbox_inches="tight")
-# plt.show()
-
-# # model = LeNet()
 
 num_clients = 5
 batch_size = 64

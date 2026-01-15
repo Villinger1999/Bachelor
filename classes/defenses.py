@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 import torch
 import numpy as np
+from collections import deque
 
 class Defense(ABC):
     """Base class all defenses must inherit from."""
@@ -13,6 +14,45 @@ class Defense(ABC):
         """
         pass
 
+class NormClipping:
+    """
+    Layerwise norm clipping.
+
+    Steps:
+      1) compute L2 norm per gradient tensor
+      2) tau = quantile(norms, q)  (q close to 1 keeps most layers unclipped)
+      3) for each layer: g <- g * min(1, tau / (||g|| + eps))
+    """
+    def __init__(self, q: float = 0.9, eps: float = 1e-6):
+        assert 0.0 < q < 1.0
+        self.q = q
+        self.eps = eps
+
+    @torch.no_grad()
+    def apply(self, grads: list[torch.Tensor]):
+        # norms for non-None grads only
+        norms = []
+        idxs = []
+        for i, g in enumerate(grads):
+            if g is None:
+                continue
+            n = g.norm(p=2)
+            norms.append(n)
+            idxs.append(i)
+
+        if len(norms) == 0:
+            return grads
+
+        norms_t = torch.stack(norms) 
+        tau = torch.quantile(norms_t, self.q)
+
+        out = list(grads)
+        # Clip each layer independently to tau
+        for n, i in zip(norms_t, idxs):
+            scale = min(1.0, (tau / (n + self.eps)).item())
+            out[i] = out[i] * scale
+        return out
+
 class Clipping(Defense):
     """Clips gradients to a maximum absolute magnitude."""
 
@@ -21,7 +61,7 @@ class Clipping(Defense):
 
     def apply(self, grads):
         """
-        clipping:
+        Value clipping:
         Set gradients with magnitude >= threshold to threshold.
 
         Args:

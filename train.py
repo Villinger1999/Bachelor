@@ -1,5 +1,5 @@
 from classes.federated_learning import train
-from classes.model_change import LeNet
+from Bachelor.future_works.model_change import LeNet
 from torch.utils.data import DataLoader, TensorDataset
 import torch
 import tensorflow as tf

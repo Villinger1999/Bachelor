@@ -17,7 +17,9 @@ python run_idlg_ex.py \
   --fl_model global_model_state_exp2_b64_e15_c10.pt \
   --leaked_grads local_grads_client0_exp3.pt\
   --images 0 \
+  --seed 123 \
   --repeats 100 \
   --iterations 100 \
+  --tvr 3e-7 \
   --defense none \
-  --out_csv results_FL_leaked_tv4.csv
+  --out_csv results_FL_leaked.csv

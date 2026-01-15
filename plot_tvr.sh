@@ -12,5 +12,12 @@ module load python/3.12.11
 source ~/bachelor-env/bin/activate
 
 python plot_tvr.py 0
-python plot_tvr.py 1
-python plot_tvr.py 2
+# python plot_tvr.py 1
+# python plot_tvr.py 2
+# python plot_tvr.py 3
+# python plot_tvr.py 4
+# python plot_tvr.py 5
+# python plot_tvr.py 6
+# python plot_tvr.py 7
+# python plot_tvr.py 8
+# python plot_tvr.py 9

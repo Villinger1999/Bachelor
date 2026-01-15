@@ -29,7 +29,7 @@ def visualize(orig_img, dummy, recon, pred_label, label, losses, random_dummy, d
     """
     orig_img: (1,C,H,W) or (C,H,W) torch tensor
     dummy: (1,C,H,W) or (C,H,W) torch tensor (initial dummy)
-    recon: numpy or torch (C,H,W) or (1,C,H,W) – final reconstruction
+    recon: numpy or torch (C,H,W) or (1,C,H,W) - final reconstruction
     """
     recon_tensor = torch.from_numpy(recon) if isinstance(recon, np.ndarray) else recon
     recon_tensor = recon_tensor.detach().cpu()
@@ -63,7 +63,6 @@ def visualize(orig_img, dummy, recon, pred_label, label, losses, random_dummy, d
 
     orig_display = orig_img0.permute(1, 2, 0).numpy()
 
-    # Make a subplot with the dummy data, reconstructed image, original image and the loss curve
     fig, axes = plt.subplots(1, 4, figsize=(24, 5))
 
     # Dummy initialization
@@ -104,14 +103,12 @@ def apply_defended_grads(model, defended_grads, lr=0.01, momentum=0.9):
     Apply a single SGD update using a list of defended gradients aligned with model.parameters().
     """
     if defended_grads is None:
-        return  # nothing to apply
+        return  
 
-    # Create an optimizer (or pass one in if you want to reuse it)
     optimizer = torch.optim.SGD(model.parameters(), lr=lr, momentum=momentum)
 
     optimizer.zero_grad(set_to_none=True)
 
-    # Write gradients into .grad
     for p, g in zip(model.parameters(), defended_grads):
         if g is None:
             p.grad = None

@@ -1,0 +1,9 @@
+source_csv,scenario,model_path,defense,overall_avg_ssim,overall_avg_psnr,overall_avg_loss,label_correct,threshold,acc_before,acc_after,delta_acc_pp
+results_fl_orig_clip_999.csv,fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,clipping,0.65396,20.403752,0.833531142,1.0,0.999,0.4702,0.4489,-2.13
+results_fl_orig_clip_998.csv,fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,clipping,0.387732,13.58034,1.27830804,1.0,0.998,0.4702,0.449,-2.12
+results_fl_orig_clip_997.csv,fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,clipping,0.267975,10.796363,3.591128867,1.0,0.997,0.4702,0.4490999999999999,-2.11
+results_fl_orig_clip_996.csv,fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,clipping,0.193684,9.206799,7.572958225,1.0,0.996,0.4702,0.4496,-2.06
+results_fl_orig_clip_995.csv,fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,clipping,0.155502,8.441781,13.653162535,1.0,0.995,0.4702,0.4501,-2.01
+results_fl_orig_clip_994.csv,fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,clipping,0.131338,7.932833,19.832723365,1.0,0.994,0.4702,0.4505999999999999,-1.96
+results_fl_orig_clip_993.csv,fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,clipping,0.116717,7.643665,23.85976766,1.0,0.993,0.4702,0.4515999999999999,-1.86
+results_fl_orig_clip_99.csv,fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,clipping,0.093511,7.182817,33.167202076,1.0,0.99,0.4702,0.4530999999999999,-1.71

@@ -1,19 +1,4 @@
-#!/usr/bin/env python3
-"""
-Analyze PSNR / SSIM / Loss from one or many CSVs.
-
-Outputs:
-1) Per-image averages (PSNR/SSIM/Loss)
-2) Overall averages across all runs (all images, all CSVs)
-3) Best & worst runs per CLASS/LABEL (label_true) for PSNR/SSIM/Loss
-
-Usage:
-  python get_scores.py --csvs a.csv b.csv --outdir scores_out
-  python get_scores.py --glob "results/*.csv" --outdir scores_out
-"""
-
 from __future__ import annotations
-
 import argparse
 import glob
 from pathlib import Path
@@ -204,19 +189,19 @@ def main() -> None:
     outdir = Path(args.outdir)
     outdir.mkdir(parents=True, exist_ok=True)
 
-    # (1) per-image averages (sorted by image)
+    # per-image averages (sorted by image)
     img_avgs_path = outdir / "per_image_averages.csv"
     img_avgs.to_csv(img_avgs_path, index=False)
 
-    # extra: per-class averages (sorted by class)
+    # per-class averages (sorted by class)
     class_avgs_path = outdir / "per_class_averages.csv"
     class_avgs.to_csv(class_avgs_path, index=False)
 
-    # (2) overall averages
+    # overall averages
     overall_path = outdir / "overall_averages.csv"
     overall.to_frame(name="value").reset_index(names=["metric"]).to_csv(overall_path, index=False)
 
-    # (3) best/worst per class (sorted by class)
+    # best/worst per class (sorted by class)
     extremes_path = outdir / "best_worst_per_class.csv"
     class_extremes.to_csv(extremes_path, index=False)
 

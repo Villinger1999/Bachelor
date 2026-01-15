@@ -1,0 +1,9 @@
+source_csv,scenario,model_path,defense,overall_avg_ssim,overall_avg_psnr,overall_avg_loss,label_correct,threshold,acc_before,acc_after,delta_acc_pp
+results_FL_orig_none.csv,fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,none,0.669401,19.086572,0.000524752,1.0,,0.4702,0.4702,0.0
+results_FL_orig_tv5.csv,fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,none,0.839035,24.836548,0.002465228,1.0,,0.4702,0.4702,0.0
+results_FL_orig_tv6.csv,fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,none,0.879741,27.998224,3.600306632,1.0,,0.4702,0.4702,0.0
+results_FL_orig_tv57.csv,fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,none,0.900664,28.943644,1.975930925,1.0,,0.4702,0.4702,0.0
+results_FL_orig_tv47_100.csv,fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,none,0.874233,28.870486,1.59033184,1.0,,0.4702,0.4702,0.0
+results_FL_orig_tv37.csv,fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,none,0.908419,29.951099,0.318853673,1.0,,0.4702,0.4702,0.0
+results_FL_orig_tv27.csv,fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,none,0.883352,29.396845,0.651576514,1.0,,0.4702,0.4702,0.0
+results_FL_orig_tv7.csv,fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,none,0.851768,27.742426,1.66375525,1.0,,0.4702,0.4702,0.0

@@ -1,20 +1,4 @@
-#!/usr/bin/env python3
-"""
-Visualize a single deterministic rerun specified by --img_idx and --seed.
-
-Python<3.10 compatible typing (Optional[...]).
-No best/worst logic. CSV is optional and used only to print stored metrics for the same run.
-
-Usage:
-  python visualize.py --model global_model_state.pt --img_idx 123 --seed 42 --defense none --iterations 100
-
-  # With optional CSV comparison printout
-  python visualize.py --model global_model_state.pt --img_idx 123 --seed 42 --defense clipping --percentile 0.995 \
-    --iterations 100 --csv results.csv
-"""
-
 from __future__ import annotations
-
 import argparse
 import os
 import random
@@ -31,19 +15,12 @@ from classes.attacks import iDLG
 from classes.helperfunctions import compute_ssim_psnr
 
 
-# ----------------------------
-# Reproducibility
-# ----------------------------
 def set_all_seeds(seed: int) -> None:
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
 
-
-# ----------------------------
-# Data / model loading
-# ----------------------------
 def load_cifar10_torch():
     (x_train, y_train), _ = tf.keras.datasets.cifar10.load_data()
     x_train = torch.tensor(x_train.transpose(0, 3, 1, 2), dtype=torch.float32) / 255.0
@@ -53,16 +30,12 @@ def load_cifar10_torch():
 
 def load_model(state_dict_path: str, device: str):
     model = LeNet()
-    # weights_only=True is available in newer torch; keep as in your original script.
     sd = torch.load(state_dict_path, map_location=device, weights_only=True)
     model.load_state_dict(sd)
     model.to(device).eval()
     return model
 
 
-# ----------------------------
-# Visualization
-# ----------------------------
 def visualize_run(orig_img, dummy, recon, label_pred, label_true, losses, title, save_path) -> None:
     if isinstance(recon, np.ndarray):
         recon_t = torch.from_numpy(recon)
@@ -88,21 +61,21 @@ def visualize_run(orig_img, dummy, recon, label_pred, label_true, losses, title,
     fig, axes = plt.subplots(1, 4, figsize=(24, 5))
 
     axes[0].imshow(to_hwc(dummy_t))
-    axes[0].set_title("Dummy init")
+    axes[0].set_title("Dummy init", fontsize=16)
     axes[0].axis("off")
 
     axes[1].imshow(to_hwc(recon_t))
-    axes[1].set_title(f"Reconstruction\npred={int(label_pred)}")
+    axes[1].set_title(f"Reconstruction\npred={int(label_pred)}", fontsize=16)
     axes[1].axis("off")
 
     axes[2].imshow(to_hwc(orig_t))
-    axes[2].set_title(f"Original\ntrue={label_true}")
+    axes[2].set_title(f"Original\ntrue={label_true}", fontsize=16)
     axes[2].axis("off")
 
     axes[3].plot(losses)
-    axes[3].set_title("Loss curve")
-    axes[3].set_xlabel("Iteration")
-    axes[3].set_ylabel("Loss")
+    axes[3].set_title("Loss curve", fontsize=16)
+    axes[3].set_xlabel("Iteration", fontsize=16)
+    axes[3].set_ylabel("Loss", fontsize=16)
     axes[3].grid(True)
 
     fig.suptitle(title, fontsize=16, fontweight="bold")
@@ -114,9 +87,6 @@ def visualize_run(orig_img, dummy, recon, label_pred, label_true, losses, title,
     plt.close(fig)
 
 
-# ----------------------------
-# Optional CSV helpers (for comparison printout only)
-# ----------------------------
 REQUIRED_COLS = ["img_idx", "seed", "ssim", "psnr", "final_loss", "defense"]
 
 
@@ -127,7 +97,6 @@ def load_run_rows(csv_path: str) -> pd.DataFrame:
     if missing:
         raise ValueError(f"CSV missing required columns: {missing}")
 
-    # Drop AVG rows by coercing repeat_id to numeric (AVG -> NaN)
     if "repeat_id" in df.columns:
         df["repeat_id_num"] = pd.to_numeric(df["repeat_id"], errors="coerce")
         df = df[df["repeat_id_num"].notna()].copy()
@@ -152,15 +121,13 @@ def find_csv_row_for_run(df: pd.DataFrame, img_idx: int, seed: int, defense: str
     return sub.iloc[0]
 
 
-# ----------------------------
-# Rerun deterministically
-# ----------------------------
 def rerun_one(
     model,
     orig_img,
     label_true: int,
     device: str,
     defense: str,
+    tvr: str,
     percentile: Optional[float],
     iterations: int,
     seed: int,
@@ -168,6 +135,8 @@ def rerun_one(
     set_all_seeds(seed)
 
     label = torch.tensor([label_true], dtype=torch.long, device=device)
+    
+    tvr = float(tvr)
 
     attacker = iDLG(
         model=model,
@@ -178,6 +147,7 @@ def rerun_one(
         orig_img=orig_img,
         grads=None,
         defense=defense,
+        tvr=tvr,
         percentile=percentile,
         random_dummy=True,
         dummy_var=0.0,
@@ -211,12 +181,12 @@ def main() -> None:
     ap.add_argument("--img_idx", type=int, required=True, help="Image index to rerun")
     ap.add_argument("--seed", type=int, required=True, help="Seed to rerun")
     ap.add_argument("--iterations", type=int, default=100)
+    ap.add_argument("--tvr", default="3e-7")
 
-    ap.add_argument("--defense", default="none", choices=["none", "clipping", "sgp"], help="Defense to apply")
+    ap.add_argument("--defense", default="none", choices=["none", "normclipping", "clipping", "sgp"], help="Defense to apply")
     ap.add_argument("--percentile", default=None, type=float, help="clipping quantile or sgp keep_ratio")
     ap.add_argument("--out_dir", default="viz_one")
 
-    # Optional: only for printing stored CSV metrics for this same run
     ap.add_argument("--csv", default=None, help="Optional CSV to print stored psnr/ssim for this img_idx+seed+defense")
 
     args = ap.parse_args()
@@ -229,14 +199,12 @@ def main() -> None:
     seed = int(args.seed)
     defense = str(args.defense)
 
-    # Bounds check for nicer errors
     if img_idx < 0 or img_idx >= len(x_train):
         raise ValueError(f"--img_idx out of range: {img_idx} (valid: 0..{len(x_train)-1})")
 
     orig_img = x_train[img_idx].unsqueeze(0).to(device)
     label_true = int(y_train[img_idx].item())
 
-    # Optional CSV lookup (comparison only)
     csv_row = None
     if args.csv is not None:
         df = load_run_rows(args.csv)
@@ -248,6 +216,7 @@ def main() -> None:
         label_true=label_true,
         device=device,
         defense=defense,
+        tvr=args.tvr,
         percentile=args.percentile,
         iterations=args.iterations,
         seed=seed,
@@ -255,12 +224,12 @@ def main() -> None:
 
     pct_str = "None" if args.percentile is None else str(args.percentile)
     title = (
-        f"img={img_idx} | seed={seed} | true={label_true} | "
+        f"img={img_idx} | seed={seed} | TVR={args.tvr} | label={label_true} | "
         f"def={defense}({pct_str}) | PSNR={out['psnr']:.3f} | SSIM={out['ssim']:.3f}"
     )
 
     os.makedirs(args.out_dir, exist_ok=True)
-    save_path = os.path.join(args.out_dir, f"img{img_idx}_seed{seed}.png")
+    save_path = os.path.join(args.out_dir, f"img{img_idx}_seed{seed}_tvr{args.tvr}_it{args.iterations}.png")
     visualize_run(
         orig_img,
         out["dummy"],

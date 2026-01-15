@@ -27,11 +27,11 @@ class iDLG:
         orig_img=None,
         grads=None,
         defense=None,
+        tvr=2e-7,
         percentile=None,
         random_dummy=True,
         dummy_var=0.0,
     ) -> None:
-        # Respect provided device and keep original dtype of the model/weights
         self.device = device if isinstance(device, str) else (device.type if hasattr(device, "type") else "cpu")
         self.model = model.to(self.device)
         self.criterion = nn.CrossEntropyLoss(reduction='sum').to(self.device)
@@ -39,6 +39,7 @@ class iDLG:
         self.tt = transforms.ToPILImage()
         self.clamp = clamp
         self.defense = defense
+        self.tvr=tvr
         self.percentile = float(percentile) if percentile is not None else None
         self.grads = grads
         self.var=dummy_var
@@ -46,7 +47,6 @@ class iDLG:
         self.param_dtype = next(self.model.parameters()).dtype
         if orig_img is not None:
             self.orig_img = orig_img.to(self.device)
-            # Align image dtype to model parameter dtype (usually float32)
             if self.orig_img.dtype != self.param_dtype:
                 self.orig_img = self.orig_img.to(self.param_dtype)
 
@@ -64,13 +64,17 @@ class iDLG:
         if self.defense == "sgp":
             thr = pruning_threshold(orig_grads, self.percentile)
             defense_obj = SGP(threshold=thr)
+            defended = defense_obj.apply(orig_grads)
         elif self.defense == "clipping":
             thr = clipping_threshold(orig_grads, self.percentile)
             defense_obj = Clipping(threshold=thr)
-        else:
-            raise ValueError(f"Unknown defense='{self.defense}'. Use none|sgp|clipping")
+            defended = defense_obj.apply(orig_grads)
+        elif self.defense == "normclipping":
+            thr = float(self.percentile)
+            defended = NormClipping(q=thr).apply(orig_grads)
 
-        defended = defense_obj.apply(orig_grads)
+        else:
+            raise ValueError(f"Unknown defense='{self.defense}'. Use none|normclipping|sgp|clipping")
         return defended
 
     def attack(self, iterations=200):
@@ -100,7 +104,6 @@ class iDLG:
         
         dummy_save = dummy_data.detach().cpu().clone()
 
-        # init with ground truth:
         label_pred = torch.argmin(torch.sum(orig_grads[-2], dim=-1), dim=-1).detach().reshape((1,)).requires_grad_(False)
         
         optimizer = LBFGS(
@@ -111,8 +114,6 @@ class iDLG:
 
         history = []
         losses = []
-        
-        # print("iDLG: self.grads is None?", self.grads is None)
 
         for iters in tqdm(range(iterations)):
             def closure():
@@ -124,7 +125,7 @@ class iDLG:
                 for gx, gy in zip(dummy_dy_dx, orig_grads):
                     grad_diff += ((gx - gy) ** 2).sum()
                     
-                tv_weight = 1e-5
+                tv_weight = self.tvr
                 tv = (dummy_data[:, :, :, :-1] - dummy_data[:, :, :, 1:]).abs().sum() + \
                     (dummy_data[:, :, :-1, :] - dummy_data[:, :, 1:, :]).abs().sum()
 
@@ -136,7 +137,6 @@ class iDLG:
 
             optimizer.step(closure)
 
-            # Optional: keep dummy within valid input range
             if self.clamp is not None:
                 with torch.no_grad():
                     dummy_data.clamp_(self.clamp[0], self.clamp[1])
@@ -147,3 +147,4 @@ class iDLG:
                 history.append(self.tt(dummy_data[0].detach().cpu()))
                 
         return orig_grads, dummy_save.detach().cpu(), dummy_data.detach().cpu(), label_pred, history, losses 
+    

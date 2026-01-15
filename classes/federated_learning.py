@@ -8,9 +8,6 @@ import sys
 from classes.defenses import *
 
 
-# ----------------------------
-# FedAvg (unchanged, weights)
-# ----------------------------
 def fedavg(states, C, client_datasets):
     """
     states: list of state_dict from each client after local training
@@ -37,9 +34,6 @@ def fedavg(states, C, client_datasets):
     return avg_state
 
 
-# ----------------------------
-# Gradient helpers
-# ----------------------------
 def grad_state_dict(model):
     """
     Return a dict keyed by parameter name with gradient tensors.
@@ -62,16 +56,14 @@ def load_grad_dict_into_model(model, grad_dict):
         if g is None:
             continue
         if p.grad is None:
-            # In most normal training flows, p.grad exists after backward.
-            # If it doesn't, skip (or set p.grad = g.clone()) depending on your preference.
             continue
         p.grad.copy_(g.to(device=p.grad.device, dtype=p.grad.dtype))
 
 
 def apply_defense_to_grad_dict(grad_dict, defense=None, *, percentile=0.9, keep_ratio=0.9):
     """
-    Returns a NEW dict with defended grads (same keys).
-    Uses your Defense classes (Clipping/SGP) which operate on list[tensor].
+    Returns a new dict with defended grads (same keys).
+    Uses Defense classes (NormClipping/Clipping/SGP) which operate on list[tensor].
     Preserves None entries.
     """
     if defense is None:
@@ -98,16 +90,13 @@ def apply_defense_to_grad_dict(grad_dict, defense=None, *, percentile=0.9, keep_
     else:
         raise ValueError(f"Unknown defense: {defense}")
 
-    # rebuild full list with None preserved
     grads_out = list(grads)
     for j, i in enumerate(idx):
         grads_out[i] = defended_nonnull[j]
 
     return {k: grads_out[i] for i, k in enumerate(keys)}
 
-# ----------------------------
-# Evaluation
-# ----------------------------
+
 def evaluate_global(model, dataloader, device):
     model = model.to(device)
     model.eval()
@@ -122,9 +111,6 @@ def evaluate_global(model, dataloader, device):
     return correct / total if total > 0 else 0.0
 
 
-# ----------------------------
-# Client
-# ----------------------------
 class Client:
     def __init__(
         self,
@@ -132,7 +118,6 @@ class Client:
         dataset,
         batch_size,
         device="cpu",
-        # Defaults for defenses; you can override per-call in train_local via args too.
         defense=None,
         percentile=0.9,
         keep_ratio=0.9,
@@ -185,7 +170,7 @@ class Client:
                 # Capture the gradients from this (last-seen) batch
                 raw_grads = grad_state_dict(local_model)
 
-                # Apply defense to gradients (THIS is now used by optimizer.step())
+                # Apply defense to gradients
                 defended_grads = apply_defense_to_grad_dict(
                     raw_grads,
                     defense=use_defense,
@@ -220,10 +205,6 @@ class Client:
         }
         return local_model.state_dict(), grads_dict
 
-
-# ----------------------------
-# Federated trainer (FedAvg)
-# ----------------------------
 class FederatedTrainer:
     """
     Federated training with FedAvg weight aggregation.

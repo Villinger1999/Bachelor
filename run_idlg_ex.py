@@ -79,6 +79,7 @@ def run_scenario(
     leaked_grads_path: Optional[str],
     image_indices: list[int],
     defense: str,
+    tvr: str,
     def_params: Optional[list[float]],
     iterations: int,
     base_seed: int,
@@ -87,8 +88,9 @@ def run_scenario(
     repeats: int = 100,
 ):
     x_train, y_train, x_test, y_test = load_cifar10()
+    
+    tvr = float(tvr)
 
-    # valuation loader should NOT shuffle
     testloader = DataLoader(TensorDataset(x_test, y_test), batch_size=64, shuffle=False)
 
     model = load_model(model_path, device)
@@ -107,7 +109,7 @@ def run_scenario(
             w.writerow([
                 # identifiers
                 "scenario", "model_path", "defense", "img_idx", "label_true",
-                # per-run identifiers (NEW)
+                # per-run identifiers 
                 "repeat_id", "seed",
                 # per-run outputs
                 "label_pred", "label_correct",
@@ -137,8 +139,9 @@ def run_scenario(
                         device=device,
                         orig_img=orig_img,
                         grads=None if "orig_grads" in scenario_name else leaked_grads,
-                        defense=defense,        # "none"|"clipping"|"sgp"
+                        defense=defense,        # "none"|"normclipping"|"clipping"|"sgp"
                         percentile=dp,          # clipping quantile OR sgp keep_ratio OR None
+                        tvr=tvr,
                         random_dummy=True,
                         dummy_var=0.0,
                         seed=seed,
@@ -187,7 +190,7 @@ def run_scenario(
                 label_acc = float(np.mean(label_corrs))
                 avg_acc_after = float(np.mean(model_acc_after_runs))
 
-                # write per-run rows (now include scenario info + repeat_id + seed)
+                # write per-run rows 
                 for r in runs:
                     w.writerow([
                         scenario_name, model_path, defense, img_idx, label_true,
@@ -246,8 +249,9 @@ if __name__ == "__main__":
     ap.add_argument("--seed", type=int, default=123)
     ap.add_argument("--out_csv", default="idlg_results.csv")
     ap.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
+    ap.add_argument("--tvr", default="2e-7")
 
-    ap.add_argument("--defense", default="none", choices=["none", "clipping", "sgp"])
+    ap.add_argument("--defense", default="none", choices=["none", "normclipping", "clipping", "sgp"])
     ap.add_argument("--def_params", default="none",
                     help="For none: 'none'. For clipping: '0.99996,0.99995'. For sgp: '0.94,0.93' (keep_ratio).")
 
@@ -276,6 +280,7 @@ if __name__ == "__main__":
             model_path=model_path,
             leaked_grads_path=leak_path,
             image_indices=images,
+            tvr=args.tvr,
             defense=args.defense,
             def_params=def_params,
             iterations=args.iterations,

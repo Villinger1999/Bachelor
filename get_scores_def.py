@@ -1,13 +1,4 @@
-#!/usr/bin/env python3
-"""
-Compute overall defense scores per CSV (NO concatenation).
-
-Adds:
-- threshold (first non-null per defense)
-"""
-
 from __future__ import annotations
-
 import argparse
 import glob
 from pathlib import Path
@@ -15,7 +6,7 @@ from typing import List, Optional
 
 import pandas as pd
 
-METRIC_COLS = ["ssim", "psnr", "final_loss"]
+METRIC_COLS = ["ssim", "psnr", "final_loss","label_correct"]
 KEYS = ["scenario", "model_path", "defense"]
 
 
@@ -63,12 +54,13 @@ def summarize_one_csv(csv_path: str) -> pd.DataFrame:
                 "ssim": "overall_avg_ssim",
                 "psnr": "overall_avg_psnr",
                 "final_loss": "overall_avg_loss",
+                "label_correct": "label_correct"
             }
         )
         .reset_index()
     )
 
-    # Extract threshold + accuracies (usually from AVG rows)
+    # Extract threshold + accuracies 
     extra = (
         df.groupby(KEYS, dropna=False)
         .agg(
@@ -89,8 +81,9 @@ def summarize_one_csv(csv_path: str) -> pd.DataFrame:
     out["overall_avg_ssim"] = out["overall_avg_ssim"].round(6)
     out["overall_avg_psnr"] = out["overall_avg_psnr"].round(6)
     out["overall_avg_loss"] = out["overall_avg_loss"].round(9)
+    
 
-    # Sort by threshold (important for sweeps)
+    # Sort by threshold 
     out = out.sort_values("threshold", ascending=False).reset_index(drop=True)
 
     return out
@@ -100,31 +93,37 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--csvs", nargs="*", help="CSV files to analyze (processed one-by-one)")
     ap.add_argument("--glob", dest="glob_pattern", help='Glob pattern, e.g. "results/*.csv"')
-    ap.add_argument("--outdir", default=None, help="Optional output directory")
+    ap.add_argument("--out", default=None, help="Optional combined output CSV path")
     args = ap.parse_args()
 
     paths = _expand_inputs(args.csvs, args.glob_pattern)
     if not paths:
         raise SystemExit("No CSVs provided.")
 
-    outdir = Path(args.outdir) if args.outdir else None
-    if outdir:
-        outdir.mkdir(parents=True, exist_ok=True)
+    all_summaries = []
 
     for p in paths:
         summary = summarize_one_csv(p)
 
+        # Add source file column
+        summary.insert(0, "source_csv", Path(p).name)
+
+        # Console output 
         print("\n" + "=" * 80)
         print(f"CSV: {p}")
         print("=" * 80)
         print(summary.to_string(index=False))
 
-        if outdir:
-            stem = Path(p).stem
-            out_path = outdir / f"{stem}_overall_by_defense.csv"
-            summary.to_csv(out_path, index=False)
-            print(f"\nSaved: {out_path}")
+        all_summaries.append(summary)
 
+    # Combine all summaries into one DataFrame 
+    combined = pd.concat(all_summaries, ignore_index=True)
+
+    # Save single CSV if requested 
+    if args.out:
+        out_path = Path(args.out)
+        combined.to_csv(out_path, index=False)
+        print(f"\nSaved combined results to: {out_path}")
 
 if __name__ == "__main__":
     main()

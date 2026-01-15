@@ -124,7 +124,7 @@ class NoiseGenerator:
             for var in variances:
                 noisy = util.random_noise(base_img, mode="gaussian", var=var)
 
-                # Filename (only meaningful if we save)
+                # Filename 
                 fname = f"{img_name}_var{var}.jpg"
                 img_path = (
                     os.path.join(self.image_output_dir, fname)
@@ -144,7 +144,7 @@ class NoiseGenerator:
 
         df = pd.DataFrame(results)
 
-        # Make plots (one row per original image index)
+        # Make plots 
         if save_plots or show_plots:
             os.makedirs(self.plot_output_dir, exist_ok=True)
 
