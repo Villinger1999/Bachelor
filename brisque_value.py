@@ -21,7 +21,6 @@ import random as random
 import argparse
 
 
-
 np.random.seed(42)  # Set a fixed seed for reproducibility
 random.seed(42)
 
@@ -41,7 +40,7 @@ def get_images(image_dir, image_count):
    
 if __name__ == "__main__":
     
-    ##------ setup of the variable needed to do test the brisque scores 
+    ## setup of the variable needed to do test the brisque scores 
  
     # Make path the folder path
     path = os.getcwd() + "/" # always points to the folder you are in
@@ -100,9 +99,9 @@ if __name__ == "__main__":
                 # Calculate BRISQUE score for each variance level
                 brisque_score = model(processed_image).item()
                 
-                ##---- save outliers uncomment the line below to save all the images that has a value lower than 0 and higher than 100
+                # save outliers uncomment the line below to save all the images that has a value lower than 0 and higher than 100
                 # if brisque_score < 0 or brisque_score > 100:
-                #     io.imsave(path + f'data/invalid_brisque/noisy{idx}_{variance}_{reso}x{reso}_brisque_{brisque_score:.2f}.jpg', save_array)
+                # io.imsave(path + f'data/invalid_brisque/noisy{idx}_{variance}_{reso}x{reso}_brisque_{brisque_score:.2f}.jpg', save_array)
                 
                 results.append({"resolution" : reso, "image_idx" : idx, "variance" : variance, "brisque_score" : brisque_score})
 
@@ -111,7 +110,7 @@ if __name__ == "__main__":
         
 
 
-        ##------- Plots and save the histograms of the two distribution, at each resolution 
+        ## Plots and save the histograms of the two distribution, at each resolution 
         if plots_download == True:
             fig, ax1 = plt.subplots(figsize=(8, 5))
             max_count = 0
@@ -160,12 +159,12 @@ if __name__ == "__main__":
             plt.savefig(path + f'results/brisque_analysis_{image_count}_{var_arr}_{reso}x{reso}.png', dpi=800, bbox_inches='tight')
             plt.close()
         
-        #------- make the ks_test on the two variances chosen
+        # make the ks_test on the two variances chosen
         brisque_var_0 = df_results[(df_results["resolution"] == reso) & (df_results['variance'] == var_arr[0])]['brisque_score']
         brisque_var_i = df_results[(df_results["resolution"] == reso) & (df_results['variance'] == var_arr[1])]['brisque_score']
         ks_test = stats.ks_2samp(brisque_var_0, brisque_var_i, alternative='two-sided', mode='asymp')
 
-        #------ FPR and FNR calculation
+        # FPR and FNR calculation
         # Use the KS statistic location as threshold
         threshold = ks_test.statistic_location
         fpr = np.sum(brisque_var_0 > threshold) / len(brisque_var_0) if len(brisque_var_0) > 0 else np.nan
@@ -214,6 +213,6 @@ if __name__ == "__main__":
         
         
 
-        #------ saving the data frame as a csv file
+        # saving the data frame as a csv file
         df_ks = pd.DataFrame(ks_results)
         df_ks.to_csv(path + f'ks_test_results_{image_count}_{var_arr}_res_{resolution_arr[0]}_{resolution_arr[-1]}.csv', index=False)
