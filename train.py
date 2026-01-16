@@ -1,9 +1,10 @@
 from classes.federated_learning import train
-from classes.models import LeNet
+from Bachelor.future_works.model_change import LeNet
 from torch.utils.data import DataLoader, TensorDataset
 import torch
 import tensorflow as tf
 import sys
+from classes.models import shallow_resnet
 
 (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
 
@@ -18,21 +19,21 @@ y_test_torch  = torch.tensor(y_test.squeeze(), dtype=torch.long)
 trainset = TensorDataset(x_train_torch, y_train_torch)
 testset = TensorDataset(x_test_torch, y_test_torch)
 
-batch_size = int(sys.argv[2])
-epoch = int(sys.argv[3])
-lr = float(sys.argv[4])
-shuf_in = sys.argv[5]
-if shuf_in == "false":
-    shuf = False
-else:
-    shuf = True
+# batch_size = int(sys.argv[2])
+# epoch = int(sys.argv[3])
+# lr = float(sys.argv[4])
+# shuf_in = sys.argv[5]
+# if shuf_in == "false":
+#     shuf = False
+# else:
+#     shuf = True
 
 # Create DataLoader for the smaller test subset
-testloader = DataLoader(testset, batch_size=batch_size, shuffle=shuf)
-trainloader = DataLoader(trainset, batch_size=batch_size, shuffle=shuf)
+testloader = DataLoader(testset, batch_size=64, shuffle=False)
+trainloader = DataLoader(trainset, batch_size=64, shuffle=False)
 
-model = LeNet()
-
-state_dict = train(model, trainloader, testloader, epochs=epoch, lr=lr)
+model = LeNet(activation=sys.argv[2])
+# model = shallow_resnet()
+state_dict = train(model, trainloader, testloader, epochs=100, lr=0.01)
 
 torch.save(state_dict, f"state_dict_{str(sys.argv[1])}.pt")

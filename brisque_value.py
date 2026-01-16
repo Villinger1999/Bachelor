@@ -111,7 +111,7 @@ if __name__ == "__main__":
         
 
 
-        ##------- Plots and save the histograms of the two distribution, at each resolution 
+        ## Plots and save the histograms of the two distribution, at each resolution 
         if plots_download == True:
             fig, ax1 = plt.subplots(figsize=(8, 5))
             max_count = 0
@@ -160,12 +160,12 @@ if __name__ == "__main__":
             plt.savefig(path + f'results/brisque_analysis_{image_count}_{var_arr}_{reso}x{reso}.png', dpi=800, bbox_inches='tight')
             plt.close()
         
-        #------- make the ks_test on the two variances chosen
+        # make the ks_test on the two variances chosen
         brisque_var_0 = df_results[(df_results["resolution"] == reso) & (df_results['variance'] == var_arr[0])]['brisque_score']
         brisque_var_i = df_results[(df_results["resolution"] == reso) & (df_results['variance'] == var_arr[1])]['brisque_score']
         ks_test = stats.ks_2samp(brisque_var_0, brisque_var_i, alternative='two-sided', mode='asymp')
 
-        #------ FPR and FNR calculation
+        # FPR and FNR calculation
         # Use the KS statistic location as threshold
         threshold = ks_test.statistic_location
         fpr = np.sum(brisque_var_0 > threshold) / len(brisque_var_0) if len(brisque_var_0) > 0 else np.nan
