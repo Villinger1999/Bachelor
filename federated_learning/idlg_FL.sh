@@ -15,13 +15,13 @@ python run_idlg_ex.py \
   --scenario fl_model_orig_grads \
   --normal_model global_model_state_exp2_b64_e15_c10.pt \
   --fl_model global_model_state_exp2_b64_e15_c10.pt \
-  --images 0-24 \
+  --images 0 \
   --seed 123 \
-  --repeats 25 \
+  --repeats 1 \
   --iterations 100 \
   --tvr 0 \
   --defense none \
-  --out_csv results_FL_orig_none_2.csv
+  --out_csv results/results_FL.csv
 
 # python run_idlg_ex.py \
 #   --scenario fl_model_orig_grads \
