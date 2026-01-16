@@ -3,7 +3,12 @@ __pycache__/
 *.pyc
 
 # Ignore images
-results/assessment/
+results/
+federated_learning/results
+brisque/results
+viz_one/
+future_works/
+state_dicts/
 data/
 .vscode/settings.json
 bachelor-env/
