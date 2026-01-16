@@ -4,8 +4,8 @@ from pathlib import Path
 import sys
 from sympy import symbols
 
-csv1 = "results_FL_orig_1.csv"
-csv2 = "results_FL_orig_none_2.csv"
+csv1 = "results/scores/results_FL_orig_1.csv"
+csv2 = "results/scores/results_FL_orig_none_2.csv"
 
 if len(sys.argv) < 2:
     raise SystemExit("Usage: python plot.py <img_idx>")
@@ -13,7 +13,7 @@ if len(sys.argv) < 2:
 img_idx = int(sys.argv[1])  
 seeds_10 = [123,124,125,126,127,128,129,130,131,132]
 
-out_dir = Path("scores/tvr")
+out_dir = Path("results/cum_scores/tvr")
 out_dir.mkdir(parents=True, exist_ok=True)
 
 def prep_df(df):
@@ -293,44 +293,44 @@ def per_class(csv, out):
     plt.close()
     
     
-plot_different("scores/tvr/tvr.csv", ["None", "1e-5", "1e-6", "5e-7", "4e-7", "3e-7", "2e-7", "1e-7"], rotation=45, xlabel="TVR", ylabel1="SSIM", ylabel2="PSNR", title="for different TVR settings", out="scores/tvr")
+plot_different("results/cum_scores/tvr/tvr.csv", ["None", "1e-5", "1e-6", "5e-7", "4e-7", "3e-7", "2e-7", "1e-7"], rotation=45, xlabel="TVR", ylabel1="SSIM", ylabel2="PSNR", title="for different TVR settings", out="results/cum_scores/tvr")
 plot_different(
-    "scores/scores_sgp/sgp.csv",
+    "results/cum_scores/scores_sgp/sgp.csv",
     ["0.9", "0.8", "0.7", "0.6", "0.5", "0.4", "0.3", "0.2"],
     rotation=45,
     xlabel="Percentile",
     ylabel1="SSIM",
     ylabel2="PSNR",
     title="for different SGP threshold",
-    out="scores/scores_sgp"
+    out="results/cum_scores/scores_sgp"
 )
 
 plot_different(
-    "scores/scores_clip/clip.csv",
+    "results/cum_scores/scores_clip/clip.csv",
     ["0.999", "0.998", "0.997", "0.996", "0.995", "0.994", "0.993", "0.99"],
     rotation=45,
     xlabel="Percentile",
     ylabel1="SSIM",
     ylabel2="PSNR",
     title="for different clipping thresholds",
-    out="scores/scores_clip"
+    out="results/cum_scores/scores_clip"
 )
 
 plot_different(
-    "scores/norm_clip/normclip.csv",
+    "results/cum_scores/norm_clip/normclip.csv",
     ["0.995", "0.99", "0.98", "0.95", "0.93", "0.9", "0.88", "0.85"],
     rotation=45,
     xlabel="Percentile",
     ylabel1="SSIM",
     ylabel2="PSNR",
     title="for different norm clipping thresholds",
-    out="scores/norm_clip"
+    out="results/cum_scores/norm_clip"
 )
 
-per_class("scores/scores_FL/per_class_averages.csv", "scores/scores_FL")
-per_class("scores/per_class_averages.csv", "scores")
-per_class("scores/scores_clip/per_class_averages.csv", "scores/scores_clip")
-per_class("scores/scores_sgp/per_class_averages.csv", "scores/scores_sgp")
-per_class("scores/norm_clip/per_class_averages.csv", "scores/norm_clip")
+per_class("results/cum_scores/scores_FL/per_class_averages.csv", "results/cum_scores/scores_FL")
+per_class("results/cum_scores/per_class_averages.csv", "scores")
+per_class("results/cum_scores/scores_clip/per_class_averages.csv", "results/cum_scores/scores_clip")
+per_class("results/cum_scores/scores_sgp/per_class_averages.csv", "results/cum_scores/scores_sgp")
+per_class("results/cum_scores/norm_clip/per_class_averages.csv", "results/cum_scores/norm_clip")
 
 

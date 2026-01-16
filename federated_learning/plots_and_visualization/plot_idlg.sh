@@ -11,13 +11,13 @@
 module load python/3.12.11
 source ~/bachelor-env/bin/activate
 
-python plot_tvr.py 0
-# python plot_tvr.py 1
-# python plot_tvr.py 2
-# python plot_tvr.py 3
-# python plot_tvr.py 4
-# python plot_tvr.py 5
-# python plot_tvr.py 6
-# python plot_tvr.py 7
-# python plot_tvr.py 8
-# python plot_tvr.py 9
+python plots_and_visualization/plot_idlg.py 0
+# python plots_and_visualization/plot_idlg.py 1
+# python plots_and_visualization/plot_idlg.py 2
+# python plots_and_visualization/plot_idlg.py 3
+# python plots_and_visualization/plot_idlg.py 4
+# python plots_and_visualization/plot_idlg.py 5
+# python plots_and_visualization/plot_idlg.py 6
+# python plots_and_visualization/plot_idlg.py 7
+# python plots_and_visualization/plot_idlg.py 8
+# python plots_and_visualization/plot_idlg.py 9
