@@ -4,8 +4,8 @@ __pycache__/
 
 # Ignore images
 results/
-federated_learning/results
-brisque/results
+federated_learning/results/
+brisque/results/
 viz_one/
 future_works/
 state_dicts/
