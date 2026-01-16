@@ -3,6 +3,7 @@ __pycache__/
 *.pyc
 
 # Ignore images
+results/
 brisque/results/
 federated_learning/results/
 state_dicts/
