@@ -1,3 +1,0 @@
-scenario,model_path,defense,img_idx,label_true,repeat_id,seed,label_pred,label_correct,ssim,psnr,final_loss,avg_ssim,avg_psnr,std_ssim,std_psnr,label_acc,threshold,model_acc_before,model_acc_after
-fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,none,0,6,0,123,6,1,0.7729630470275879,21.20793200494678,6.198370556376176e-06,,,,,,,,
-fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,none,0,6,AVG,-,-,-,-,-,-,0.7729630470275879,21.20793200494678,0.0,0.0,1.0,,0.4702,0.4702
