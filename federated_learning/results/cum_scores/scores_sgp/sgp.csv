@@ -1,9 +1,0 @@
-source_csv,scenario,model_path,defense,overall_avg_ssim,overall_avg_psnr,overall_avg_loss,label_correct,threshold,acc_before,acc_after,delta_acc_pp
-results_fl_orig_sgp_9.csv,fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,sgp,0.912371,30.18099,1.152713744,1.0,0.9,0.4702,0.4489,-2.13
-results_fl_orig_sgp_8.csv,fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,sgp,0.872328,27.965158,0.837190224,1.0,0.8,0.4702,0.4489,-2.13
-results_fl_orig_sgp_7.csv,fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,sgp,0.682681,21.59823,0.325645888,1.0,0.7,0.4702,0.4489,-2.13
-results_fl_orig_sgp_6.csv,fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,sgp,0.448464,15.097597,0.666864407,1.0,0.6,0.4702,0.4489,-2.13
-results_fl_orig_sgp_5.csv,fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,sgp,0.252639,10.407273,2.867385448,1.0,0.5,0.4702,0.4484,-2.18
-results_fl_orig_sgp_4.csv,fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,sgp,0.1598,8.46627,12.791964007,1.0,0.4,0.4702,0.4496,-2.06
-results_fl_orig_sgp_3.csv,fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,sgp,0.104793,7.327784,36.747890945,1.0,0.3,0.4702,0.4502,-2.0
-results_fl_orig_sgp_2.csv,fl_model_orig_grads,global_model_state_exp2_b64_e15_c10.pt,sgp,0.066007,6.499157,57.372100588,1.0,0.2,0.4702,0.4518,-1.84
