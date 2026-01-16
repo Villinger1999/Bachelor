@@ -5,8 +5,8 @@ import random
 from pathlib import Path
 
 # Make path the folder path
-path = path = os.getcwd() + "/"   
-extract_path = "data/imnet_subset_1000"     # folder to extract subset into
+path = path = ""   
+extract_path = "/dtu/datasets1/imagenet_object_localization_patched2019/ILSVRC/Data/CLS-LOC/train/n01440764/n01440764_10026.JPEG"     # folder to extract subset into
 
 # Base path to extracted images
 subset_dir = Path(path + extract_path)
