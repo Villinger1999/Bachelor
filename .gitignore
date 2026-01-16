@@ -9,6 +9,7 @@ brisque/results/
 viz_one/
 future_works/
 state_dicts/
+scores/
 data/
 .vscode/settings.json
 bachelor-env/
