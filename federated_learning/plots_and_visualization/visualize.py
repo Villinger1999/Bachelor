@@ -149,8 +149,8 @@ def rerun_one(
         defense=defense,
         tvr=tvr,
         percentile=percentile,
-        random_dummy=True,
-        dummy_var=0.0,
+        random_dummy=False,
+        dummy_var=0.1,
     )
 
     def_save, dummy, recon, label_pred, history, losses = attacker.attack(iterations=iterations)

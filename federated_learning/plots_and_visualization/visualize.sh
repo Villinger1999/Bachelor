@@ -11,14 +11,15 @@
 module load python/3.12.11
 source ~/bachelor-env/bin/activate
 
-python visualize.py \
+python -m plots_and_visualization.visualize \
   --model global_model_state_exp2_b64_e15_c10.pt \
   --img_idx 0 \
-  --seed 123\
+  --seed 123 \
   --defense none \
   --tvr 0 \
   --percentile 0 \
-  --iterations 300
+  --iterations 100 \
+  --out_dir viz_one
 
 # python visualize.py \
 #   --model global_model_state_exp2_b64_e15_c10.pt \
